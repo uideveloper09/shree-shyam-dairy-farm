@@ -38,7 +38,7 @@ export default function SectionHeading({ label, title, subtitle, align = "center
       {/* H2 — 52px desktop, responsive scale down */}
       <h2 className="
         mt-4 font-heading font-bold text-[#082F63] leading-[1.2]
-        text-[1.875rem] sm:text-[2.25rem] lg:text-[3.25rem]
+       text-[1.875rem] sm:text-[2.25rem] lg:text-[2.625rem]
       ">
         {title}
       </h2>

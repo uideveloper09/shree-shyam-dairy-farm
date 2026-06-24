@@ -1,6 +1,8 @@
 import { Playfair_Display, Poppins, Cinzel, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import { SITE } from "@/lib/site";
+import { CartProvider } from "@/context/CartContext";
+import CartDrawer from "@/components/ui/CartDrawer";
 
 const playfair = Playfair_Display({
   variable: "--font-heading",
@@ -54,7 +56,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${playfair.variable} ${poppins.variable} ${cinzel.variable} ${cormorant.variable} h-full scroll-smooth`}>
       <body className="min-h-full flex flex-col font-body antialiased bg-white text-gray-900">
+        <CartProvider>
         {children}
+        <CartDrawer />
+        </CartProvider>
       </body>
     </html>
   );

@@ -13,7 +13,7 @@
  */
 import Image from "next/image";
 import MotionReveal from "@/components/ui/MotionReveal";
-import SectionHeading from "@/components/ui/SectionHeading";
+// import SectionHeading from "@/components/ui/SectionHeading";
 import OrderButton from "@/components/ui/OrderButton";
 import { CONTAINER } from "@/lib/layout";
 

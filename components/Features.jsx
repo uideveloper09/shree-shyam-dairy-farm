@@ -12,17 +12,17 @@
  *   Desc       : 12px white/60
  * Icons: custom PNG icons available in /public/icons/
  */
-import Image from "next/image";
+// import Image from "next/image";
 import { FEATURES } from "@/lib/site";
 import { CONTAINER } from "@/lib/layout";
 
 /* Map icon key → PNG asset */
-const ICON_ASSETS = {
-  leaf:    "/icons/natural-100-icon.png",
-  cow:     "/icons/happy-cows.png",
-  droplet: "/icons/premium-quality-icon.png",
-  home:    "/icons/ghar-tak-icon.png",
-};
+// const ICON_ASSETS = {
+//   leaf:    "/icons/natural-100-icon.png",
+//   cow:     "/icons/happy-cows.png",
+//   droplet: "/icons/premium-quality-icon.png",
+//   home:    "/icons/ghar-tak-icon.png",
+// };
 
 /* Fallback SVG icons via react-icons if PNG not desired */
 import { FaLeaf, FaTint, FaHome } from "react-icons/fa";
