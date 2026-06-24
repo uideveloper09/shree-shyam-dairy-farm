@@ -1,88 +1,57 @@
 "use client";
 
-import Image from "next/image";
+import LazyImage from "@/components/ui/LazyImage";
 import MotionReveal from "@/components/ui/MotionReveal";
 import SectionHeading from "@/components/ui/SectionHeading";
-import { CONTAINER } from "@/lib/layout";
+import { useSiteData } from "@/context/SiteDataContext";
+import { CONTAINER, SECTION_WHITE } from "@/lib/layout";
 
 export default function OurFarm() {
-  const features = [
-    "200+ Healthy Cows",
-    "Organic Green Fodder",
-    "Clean & Hygienic Farm",
-    "Daily Fresh Milk Production",
-    "Veterinary Care Available",
-    "Direct Farm To Home Delivery",
-  ];
+  const { farm } = useSiteData();
 
   return (
-    <section id="farm" className="bg-white py-[80px]">
+    <section id="farm" className={SECTION_WHITE}>
       <div className={CONTAINER}>
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-
-          {/* Left Image */}
+        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           <MotionReveal delay={0.1}>
-            <div className="relative overflow-hidden rounded-[24px]">
-              <Image
-                src="/images/our-farm-banner.png"
-                alt="Shree Shyam Dairy Farm"
-                width={700}
-                height={500}
-                className="w-full h-auto object-cover"
-              />
-            </div>
-          </MotionReveal>
-
-          {/* Right Content */}
-          <MotionReveal delay={0.2}>
             <div>
+              <SectionHeading label={farm.label} title={farm.title} align="left" />
+              <p className="mt-6 text-[16px] leading-[1.85] text-gray-600">{farm.description}</p>
 
-              <SectionHeading
-                label="Our Farm"
-                title="Jahan Se Shuru Hoti Hai Shuddhata"
-              />
-
-              <p className="mt-6 text-[#666] leading-8">
-                Shree Shyam Dairy Farm mein hum har din taaza,
-                poshtik aur shuddh dairy products taiyaar karte hain.
-                Hamare gaayon ko saaf-suthra vatavaran,
-                santulit aahar aur niyamit veterinary care di jaati hai.
-              </p>
-
-              <div className="mt-8 grid sm:grid-cols-2 gap-4">
-                {features.map((item) => (
+              <div className="mt-8 grid gap-3 sm:grid-cols-2">
+                {farm.features.map((item) => (
                   <div
                     key={item}
-                    className="
-                      rounded-xl border border-[#E8E8E8]
-                      p-4 bg-[#FAFAFA]
-                    "
+                    className="premium-card flex items-center gap-2 rounded-xl px-4 py-3.5"
                   >
-                    <span className="text-[#082F63] font-semibold">
-                      ✓ {item}
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#C89B3C]/15 text-[11px] font-bold text-[#C89B3C]">
+                      ✓
                     </span>
+                    <span className="text-[14px] font-semibold text-[#082F63]">{item}</span>
                   </div>
                 ))}
               </div>
 
-              <button
-                className="
-                  mt-8
-                  bg-[#082F63]
-                  text-white
-                  px-8
-                  py-3
-                  rounded-lg
-                  hover:bg-[#0B3D7A]
-                  transition
-                "
-              >
-                Visit Our Farm
-              </button>
-
+              <a href={farm.cta.href} className="btn-premium-navy mt-8 h-12 px-8">
+                {farm.cta.label}
+              </a>
             </div>
           </MotionReveal>
 
+          <MotionReveal delay={0.2}>
+            <div className="relative">
+              <div className="absolute -inset-3 rounded-3xl bg-gradient-to-tr from-[#082F63]/10 to-[#C89B3C]/15" />
+              <div className="relative overflow-hidden rounded-3xl shadow-[0_20px_56px_rgba(8,47,99,0.12)] ring-1 ring-[#eee]">
+                <LazyImage
+                  src={farm.image}
+                  alt={farm.imageAlt}
+                  width={700}
+                  height={500}
+                  className="h-auto w-full object-cover"
+                />
+              </div>
+            </div>
+          </MotionReveal>
         </div>
       </div>
     </section>

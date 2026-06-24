@@ -1,15 +1,23 @@
 @import "tailwindcss";
 
-/* ─── Color tokens ─── */
+/* ─── Premium design tokens ─── */
 :root {
   --navy:        #082F63;
   --navy-dark:   #0B3D7A;
+  --navy-deep:   #061E3D;
   --gold:        #C89B3C;
+  --gold-light:  #d4ab5a;
+  --cream:       #faf9f6;
+  --cream-dark:  #f3f1ec;
   --footer-dark: #061E3D;
-  --text:        #222222;
-  --border:      #E5E5E5;
-  --bg-light:    #F7F7F7;
-  --bg-white:    #FFFFFF;
+  --text:        #1a1a1a;
+  --text-muted:  #6b7280;
+  --border:      #e8e8e8;
+  --border-soft: #f0f0f0;
+  --bg-light:    #faf9f6;
+  --bg-white:    #ffffff;
+  --shadow-soft: 0 4px 24px rgba(8, 47, 99, 0.06);
+  --shadow-hover: 0 12px 40px rgba(8, 47, 99, 0.12);
 }
 
 @theme inline {
@@ -21,7 +29,6 @@
   --font-tagline:    var(--font-tagline);
 }
 
-/* ─── Base reset ─── */
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
@@ -40,7 +47,6 @@ body {
 
 img { display: block; }
 
-/* ─── Font helpers ─── */
 .font-heading,
 h1, h2, h3, h4, h5 {
   font-family: var(--font-heading), "Playfair Display", Georgia, serif;
@@ -54,25 +60,192 @@ h1, h2, h3, h4, h5 {
   font-family: var(--font-tagline), "Cormorant Garamond", Georgia, serif;
 }
 
-/* ─── Section label (gold lines + diamond) ─── */
-.section-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.22em;
-  color: var(--gold);
-}
-.section-label::before,
-.section-label::after {
-  content: "";
-  display: inline-block;
-  height: 1px;
-  width: 48px;
-  background: color-mix(in srgb, var(--gold) 65%, transparent);
+/* ─── Premium utilities ─── */
+.premium-section {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
 }
 
-/* ─── Smooth hover transitions ─── */
-a, button { transition: color 0.2s, background-color 0.2s, opacity 0.2s; }
+@media (min-width: 640px) {
+  .premium-section {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .premium-section {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+}
+
+.premium-section-cream {
+  background-color: var(--cream);
+}
+
+.premium-section-white {
+  background-color: var(--bg-white);
+}
+
+.premium-card {
+  border-radius: 1rem;
+  border: 1px solid var(--border-soft);
+  background: white;
+  box-shadow: var(--shadow-soft);
+  transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+}
+
+.premium-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--gold) 25%, transparent);
+}
+
+.btn-premium-navy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: opacity 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 16px rgba(8, 47, 99, 0.25);
+}
+
+.btn-premium-navy:hover {
+  opacity: 0.92;
+  box-shadow: 0 6px 24px rgba(8, 47, 99, 0.35);
+}
+
+.btn-premium-gold {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+  color: var(--navy-deep);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: opacity 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 16px rgba(200, 155, 60, 0.3);
+}
+
+.btn-premium-gold:hover {
+  opacity: 0.95;
+}
+
+.btn-premium-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  border: 2px solid white;
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  backdrop-filter: blur(4px);
+  transition: background-color 0.2s;
+}
+
+.btn-premium-outline:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.carousel-nav-btn {
+  display: flex;
+  height: 2.75rem;
+  width: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  background: white;
+  color: var(--navy);
+  box-shadow: var(--shadow-soft);
+  transition: all 0.2s ease;
+}
+
+.carousel-nav-btn:hover {
+  border-color: color-mix(in srgb, var(--gold) 40%, transparent);
+  background: var(--cream);
+  color: var(--gold);
+  box-shadow: var(--shadow-hover);
+}
+
+.link-premium {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--navy);
+  transition: color 0.2s;
+}
+
+.link-premium:hover {
+  color: var(--gold);
+}
+
+a, button {
+  transition: color 0.2s, background-color 0.2s, opacity 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--gold) 35%, transparent);
+  color: var(--navy-deep);
+}
+
+/* ─── Facebook-style lazy loading ─── */
+@keyframes lazy-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.lazy-shimmer {
+  background: linear-gradient(
+    90deg,
+    #eceae4 0%,
+    #f7f6f3 45%,
+    #eceae4 90%
+  );
+  background-size: 200% 100%;
+  animation: lazy-shimmer 1.5s ease-in-out infinite;
+}
+
+.lazy-shimmer-dark {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(255, 255, 255, 0.14) 45%,
+    rgba(255, 255, 255, 0.06) 90%
+  );
+  background-size: 200% 100%;
+  animation: lazy-shimmer 1.5s ease-in-out infinite;
+}
+
+.lazy-fade-in {
+  animation: lazy-fade-in 0.45s ease-out forwards;
+}
+
+@keyframes lazy-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

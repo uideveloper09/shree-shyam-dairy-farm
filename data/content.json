@@ -1,0 +1,380 @@
+{
+  "site": {
+    "name": "Shree Shyam Dairy Farm",
+    "shortName": "Shree Shyam",
+    "logoTagline": "Farm Se Seedha Aapke Ghar Tak",
+    "hindiTagline": "शुद्ध दूध, Seedha Aapke Ghar Tak",
+    "tagline": "Fresh & Pure Dairy Products",
+    "location": "Bihar, India",
+    "phone": "+91 98765 43210",
+    "whatsappNumber": "919876543210",
+    "email": "shreeshyamdairyfarm@gmail.com",
+    "hours": "Mon - Sun: 6:00 AM - 10:00 PM",
+    "description": "Pure, fresh and natural dairy products straight from our farm to your home in Bihar, India.",
+    "footerDesc": "Shree Shyam Dairy Farm se aapke ghar tak shuddh, taaza aur poshtik dairy products — bina kisi bichauliye ke.",
+    "promo": "🎉 10% OFF on your First order | Use FRESH10",
+    "deliveryNote": "Same-day delivery in Bihar* | Farm-fresh daily",
+    "serviceNote": "Proudly serving customers throughout Bihar, India",
+    "footerTagline": "Join us on a journey that promises not just sustenance but soulful nourishment."
+  },
+  "navLinks": [
+    { "label": "Milk", "href": "#category-milk" },
+    { "label": "Ghee", "href": "#category-ghee" },
+    { "label": "Curd & Paneer", "href": "#category-curd" },
+    { "label": "Chaach", "href": "#category-chaach" },
+    { "label": "About Us", "href": "#about" },
+    { "label": "Shop All", "href": "#products" }
+  ],
+  "socialLinks": [
+    { "label": "Facebook", "href": "https://facebook.com", "icon": "facebook" },
+    { "label": "Instagram", "href": "https://instagram.com", "icon": "instagram" },
+    { "label": "WhatsApp", "href": "https://wa.me/919876543210", "icon": "whatsapp" }
+  ],
+  "hero": {
+    "eyebrow": "Proudly serving customers across Bihar",
+    "title": "Discover the Finest Dairy That Elevates Your Kitchen",
+    "subtitle": "Farm-fresh milk, ghee, dahi, paneer & chaach — delivered straight from our farm to your home.",
+    "image": "/images/hero-section-banner.png",
+    "imageAlt": "Shree Shyam Dairy Farm — Pure Fresh Dairy",
+    "primaryCta": { "label": "Shop Now", "href": "#products" },
+    "secondaryCta": { "label": "About Us", "href": "#about" }
+  },
+  "categories": [
+    {
+      "slug": "milk",
+      "label": "Milk",
+      "desc": "100% pure cow milk, delivered fresh every morning from our farm.",
+      "image": "/images/products/Cow-Milk.png",
+      "href": "#category-milk"
+    },
+    {
+      "slug": "ghee",
+      "label": "Desi Ghee",
+      "desc": "Traditional bilona-style ghee — pure, aromatic and nutrient-rich.",
+      "image": "/images/products/Desi-Ghee.png",
+      "href": "#category-ghee"
+    },
+    {
+      "slug": "curd",
+      "label": "Curd & Paneer",
+      "desc": "Fresh dahi and soft paneer made daily with farm-fresh milk.",
+      "image": "/images/products/Dahi.png",
+      "href": "#category-curd"
+    },
+    {
+      "slug": "chaach",
+      "label": "Chaach",
+      "desc": "Refreshing and healthy chaach — perfect for every season.",
+      "image": "/images/products/Chaach.png",
+      "href": "#category-chaach"
+    },
+    {
+      "slug": "paneer",
+      "label": "Paneer",
+      "desc": "Soft, protein-rich paneer for your favourite home recipes.",
+      "image": "/images/products/Paneer.png",
+      "href": "#category-curd"
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "Cow Milk",
+      "desc": "100% Pure & Fresh",
+      "price": 60,
+      "compareAtPrice": 70,
+      "unit": "1 Litre",
+      "badge": "Farm Fresh",
+      "category": "milk",
+      "rating": 4.9,
+      "image": "/images/products/Cow-Milk.png",
+      "imageClass": "object-cover object-center",
+      "inStock": true
+    },
+    {
+      "id": 2,
+      "name": "Dahi",
+      "desc": "Fresh & Healthy",
+      "price": 80,
+      "compareAtPrice": 95,
+      "unit": "500 gm",
+      "badge": "Best Seller",
+      "category": "curd",
+      "rating": 4.8,
+      "image": "/images/products/Dahi.png",
+      "imageClass": "object-cover object-center",
+      "inStock": true
+    },
+    {
+      "id": 3,
+      "name": "Desi Ghee",
+      "desc": "Pure & Aromatic",
+      "price": 700,
+      "compareAtPrice": 850,
+      "unit": "1 Kg",
+      "badge": "Premium",
+      "category": "ghee",
+      "rating": 5.0,
+      "image": "/images/products/Desi-Ghee.png",
+      "imageClass": "object-cover object-center",
+      "inStock": true
+    },
+    {
+      "id": 4,
+      "name": "Paneer",
+      "desc": "Soft & Protein Rich",
+      "price": 350,
+      "compareAtPrice": 400,
+      "unit": "1 Kg",
+      "badge": "High Protein",
+      "category": "curd",
+      "rating": 4.9,
+      "image": "/images/products/Paneer.png",
+      "imageClass": "object-cover object-center",
+      "inStock": true
+    },
+    {
+      "id": 5,
+      "name": "Chaach",
+      "desc": "Healthy & Refreshing",
+      "price": 40,
+      "compareAtPrice": 50,
+      "unit": "1 Litre",
+      "badge": "Summer Special",
+      "category": "chaach",
+      "rating": 4.7,
+      "image": "/images/products/Chaach.png",
+      "imageClass": "object-cover object-center",
+      "inStock": true
+    },
+    {
+      "id": 6,
+      "name": "Milk + Dahi Combo",
+      "desc": "Daily essentials pack",
+      "price": 130,
+      "compareAtPrice": 165,
+      "unit": "Combo",
+      "badge": "Save 21%",
+      "category": "combo",
+      "rating": 4.9,
+      "image": "/images/products/Cow-Milk.png",
+      "imageClass": "object-cover object-center",
+      "inStock": true
+    },
+    {
+      "id": 7,
+      "name": "Ghee + Paneer Combo",
+      "desc": "Premium kitchen combo",
+      "price": 999,
+      "compareAtPrice": 1250,
+      "unit": "Combo",
+      "badge": "Save 20%",
+      "category": "combo",
+      "rating": 5.0,
+      "image": "/images/products/Desi-Ghee.png",
+      "imageClass": "object-cover object-center",
+      "inStock": true
+    },
+    {
+      "id": 8,
+      "name": "Family Dairy Pack",
+      "desc": "Milk, Dahi & Chaach",
+      "price": 165,
+      "compareAtPrice": 210,
+      "unit": "Combo",
+      "badge": "Save 21%",
+      "category": "combo",
+      "rating": 4.8,
+      "image": "/images/products/Chaach.png",
+      "imageClass": "object-cover object-center",
+      "inStock": true
+    },
+    {
+      "id": 9,
+      "name": "Protein Power Combo",
+      "desc": "Paneer + Dahi pack",
+      "price": 410,
+      "compareAtPrice": 495,
+      "unit": "Combo",
+      "badge": "Save 17%",
+      "category": "combo",
+      "rating": 4.9,
+      "image": "/images/products/Paneer.png",
+      "imageClass": "object-cover object-center",
+      "inStock": true
+    },
+    {
+      "id": 10,
+      "name": "Weekend Special Combo",
+      "desc": "Ghee + Milk + Dahi",
+      "price": 799,
+      "compareAtPrice": 950,
+      "unit": "Combo",
+      "badge": "Save 16%",
+      "category": "combo",
+      "rating": 4.9,
+      "image": "/images/products/Desi-Ghee.png",
+      "imageClass": "object-cover object-center",
+      "inStock": true
+    }
+  ],
+  "productSections": [
+    {
+      "id": "monsoon-special",
+      "label": "Special Offers",
+      "title": "Monsoon Special",
+      "productIds": [6, 8, 7, 9, 10],
+      "viewAllHref": "#products"
+    },
+    {
+      "id": "best-value",
+      "label": "Shop Smart",
+      "title": "Best Value, Lowest Price",
+      "productIds": [1, 2, 5, 4, 3],
+      "viewAllHref": "#products"
+    },
+    {
+      "id": "premium-picks",
+      "label": "Premium",
+      "title": "Premium Picks",
+      "productIds": [3, 4, 7, 10],
+      "viewAllHref": "#category-ghee"
+    },
+    {
+      "id": "family-combos",
+      "label": "Combos",
+      "title": "Family Combos",
+      "productIds": [6, 8, 9, 10, 7],
+      "viewAllHref": "#products"
+    }
+  ],
+  "whyChoose": [
+    {
+      "title": "Quality",
+      "desc": "All products meet the highest purity and freshness standards.",
+      "icon": "shield"
+    },
+    {
+      "title": "Sustainability",
+      "desc": "Responsible farming with minimal environmental impact.",
+      "icon": "leaf"
+    },
+    {
+      "title": "Health & Wellness",
+      "desc": "Natural, wholesome dairy for a balanced nutritious diet.",
+      "icon": "cow"
+    },
+    {
+      "title": "Authenticity",
+      "desc": "Traditional methods preserving real farm-fresh taste.",
+      "icon": "home"
+    }
+  ],
+  "testimonials": [
+    {
+      "name": "Priya Sharma",
+      "location": "Patna, Bihar",
+      "rating": 5,
+      "quote": "Shree Shyam ka doodh bahut fresh hai. Subah delivery milti hai aur doodh ka taste bilkul gaon jaisa. Ghee bhi amazing hai — roti par lagate hi khushboo aa jati hai."
+    },
+    {
+      "name": "Rahul Kumar",
+      "location": "Gaya, Bihar",
+      "rating": 5,
+      "quote": "Paneer soft aur fresh milta hai, market wale se kaafi better. WhatsApp order karna easy hai aur delivery time par hoti hai. Highly recommend!"
+    },
+    {
+      "name": "Anita Devi",
+      "location": "Muzaffarpur, Bihar",
+      "rating": 5,
+      "quote": "Humara poora parivaar Shree Shyam ka dahi aur chaach use karta hai. Koi preservatives nahi, bilkul natural. Farm se seedha ghar tak — sach mein!"
+    }
+  ],
+  "about": {
+    "label": "About Us",
+    "title": "About Shree Shyam",
+    "image": "/images/our-farm-banner.png",
+    "imageAlt": "Shree Shyam Dairy Farm",
+    "body": "We raise healthy cows on our own farm, process milk with modern hygienic equipment, and deliver fresh dairy products directly to your doorstep — no middlemen, no compromise on quality.",
+    "cta": { "label": "Visit Our Farm", "href": "#farm" }
+  },
+  "farm": {
+    "label": "Our Farm",
+    "title": "Jahan Se Shuru Hoti Hai Shuddhata",
+    "image": "/images/our-farm-banner.png",
+    "imageAlt": "Shree Shyam Dairy Farm",
+    "description": "Shree Shyam Dairy Farm mein hum har din taaza, poshtik aur shuddh dairy products taiyaar karte hain. Hamare gaayon ko saaf-suthra vatavaran, santulit aahar aur niyamit veterinary care di jaati hai.",
+    "features": [
+      "200+ Healthy Cows",
+      "Organic Green Fodder",
+      "Clean & Hygienic Farm",
+      "Daily Fresh Milk Production",
+      "Veterinary Care Available",
+      "Direct Farm To Home Delivery"
+    ],
+    "cta": { "label": "Visit Our Farm", "href": "#contact" }
+  },
+  "contact": {
+    "label": "Contact Us",
+    "title": "Let's Answer Your Queries",
+    "subtitle": "Visit our farm, call us, or drop a message — we're happy to help.",
+    "mapQuery": "Shree Shyam Dairy Farm, Bihar, India",
+    "address": "Shree Shyam Dairy Farm, Bihar, India",
+    "directionsLabel": "Get Directions"
+  },
+  "categorySection": {
+    "label": "Categories",
+    "title": "Our Range of Goodness"
+  },
+  "whySection": {
+    "label": "Why Choose Us",
+    "title": "Why Shree Shyam?"
+  },
+  "testimonialsSection": {
+    "label": "Testimonials",
+    "title": "Stories of Satisfaction",
+    "subtitle": "Real voices from families who choose farm-fresh dairy, every single day.",
+    "badge": "Verified Customers"
+  },
+  "footerLinks": {
+    "quick": [
+      { "label": "About Us", "href": "#about" },
+      { "label": "Shop All", "href": "#products" },
+      { "label": "Our Farm", "href": "#farm" },
+      { "label": "Contact Us", "href": "#contact" }
+    ]
+  },
+  "chatAssistant": {
+    "name": "Shyam AI",
+    "title": "Farm Assistant",
+    "greeting": "Namaste! 🙏 Main Shree Shyam Dairy Farm ka AI assistant hoon. Products, prices, delivery, ya order — kuch bhi poochho!",
+    "placeholder": "Apna sawaal likho...",
+    "quickPrompts": [
+      "Products aur prices?",
+      "Order kaise karun?",
+      "Delivery Bihar mein?",
+      "Contact details"
+    ]
+  },
+  "cart": {
+    "title": "Shopping Bag",
+    "emptyTitle": "Oops! Your cart is empty!",
+    "emptyDesc": "There is nothing in your cart lets add some items.",
+    "emptyCta": "Shop Now",
+    "freeShippingMin": 500,
+    "shippingCharge": 40,
+    "prepaidDiscountPercent": 5,
+    "paymentMethodsLabel": "Google Pay | PhonePe | UPI",
+    "paymentProvider": "Razorpay",
+    "checkoutCta": "Continue to Safe Checkout",
+    "placeOrderCta": "Place Order",
+    "coupons": [
+      {
+        "code": "FRESH10",
+        "type": "percent",
+        "value": 10,
+        "label": "First order 10% off"
+      }
+    ]
+  }
+}

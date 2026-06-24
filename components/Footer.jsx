@@ -1,18 +1,3 @@
-/**
- * Footer
- * ───────
- * Spec:
- *   Bg          : #082F63
- *   Padding top : 80px
- *   Padding bot : 40px
- *   4 col grid  : gap 32px
- *   Logo        : 220px wide area
- *   Col heads   : 14px 600 white uppercase tracking-wide mb-6
- *   Links       : 14px white/60 hover:white
- *   Icons       : h-9 w-9 rounded-full border-white/20
- *   Contact icon: 14px gold
- *   Copyright   : #061E3D bg, 12px white/45, center
- */
 "use client";
 
 import {
@@ -25,69 +10,99 @@ import {
   FaInstagram,
   FaWhatsapp,
 } from "react-icons/fa";
-import { SITE, SOCIAL_LINKS, FOOTER_LINKS } from "@/lib/site";
-import { CONTAINER } from "@/lib/layout";
 import Image from "next/image";
+import { useSiteData } from "@/context/SiteDataContext";
+import { Newsletter, FooterColHeading } from "@/components/AboutStrip";
+import { CONTAINER } from "@/lib/layout";
+
 const SOCIAL_ICONS = {
   facebook: FaFacebookF,
   instagram: FaInstagram,
   whatsapp: FaWhatsapp,
 };
 
-export default function Footer({ showTagline = true }) {
-  const year = new Date().getFullYear();
+function FooterLink({ href, children, showChevron = false }) {
   return (
-    <footer id="contact" className="bg-[#082F63]">
-      <div className={`${CONTAINER} pt-20 pb-10`}>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
-          {/* ── Col 1 — Brand (220px logo area) ── */}
-          {/* ── Col 1 — Brand ── */}
-          <div>
-            <div className="flex items-center gap-3">
-              <a href="#home" aria-label={SITE.name}>
+    <a
+      href={href}
+      className="group inline-flex items-center gap-2 text-[13px] text-white/55 transition hover:text-[#C89B3C]"
+    >
+      {showChevron && (
+        <FaChevronRight
+          size={7}
+          className="shrink-0 text-[#C89B3C]/70 transition group-hover:translate-x-0.5"
+        />
+      )}
+      {children}
+    </a>
+  );
+}
+
+function ContactRow({ icon: Icon, href, children }) {
+  const content = (
+    <span className="flex min-w-0 items-start gap-2.5 text-[13px] leading-snug text-white/60 transition group-hover:text-white/90">
+      <Icon size={12} className="mt-0.5 shrink-0 text-[#C89B3C]" />
+      <span className="min-w-0 break-words">{children}</span>
+    </span>
+  );
+
+  if (href) {
+    return (
+      <a href={href} className="group block">
+        {content}
+      </a>
+    );
+  }
+  return content;
+}
+
+export default function Footer({ showTagline = true }) {
+  const { site, socialLinks, footerLinks } = useSiteData();
+  const year = new Date().getFullYear();
+
+  return (
+    <footer className="relative overflow-hidden bg-[#082F63]">
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.08]"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 0% 100%, #C89B3C 0%, transparent 45%), radial-gradient(circle at 100% 0%, #ffffff 0%, transparent 35%)",
+        }}
+      />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#C89B3C]/60 to-transparent" />
+
+      <div className={`${CONTAINER} relative z-10 pt-16 pb-10 sm:pt-20`}>
+        {/* Main links — 4 equal columns, no squeeze */}
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-10 xl:gap-x-14">
+          {/* Brand */}
+          <div className="min-w-0 sm:col-span-2 lg:col-span-1">
+            <div className="flex items-start gap-3">
+              <a href="#home" aria-label={site.name} className="shrink-0">
                 <Image
                   src="/logos/logo-footer.png"
                   alt="Logo"
-                  width={65}
-                  height={65}
-                  className="w-[65px] h-[65px]"
+                  width={60}
+                  height={60}
+                  className="h-[60px] w-[60px] rounded-full ring-2 ring-[#C89B3C]/30"
                 />
               </a>
-              <div className="flex flex-col min-w-0">
-                <span
-                  className={`font-logo font-bold uppercase tracking-[0.12em] leading-[0.95]
-      text-[20px] sm:text-[20px] lg:text-[20px] text-white`}
-                >
+              <div className="min-w-0">
+                <p className="font-logo text-[17px] font-bold uppercase leading-tight tracking-[0.1em] text-white">
                   SHREE SHYAM
-                </span>
-
-                <span
-                  className={`font-logo font-bold uppercase tracking-[0.12em] leading-[0.95]
-      text-[20px] sm:text-[20px] lg:text-[20px] text-white`}
-                >
+                  <br />
                   DAIRY FARM
-                </span>
-
+                </p>
                 {showTagline && (
-                  <span
-                    className={`font-tagline mt-1 text-[13px] sm:text-[14px]
-        font-small tracking-[0.02em] leading-snug text-white/70`}
-                  >
-                    {SITE.logoTagline}
-                  </span>
+                  <p className="font-tagline mt-1 text-[12px] text-[#C89B3C]/90">
+                    {site.logoTagline}
+                  </p>
                 )}
               </div>
             </div>
-
-            <p className="mt-5 text-[14px] text-white/55 leading-[1.75] max-w-[260px]">
-              {SITE.footerDesc}
-            </p>
-
-            {/* Social */}
-            <div className="mt-5 flex items-center gap-2.5">
-              {SOCIAL_LINKS.map(({ label, href, icon }) => {
+            <p className="mt-4 text-[13px] leading-[1.75] text-white/50">{site.footerDesc}</p>
+            <div className="mt-5 flex gap-2.5">
+              {socialLinks.map(({ label, href, icon }) => {
                 const Icon = SOCIAL_ICONS[icon];
-
                 return (
                   <a
                     key={icon}
@@ -95,7 +110,7 @@ export default function Footer({ showTagline = true }) {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={label}
-                    className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 text-white/65 hover:text-white hover:border-white/45 transition"
+                    className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white/65 transition hover:border-[#C89B3C]/50 hover:text-[#C89B3C]"
                   >
                     <Icon size={13} />
                   </a>
@@ -104,95 +119,82 @@ export default function Footer({ showTagline = true }) {
             </div>
           </div>
 
-          {/* ── Col 2 — Quick Links ── */}
-          <div>
-            <h4 className="text-[14px] font-semibold uppercase tracking-wide text-white mb-6">
-              Quick Links
-            </h4>
-            <ul className="space-y-3">
-              {FOOTER_LINKS.quick.map((l) => (
-                <li key={l.href}>
-                  <a
-                    href={l.href}
-                    className="text-[14px] text-white/60 hover:text-white transition flex items-center gap-1"
-                  >
-                    {l.label}
-                  </a>
+          {/* Quick Links */}
+          <div className="min-w-0">
+            <FooterColHeading title="Quick Links" />
+            <ul className="space-y-2.5">
+              {footerLinks.quick.map((l) => (
+                <li key={l.href + l.label}>
+                  <FooterLink href={l.href}>{l.label}</FooterLink>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* ── Col 3 — Products ── */}
-          <div>
-            <h4 className="text-[14px] font-semibold uppercase tracking-wide text-white mb-6">
-              Our Products
-            </h4>
-            <ul className="space-y-3">
-              {FOOTER_LINKS.products.map((p) => (
+          {/* Products */}
+          <div className="min-w-0">
+            <FooterColHeading title="Our Products" />
+            <ul className="space-y-2.5">
+              {footerLinks.products.map((p) => (
                 <li key={p.label}>
-                  <a
-                    href={p.href}
-                    className="text-[14px] text-white/60 hover:text-white transition flex items-center gap-2"
-                  >
-                    <FaChevronRight
-                      size={8}
-                      className="text-[#C89B3C] shrink-0"
-                    />
+                  <FooterLink href={p.href} showChevron>
                     {p.label}
-                  </a>
+                  </FooterLink>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* ── Col 4 — Contact ── */}
-          <div>
-            <h4 className="text-[14px] font-semibold uppercase tracking-wide text-white mb-6">
-              Contact Us
-            </h4>
-            <ul className="space-y-4">
-              <li className="flex items-start gap-3 text-[14px] text-white/65">
-                <FaMapMarkerAlt
-                  size={14}
-                  className="shrink-0 mt-0.5 text-[#C89B3C]"
-                />
-                <span>{SITE.location}</span>
+          {/* Contact — full column width, no overlap */}
+          <div className="min-w-0">
+            <FooterColHeading title="Contact Us" />
+            <ul className="space-y-3">
+              <li>
+                <ContactRow icon={FaMapMarkerAlt}>{site.location}</ContactRow>
               </li>
               <li>
-                <a
-                  href={`tel:${SITE.phone.replace(/\s/g, "")}`}
-                  className="flex items-center gap-3 text-[14px] text-white/65 hover:text-white transition"
-                >
-                  <FaPhoneAlt size={13} className="shrink-0 text-[#C89B3C]" />
-                  {SITE.phone}
-                </a>
+                <ContactRow icon={FaPhoneAlt} href={`tel:${site.phone.replace(/\s/g, "")}`}>
+                  {site.phone}
+                </ContactRow>
               </li>
               <li>
-                <a
-                  href={`mailto:${SITE.email}`}
-                  className="flex items-start gap-3 text-[14px] text-white/65 hover:text-white transition break-all"
-                >
-                  <FaEnvelope
-                    size={14}
-                    className="shrink-0 mt-0.5 text-[#C89B3C]"
-                  />
-                  {SITE.email}
-                </a>
+                <ContactRow icon={FaEnvelope} href={`mailto:${site.email}`}>
+                  {site.email}
+                </ContactRow>
               </li>
-              <li className="flex items-start gap-3 text-[14px] text-white/65">
-                <FaClock size={14} className="shrink-0 mt-0.5 text-[#C89B3C]" />
-                <span>{SITE.hours}</span>
+              <li>
+                <ContactRow icon={FaClock}>{site.hours}</ContactRow>
               </li>
             </ul>
           </div>
         </div>
+
+        {/* Newsletter — full width row, separate from contact */}
+        <div className="mt-12">
+          <Newsletter premium layout="bar" />
+        </div>
+
+        {/* Tagline */}
+        <div className="relative mt-12 border-t border-white/10 pt-8">
+          <p className="mx-auto max-w-xl text-center font-tagline text-[15px] leading-[1.8] text-white/50">
+            {site.footerTagline}{" "}
+            <strong className="font-semibold text-white/80">{site.name}</strong> — where freshness
+            is delivered to perfection.
+          </p>
+        </div>
       </div>
 
       {/* Copyright */}
-      <div className="bg-[#061E3D]">
-        <div className="py-4 text-center text-xs text-white/45">
-          &copy; {year} {SITE.name}. All Rights Reserved.
+      <div className="border-t border-white/[0.06] bg-[#061E3D]">
+        <div
+          className={`${CONTAINER} flex flex-col items-center justify-between gap-2 py-4 sm:flex-row`}
+        >
+          <p className="text-[11px] text-white/40">
+            &copy; {year} {site.name}. All Rights Reserved.
+          </p>
+          <p className="text-[10px] uppercase tracking-[0.16em] text-[#C89B3C]/55">
+            Farm Se Seedha Aapke Ghar Tak
+          </p>
         </div>
       </div>
     </footer>

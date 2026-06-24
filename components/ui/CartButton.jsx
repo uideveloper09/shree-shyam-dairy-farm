@@ -5,24 +5,18 @@ import { useCart } from "@/context/CartContext";
 
 export default function CartButton() {
   const { cartItems, openCart } = useCart();
-
-  const count = cartItems.reduce(
-    (sum, item) => sum + item.quantity,
-    0
-  );
+  const count = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <button
+      type="button"
       onClick={openCart}
-      className="relative flex items-center justify-center w-11 h-11 rounded border border-[#E5E5E5]"
+      aria-label="Open shopping cart"
+      className="relative flex h-10 w-10 items-center justify-center rounded-lg border border-[#eee] bg-[#faf9f6] text-[#082F63] transition hover:border-[#C89B3C]/40 hover:bg-white hover:shadow-sm"
     >
-      <ShoppingCart
-        size={22}
-        className="text-[#082F63]"
-      />
-
+      <ShoppingCart size={20} />
       {count > 0 && (
-        <span className="absolute -top-2 -right-2 min-w-[20px] h-[20px] rounded-full bg-[#C89B3C] text-white text-[11px] flex items-center justify-center">
+        <span className="absolute -right-1.5 -top-1.5 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-gradient-to-r from-[#C89B3C] to-[#d4ab5a] px-1 text-[10px] font-bold text-[#061E3D] shadow-sm">
           {count}
         </span>
       )}

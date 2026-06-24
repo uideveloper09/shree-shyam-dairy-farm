@@ -1,169 +1,143 @@
 "use client";
 
 import {
-createContext,
-useContext,
-useMemo,
-useState,
+  createContext,
+  useContext,
+  useMemo,
+  useState,
+  useCallback,
 } from "react";
+import { useSiteData } from "@/context/SiteDataContext";
+import { calculateBill, findCoupon } from "@/lib/cart";
 
-const CartContext = createContext();
+const CartContext = createContext(null);
 
 export function CartProvider({ children }) {
-const [cartItems, setCartItems] = useState([]);
-const [isCartOpen, setIsCartOpen] = useState(false);
+  const { cart: cartConfig } = useSiteData();
+  const [cartItems, setCartItems] = useState([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [orderNote, setOrderNote] = useState("");
+  const [couponInput, setCouponInput] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const [couponMessage, setCouponMessage] = useState("");
+  const [removeConfirmId, setRemoveConfirmId] = useState(null);
 
-// --------------------------------
-// Cart Drawer Controls
-// --------------------------------
+  const openCart = () => setIsCartOpen(true);
+  const closeCart = () => {
+    setIsCartOpen(false);
+    setRemoveConfirmId(null);
+  };
+  const toggleCart = () => setIsCartOpen((prev) => !prev);
 
-const openCart = () => {
-setIsCartOpen(true);
-};
+  const addToCart = (product) => {
+    if (product.inStock === false) return;
 
-const closeCart = () => {
-setIsCartOpen(false);
-};
+    setCartItems((prev) => {
+      const existing = prev.find((item) => item.id === product.id);
+      if (existing) {
+        return prev.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      }
+      return [...prev, { ...product, quantity: 1 }];
+    });
+  };
 
-const toggleCart = () => {
-setIsCartOpen((prev) => !prev);
-};
+  const removeFromCart = (id) => {
+    setCartItems((prev) => prev.filter((item) => item.id !== id));
+    setRemoveConfirmId(null);
+  };
 
-// --------------------------------
-// Add To Cart
-// --------------------------------
-
-const addToCart = (product) => {
-  setCartItems((prev) => {
-    const existing = prev.find(
-      (item) => item.id === product.id
-    );
-
-    if (existing) {
-      return prev.map((item) =>
-        item.id === product.id
-          ? {
-              ...item,
-              quantity: item.quantity + 1,
-            }
-          : item
-      );
-    }
-
-    return [
-      ...prev,
-      {
-        ...product,
-        quantity: 1,
-      },
-    ];
-  });
-
-  // Drawer automatically open nahi hoga
-};
-
-// --------------------------------
-// Remove Item
-// --------------------------------
-
-const removeFromCart = (id) => {
-setCartItems((prev) =>
-prev.filter((item) => item.id !== id)
-);
-};
-
-// --------------------------------
-// Increase Quantity
-// --------------------------------
-
-const increaseQty = (id) => {
-setCartItems((prev) =>
-prev.map((item) =>
-item.id === id
-? {
-...item,
-quantity: item.quantity + 1,
-}
-: item
-)
-);
-};
-
-// --------------------------------
-// Decrease Quantity
-// --------------------------------
-
-const decreaseQty = (id) => {
-  setCartItems((prev) =>
-    prev
-      .map((item) =>
-        item.id === id
-          ? {
-              ...item,
-              quantity: item.quantity - 1,
-            }
-          : item
+  const increaseQty = (id) => {
+    setCartItems((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
       )
-      .filter((item) => item.quantity > 0)
+    );
+  };
+
+  const decreaseQty = (id) => {
+    setCartItems((prev) =>
+      prev
+        .map((item) =>
+          item.id === id ? { ...item, quantity: item.quantity - 1 } : item
+        )
+        .filter((item) => item.quantity > 0)
+    );
+  };
+
+  const clearCart = () => {
+    setCartItems([]);
+    setOrderNote("");
+    setAppliedCoupon(null);
+    setCouponInput("");
+    setCouponMessage("");
+    setRemoveConfirmId(null);
+  };
+
+  const applyCoupon = useCallback(() => {
+    const coupon = findCoupon(cartConfig.coupons, couponInput);
+    if (!coupon) {
+      setAppliedCoupon(null);
+      setCouponMessage("Invalid coupon code");
+      return false;
+    }
+    setAppliedCoupon(coupon);
+    setCouponMessage(`Hurray! ${coupon.code} applied successfully`);
+    return true;
+  }, [cartConfig.coupons, couponInput]);
+
+  const removeCoupon = () => {
+    setAppliedCoupon(null);
+    setCouponInput("");
+    setCouponMessage("");
+  };
+
+  const bill = useMemo(
+    () => calculateBill(cartItems, cartConfig, appliedCoupon),
+    [cartItems, cartConfig, appliedCoupon]
   );
-};
 
-// --------------------------------
-// Clear Cart
-// --------------------------------
+  const totalItems = bill.itemCount;
+  const totalPrice = bill.subtotal;
 
-const clearCart = () => {
-setCartItems([]);
-};
-
-// --------------------------------
-// Total Items
-// --------------------------------
-
-const totalItems = useMemo(() => {
-return cartItems.reduce(
-(sum, item) => sum + item.quantity,
-0
-);
-}, [cartItems]);
-
-// --------------------------------
-// Total Price
-// --------------------------------
-
-const totalPrice = useMemo(() => {
-return cartItems.reduce(
-(sum, item) =>
-sum + item.price * item.quantity,
-0
-);
-}, [cartItems]);
-
-return (
-<CartContext.Provider
-value={{
-cartItems,
-    isCartOpen,
-    openCart,
-    closeCart,
-    toggleCart,
-
-    addToCart,
-    removeFromCart,
-
-    increaseQty,
-    decreaseQty,
-
-    clearCart,
-
-    totalItems,
-    totalPrice,
-  }}
->
-  {children}
-</CartContext.Provider>
-);
+  return (
+    <CartContext.Provider
+      value={{
+        cartItems,
+        isCartOpen,
+        openCart,
+        closeCart,
+        toggleCart,
+        addToCart,
+        removeFromCart,
+        increaseQty,
+        decreaseQty,
+        clearCart,
+        totalItems,
+        totalPrice,
+        bill,
+        orderNote,
+        setOrderNote,
+        couponInput,
+        setCouponInput,
+        appliedCoupon,
+        applyCoupon,
+        removeCoupon,
+        couponMessage,
+        removeConfirmId,
+        setRemoveConfirmId,
+      }}
+    >
+      {children}
+    </CartContext.Provider>
+  );
 }
 
-export const useCart = () =>
-useContext(CartContext);
+export const useCart = () => {
+  const ctx = useContext(CartContext);
+  if (!ctx) throw new Error("useCart must be used within CartProvider");
+  return ctx;
+};
