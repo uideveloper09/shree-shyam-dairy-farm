@@ -1,26 +1,78 @@
 @import "tailwindcss";
 
+/* ─── Color tokens ─── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --navy:        #082F63;
+  --navy-dark:   #0B3D7A;
+  --gold:        #C89B3C;
+  --footer-dark: #061E3D;
+  --text:        #222222;
+  --border:      #E5E5E5;
+  --bg-light:    #F7F7F7;
+  --bg-white:    #FFFFFF;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-navy:      var(--navy);
+  --color-gold:      var(--gold);
+  --font-heading:    var(--font-heading);
+  --font-body:       var(--font-body);
+  --font-logo:       var(--font-logo);
+  --font-tagline:    var(--font-tagline);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ─── Base reset ─── */
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg-white);
+  color: var(--text);
+  font-family: var(--font-body), "Poppins", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.8;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+img { display: block; }
+
+/* ─── Font helpers ─── */
+.font-heading,
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-heading), "Playfair Display", Georgia, serif;
+}
+
+.font-logo {
+  font-family: var(--font-logo), "Cinzel", "Trajan Pro", Georgia, serif;
+}
+
+.font-tagline {
+  font-family: var(--font-tagline), "Cormorant Garamond", Georgia, serif;
+}
+
+/* ─── Section label (gold lines + diamond) ─── */
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--gold);
+}
+.section-label::before,
+.section-label::after {
+  content: "";
+  display: inline-block;
+  height: 1px;
+  width: 48px;
+  background: color-mix(in srgb, var(--gold) 65%, transparent);
+}
+
+/* ─── Smooth hover transitions ─── */
+a, button { transition: color 0.2s, background-color 0.2s, opacity 0.2s; }
