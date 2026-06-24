@@ -27,15 +27,15 @@ import {
 } from "react-icons/fa";
 import { SITE, SOCIAL_LINKS, FOOTER_LINKS } from "@/lib/site";
 import { CONTAINER } from "@/lib/layout";
+import Image from "next/image";
 const SOCIAL_ICONS = {
   facebook: FaFacebookF,
   instagram: FaInstagram,
   whatsapp: FaWhatsapp,
 };
 
-export default function Footer({ variant = "light", showTagline = true }) {
+export default function Footer({ showTagline = true }) {
   const year = new Date().getFullYear();
-  const isDark = variant === "dark";
   return (
     <footer id="contact" className="bg-[#082F63]">
       <div className={`${CONTAINER} pt-20 pb-10`}>
@@ -45,9 +45,11 @@ export default function Footer({ variant = "light", showTagline = true }) {
           <div>
             <div className="flex items-center gap-3">
               <a href="#home" aria-label={SITE.name}>
-                <img
+                <Image
                   src="/logos/logo-footer.png"
                   alt="Logo"
+                  width={65}
+                  height={65}
                   className="w-[65px] h-[65px]"
                 />
               </a>

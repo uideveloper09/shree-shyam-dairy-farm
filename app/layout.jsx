@@ -59,3 +59,11 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+
+export const metadata = {
+  title: "Shree Shyam Dairy Farm",
+  description: "Fresh & Pure Dairy Products",
+  icons: {
+    icon: "/favicon.ico",
+  },
+};
