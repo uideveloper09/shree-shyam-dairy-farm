@@ -4,15 +4,9 @@ import { useState, useEffect, useCallback } from "react";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 import { FaStar, FaQuoteLeft } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
-import { Great_Vibes } from "next/font/google";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { useSiteData } from "@/context/SiteDataContext";
 import { CONTAINER, SECTION_CREAM, SECTION_HEAD_COMPACT } from "@/lib/layout";
-
-const signatureFont = Great_Vibes({
-  subsets: ["latin"],
-  weight: ["400"],
-});
 
 function getInitials(name) {
   return name
@@ -76,9 +70,7 @@ function TestimonialCard({ testimonial }) {
         </blockquote>
         <div className="mt-4 flex items-center justify-between gap-4">
           <StarRating rating={testimonial.rating ?? 5} />
-          <p
-            className={`${signatureFont.className} shrink-0 text-[26px] leading-none text-[#082F63] sm:text-[30px] lg:text-[34px]`}
-          >
+          <p className="font-signature shrink-0 text-[26px] leading-none text-[#082F63] sm:text-[30px] lg:text-[34px]">
             {testimonial.name}
           </p>
         </div>

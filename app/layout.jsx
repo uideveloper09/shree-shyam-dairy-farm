@@ -1,4 +1,4 @@
-import { Playfair_Display, Poppins, Marcellus, Cormorant_Garamond } from "next/font/google";
+import { Playfair_Display, Poppins, Marcellus, Cormorant_Garamond, Great_Vibes } from "next/font/google";
 import "./globals.css";
 import { getContent } from "@/lib/data";
 import { CartProvider } from "@/context/CartContext";
@@ -34,6 +34,13 @@ const cormorant = Cormorant_Garamond({
   variable: "--font-tagline",
   subsets: ["latin"],
   weight: ["400", "500", "600"],
+  display: "swap",
+});
+
+const greatVibes = Great_Vibes({
+  variable: "--font-signature",
+  subsets: ["latin"],
+  weight: "400",
   display: "swap",
 });
 
@@ -78,9 +85,10 @@ export default async function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${playfair.variable} ${poppins.variable} ${logoFont.variable} ${cormorant.variable} scroll-smooth`}
+      suppressHydrationWarning
+      className={`${playfair.variable} ${poppins.variable} ${logoFont.variable} ${cormorant.variable} ${greatVibes.variable} scroll-smooth`}
     >
-      <body className="m-0 min-h-full p-0 font-body antialiased text-gray-900">
+      <body suppressHydrationWarning className="m-0 min-h-full p-0 font-body antialiased text-gray-900">
         <ScrollUnlock />
         <SectionScrollProvider>
           <PageLoader />

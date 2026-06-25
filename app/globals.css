@@ -27,6 +27,7 @@
   --font-body:       var(--font-body);
   --font-logo:       var(--font-logo);
   --font-tagline:    var(--font-tagline);
+  --font-signature:  var(--font-signature);
 }
 
 html {
@@ -248,6 +249,10 @@ h1, h2, h3, h4, h5 {
 
 .font-tagline {
   font-family: var(--font-tagline), "Cormorant Garamond", Georgia, serif;
+}
+
+.font-signature {
+  font-family: var(--font-signature), "Great Vibes", cursive;
 }
 
 /* ─── Premium utilities ─── */
