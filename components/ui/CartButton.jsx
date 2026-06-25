@@ -3,7 +3,7 @@
 import { ShoppingCart } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 
-export default function CartButton() {
+export default function CartButton({ className = "h-10 w-10" }) {
   const { cartItems, openCart } = useCart();
   const count = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -12,7 +12,7 @@ export default function CartButton() {
       type="button"
       onClick={openCart}
       aria-label="Open shopping cart"
-      className="relative flex h-10 w-10 items-center justify-center rounded-lg border border-[#eee] bg-[#faf9f6] text-[#082F63] transition hover:border-[#C89B3C]/40 hover:bg-white hover:shadow-sm"
+      className={`relative flex shrink-0 items-center justify-center rounded-lg border border-[#eee] bg-[#faf9f6] text-[#082F63] transition hover:border-[#C89B3C]/40 hover:bg-white hover:shadow-sm ${className}`}
     >
       <ShoppingCart size={20} />
       {count > 0 && (

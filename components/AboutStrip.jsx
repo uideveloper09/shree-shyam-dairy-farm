@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import LazyImage from "@/components/ui/LazyImage";
+import Image from "next/image";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { useSiteData } from "@/context/SiteDataContext";
 import { CONTAINER, SECTION_CREAM } from "@/lib/layout";
@@ -13,14 +13,15 @@ export default function AboutStrip() {
     <section id="about" className={SECTION_CREAM}>
       <div className={CONTAINER}>
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
-          <div className="relative">
+          <div className="relative w-full">
             <div className="absolute -inset-3 rounded-2xl bg-gradient-to-br from-[#C89B3C]/20 to-[#082F63]/10" />
-            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-[0_16px_48px_rgba(8,47,99,0.15)] ring-1 ring-white/80">
-              <LazyImage
+            <div className="relative overflow-hidden rounded-2xl bg-[#f3f1ec] shadow-[0_16px_48px_rgba(8,47,99,0.15)] ring-1 ring-white/80">
+              <Image
                 src={about.image}
                 alt={about.imageAlt}
-                fill
-                className="object-cover"
+                width={1920}
+                height={1080}
+                className="h-auto w-full object-contain"
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
             </div>

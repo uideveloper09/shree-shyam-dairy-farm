@@ -40,7 +40,7 @@ html {
 }
 
 body {
-  background: var(--cream);
+  background: var(--footer-dark);
   color: var(--text);
   font-family: var(--font-body), "Poppins", system-ui, sans-serif;
   font-size: 16px;
@@ -48,10 +48,26 @@ body {
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  min-height: 100%;
+  overscroll-behavior-y: none;
+}
+
+.site-shell {
+  display: flex;
   min-height: 100dvh;
   min-height: -webkit-fill-available;
-  overscroll-behavior-y: none;
+  width: 100%;
+  flex-direction: column;
+  background: var(--cream);
+}
+
+.carousel-track {
+  scroll-padding-inline: 1rem;
+}
+
+@media (min-width: 640px) {
+  .carousel-track {
+    scroll-padding-inline: 0;
+  }
 }
 
 img { display: block; }
@@ -71,8 +87,8 @@ h1, h2, h3, h4, h5 {
 
 /* ─── Premium utilities ─── */
 .premium-section {
-  padding-top: 4rem;
-  padding-bottom: 4rem;
+  padding-top: 2.75rem;
+  padding-bottom: 2.75rem;
 }
 
 @media (min-width: 640px) {
@@ -272,4 +288,15 @@ a, button {
 .fixed-safe-bottom-high {
   position: fixed;
   bottom: calc(6rem + env(safe-area-inset-bottom, 0px));
+}
+
+.ios-bottom-fill {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  height: env(safe-area-inset-bottom, 0px);
+  background: var(--footer-dark);
+  pointer-events: none;
 }

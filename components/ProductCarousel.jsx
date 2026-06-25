@@ -4,7 +4,13 @@ import { useRef, useState, useEffect } from "react";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 import SectionHeading from "@/components/ui/SectionHeading";
 import ProductCard from "@/components/ui/ProductCard";
-import { CONTAINER, SECTION_CREAM, SECTION_WHITE } from "@/lib/layout";
+import {
+  CONTAINER,
+  SECTION_CREAM,
+  SECTION_WHITE,
+  CAROUSEL_WRAP,
+  CAROUSEL_TRACK,
+} from "@/lib/layout";
 
 export default function ProductCarousel({
   label,
@@ -40,7 +46,9 @@ export default function ProductCarousel({
   const scroll = (direction) => {
     const el = scrollRef.current;
     if (!el) return;
-    el.scrollBy({ left: direction * el.clientWidth * 0.85, behavior: "smooth" });
+    const card = el.querySelector("article");
+    const step = card ? card.offsetWidth + 12 : el.clientWidth * 0.85;
+    el.scrollBy({ left: direction * step, behavior: "smooth" });
   };
 
   if (!products.length) return null;
@@ -50,8 +58,8 @@ export default function ProductCarousel({
   return (
     <section id={id} className={sectionClass}>
       <div className={CONTAINER}>
-        <div className="mb-10 flex items-end justify-between gap-4 border-b border-[#eee] pb-6">
-          <SectionHeading label={label} title={title} align="left" className="mb-0" />
+        <div className="mb-6 flex items-end justify-between gap-3 border-b border-[#eee] pb-4 sm:mb-10 sm:gap-4 sm:pb-6">
+          <SectionHeading label={label} title={title} align="left" className="mb-0 min-w-0" />
           {viewAllHref && (
             <a href={viewAllHref} className="link-premium hidden shrink-0 sm:inline-flex">
               View all →
@@ -59,22 +67,19 @@ export default function ProductCarousel({
           )}
         </div>
 
-        <div className="relative">
+        <div className={CAROUSEL_WRAP}>
           {canScrollLeft && (
             <button
               type="button"
               onClick={() => scroll(-1)}
               aria-label="Scroll left"
-              className="carousel-nav-btn absolute -left-3 top-[38%] z-10 hidden -translate-y-1/2 sm:flex lg:-left-5"
+              className="carousel-nav-btn absolute left-0 top-[38%] z-10 hidden -translate-y-1/2 md:flex lg:-left-5"
             >
               <HiChevronLeft size={22} />
             </button>
           )}
 
-          <div
-            ref={scrollRef}
-            className="flex gap-5 overflow-x-auto scroll-smooth pb-2 snap-x snap-mandatory [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-          >
+          <div ref={scrollRef} className={CAROUSEL_TRACK}>
             {products.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
@@ -85,7 +90,7 @@ export default function ProductCarousel({
               type="button"
               onClick={() => scroll(1)}
               aria-label="Scroll right"
-              className="carousel-nav-btn absolute -right-3 top-[38%] z-10 hidden -translate-y-1/2 sm:flex lg:-right-5"
+              className="carousel-nav-btn absolute right-0 top-[38%] z-10 hidden -translate-y-1/2 md:flex lg:-right-5"
             >
               <HiChevronRight size={22} />
             </button>
@@ -93,7 +98,7 @@ export default function ProductCarousel({
         </div>
 
         {viewAllHref && (
-          <div className="mt-8 text-center sm:hidden">
+          <div className="mt-6 text-center sm:hidden">
             <a href={viewAllHref} className="link-premium">
               View all →
             </a>

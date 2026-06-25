@@ -293,8 +293,8 @@
   "about": {
     "label": "About Us",
     "title": "About Shree Shyam",
-    "image": "/images/our-farm-banner.png",
-    "imageAlt": "Shree Shyam Dairy Farm",
+    "image": "/images/about-us-banner.png",
+    "imageAlt": "Shree Shyam Dairy Farm — fresh milk, healthy cows, happy farm",
     "body": "We raise healthy cows on our own farm, process milk with modern hygienic equipment, and deliver fresh dairy products directly to your doorstep — no middlemen, no compromise on quality.",
     "cta": { "label": "Visit Our Farm", "href": "#farm" }
   },

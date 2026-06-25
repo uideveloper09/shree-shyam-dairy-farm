@@ -5,14 +5,19 @@ import LazyImage from "@/components/ui/LazyImage";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { useSiteData } from "@/context/SiteDataContext";
-import { CONTAINER, SECTION_WHITE } from "@/lib/layout";
+import {
+  CONTAINER,
+  SECTION_WHITE,
+  CAROUSEL_WRAP,
+  CAROUSEL_TRACK,
+} from "@/lib/layout";
 
 function CategoryCard({ category }) {
   return (
     <a
       id={`category-${category.slug}`}
       href={category.href}
-      className="premium-card group flex w-[220px] shrink-0 snap-start scroll-mt-28 flex-col overflow-hidden sm:w-[260px]"
+      className="premium-card group flex w-[calc(100vw-5rem)] max-w-[260px] shrink-0 snap-center scroll-mt-28 flex-col overflow-hidden sm:w-[260px] sm:max-w-none sm:snap-start"
     >
       <div className="relative aspect-[4/5] overflow-hidden bg-[#faf9f6]">
         <LazyImage
@@ -80,22 +85,19 @@ export default function CategoryGrid() {
           />
         </div>
 
-        <div className="relative">
+        <div className={CAROUSEL_WRAP}>
           {canScrollLeft && (
             <button
               type="button"
               onClick={() => scroll(-1)}
               aria-label="Scroll left"
-              className="carousel-nav-btn absolute -left-3 top-[35%] z-10 hidden -translate-y-1/2 sm:flex lg:-left-5"
+              className="carousel-nav-btn absolute left-0 top-[35%] z-10 hidden -translate-y-1/2 md:flex lg:-left-5"
             >
               <HiChevronLeft size={22} />
             </button>
           )}
 
-          <div
-            ref={scrollRef}
-            className="flex gap-5 overflow-x-auto scroll-smooth pb-2 snap-x snap-mandatory [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-          >
+          <div ref={scrollRef} className={CAROUSEL_TRACK}>
             {categories.map((cat) => (
               <CategoryCard key={cat.slug} category={cat} />
             ))}
@@ -106,7 +108,7 @@ export default function CategoryGrid() {
               type="button"
               onClick={() => scroll(1)}
               aria-label="Scroll right"
-              className="carousel-nav-btn absolute -right-3 top-[35%] z-10 hidden -translate-y-1/2 sm:flex lg:-right-5"
+              className="carousel-nav-btn absolute right-0 top-[35%] z-10 hidden -translate-y-1/2 md:flex lg:-right-5"
             >
               <HiChevronRight size={22} />
             </button>

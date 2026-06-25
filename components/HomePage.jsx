@@ -28,7 +28,7 @@ export default function HomePage() {
   const { productSections } = useSiteData();
 
   return (
-    <>
+    <div className="site-shell">
       <PromoBanner />
       <TopBar />
       <Navbar />
@@ -73,6 +73,6 @@ export default function HomePage() {
       <LazySection skeleton={<div className="lazy-shimmer h-96 w-full" aria-hidden />}>
         <Footer />
       </LazySection>
-    </>
+    </div>
   );
 }

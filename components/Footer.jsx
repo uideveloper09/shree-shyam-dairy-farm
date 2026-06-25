@@ -61,7 +61,7 @@ export default function Footer({ showTagline = true }) {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative overflow-hidden bg-[#082F63]">
+    <footer className="relative mt-auto shrink-0 overflow-hidden bg-[#082F63]">
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.08]"
         style={{
@@ -185,7 +185,7 @@ export default function Footer({ showTagline = true }) {
       </div>
 
       {/* Copyright */}
-      <div className="border-t border-white/[0.06] bg-[#061E3D] safe-bottom">
+      <div className="border-t border-white/[0.06] bg-[#061E3D] pb-[max(1rem,env(safe-area-inset-bottom))]">
         <div
           className={`${CONTAINER} flex flex-col items-center justify-between gap-2 py-4 sm:flex-row`}
         >

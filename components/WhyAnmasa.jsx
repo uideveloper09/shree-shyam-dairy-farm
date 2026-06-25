@@ -64,18 +64,18 @@ export default function WhyAnmasa() {
           />
         </div>
 
-        <div className="relative lg:hidden">
+        <div className="relative px-1 lg:hidden">
           <button
             type="button"
             onClick={() => scrollTo(index - 1)}
             aria-label="Previous"
-            className="carousel-nav-btn absolute -left-1 top-1/2 z-10 -translate-y-1/2"
+            className="carousel-nav-btn absolute left-0 top-1/2 z-10 -translate-y-1/2"
           >
-            <HiChevronLeft size={20} />
+            <HiChevronLeft size={18} />
           </button>
           <div
             ref={scrollRef}
-            className="flex overflow-x-auto scroll-smooth snap-x snap-mandatory [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            className="carousel-track flex snap-x snap-mandatory overflow-x-auto scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
             {whyChoose.map((item) => (
               <ValueCard key={item.title} item={item} />
@@ -85,9 +85,9 @@ export default function WhyAnmasa() {
             type="button"
             onClick={() => scrollTo(index + 1)}
             aria-label="Next"
-            className="carousel-nav-btn absolute -right-1 top-1/2 z-10 -translate-y-1/2"
+            className="carousel-nav-btn absolute right-0 top-1/2 z-10 -translate-y-1/2"
           >
-            <HiChevronRight size={20} />
+            <HiChevronRight size={18} />
           </button>
         </div>
 

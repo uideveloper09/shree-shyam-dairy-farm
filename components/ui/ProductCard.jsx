@@ -10,7 +10,7 @@ export default function ProductCard({ product }) {
   const savePercent = getSavePercent(product.price, product.compareAtPrice);
 
   return (
-    <article className="premium-card group flex w-[260px] shrink-0 snap-start flex-col overflow-hidden p-3 sm:w-[280px]">
+    <article className="premium-card group flex w-[calc(100vw-5rem)] max-w-[300px] shrink-0 snap-center flex-col overflow-hidden p-3 sm:w-[280px] sm:max-w-none sm:snap-start">
       <div className="relative aspect-square overflow-hidden rounded-xl bg-[#faf9f6]">
         {savePercent > 0 && (
           <span className="absolute left-3 top-3 z-10 rounded-full bg-gradient-to-r from-[#C89B3C] to-[#d4ab5a] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-[#061E3D] shadow-sm">
