@@ -1,12 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { HiMenu, HiX } from "react-icons/hi";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSiteData } from "@/context/SiteDataContext";
 import { CONTAINER } from "@/lib/layout";
 import BrandLogo from "@/components/ui/BrandLogo";
 import CartButton from "@/components/ui/CartButton";
+import { isHashHref, resolveNavHref } from "@/lib/routes";
 
 const drawerVariants = {
   hidden: { opacity: 0, y: -24, scale: 0.98 },
@@ -35,9 +38,18 @@ const itemVariants = {
 
 export default function Navbar() {
   const { site, navLinks } = useSiteData();
+  const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeHash, setActiveHash] = useState("");
+
+  useEffect(() => {
+    if (pathname !== "/") return;
+    const syncHash = () => setActiveHash(window.location.hash || "");
+    syncHash();
+    window.addEventListener("hashchange", syncHash);
+    return () => window.removeEventListener("hashchange", syncHash);
+  }, [pathname]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -78,12 +90,31 @@ export default function Navbar() {
     };
   }, [menuOpen]);
 
-  const scrollTo = (href) => {
+  const scrollToHash = (href) => {
     const id = href.replace("#", "");
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
     setActiveHash(href);
     setMenuOpen(false);
   };
+
+  const isLinkActive = (href) => {
+    if (isHashHref(href)) {
+      return pathname === "/" && activeHash === href;
+    }
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
+
+  const navItemClass = (href) =>
+    `relative whitespace-nowrap px-3 py-2 text-[12px] font-semibold uppercase tracking-[0.05em] transition xl:px-4 xl:text-[13px] ${
+      isLinkActive(href) ? "text-[#082F63]" : "text-gray-600 hover:text-[#082F63]"
+    }`;
+
+  const mobileNavItemClass = (href) =>
+    `rounded-xl px-4 py-3.5 text-left text-[15px] font-medium transition ${
+      isLinkActive(href)
+        ? "bg-[#082F63]/8 text-[#082F63] ring-1 ring-[#C89B3C]/30"
+        : "text-gray-700 hover:bg-[#faf9f6] hover:text-[#082F63]"
+    }`;
 
   return (
     <header
@@ -95,50 +126,57 @@ export default function Navbar() {
     >
       <div className={CONTAINER}>
         <div className="flex h-14 min-w-0 items-center gap-2 sm:h-16 sm:gap-3 lg:h-[84px] lg:gap-4">
-          <button
-            type="button"
-            onClick={() => scrollTo("#home")}
-            className="min-w-0 shrink"
-            aria-label={site.name}
-          >
+          <Link href="/" className="min-w-0 shrink" aria-label={site.name}>
             <BrandLogo variant="light" compact className="max-w-[calc(100vw-6.5rem)] sm:max-w-none" />
-          </button>
+          </Link>
 
           <nav
             className="hidden flex-1 items-center justify-center gap-0.5 lg:flex"
             aria-label="Main navigation"
           >
             {navLinks.map((link) => {
-              const active = activeHash === link.href;
+              const href = resolveNavHref(link.href, pathname);
+              const active = isLinkActive(link.href);
+
+              if (isHashHref(link.href) && pathname === "/") {
+                return (
+                  <button
+                    key={link.href}
+                    type="button"
+                    onClick={() => scrollToHash(link.href)}
+                    className={navItemClass(link.href)}
+                  >
+                    {link.label}
+                    <span
+                      className={`absolute bottom-0 left-1/2 h-0.5 -translate-x-1/2 bg-[#C89B3C] transition-all duration-300 ${
+                        active ? "w-4/5" : "w-0"
+                      }`}
+                    />
+                  </button>
+                );
+              }
+
               return (
-                <button
-                  key={link.href}
-                  type="button"
-                  onClick={() => scrollTo(link.href)}
-                  className={`relative whitespace-nowrap px-3 py-2 text-[12px] font-semibold uppercase tracking-[0.05em] transition xl:px-4 xl:text-[13px] ${
-                    active ? "text-[#082F63]" : "text-gray-600 hover:text-[#082F63]"
-                  }`}
-                >
+                <Link key={link.href} href={href} className={navItemClass(link.href)}>
                   {link.label}
                   <span
                     className={`absolute bottom-0 left-1/2 h-0.5 -translate-x-1/2 bg-[#C89B3C] transition-all duration-300 ${
                       active ? "w-4/5" : "w-0"
                     }`}
                   />
-                </button>
+                </Link>
               );
             })}
           </nav>
 
           <div className="ml-auto flex shrink-0 items-center gap-1.5 sm:gap-2">
             <CartButton className="h-9 w-9 sm:h-10 sm:w-10" />
-            <button
-              type="button"
-              onClick={() => scrollTo("#products")}
+            <Link
+              href={pathname === "/" ? "#products" : "/#products"}
               className="btn-premium-navy hidden h-9 px-4 text-[10px] md:inline-flex md:h-10 md:px-5 md:text-[11px]"
             >
               Shop Now
-            </button>
+            </Link>
             <button
               type="button"
               onClick={() => setMenuOpen((p) => !p)}
@@ -186,37 +224,58 @@ export default function Navbar() {
                 className={`${CONTAINER} flex max-h-[calc(100dvh-3.5rem)] flex-col gap-1 overflow-y-auto py-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:max-h-[calc(100dvh-4rem)]`}
               >
                 {navLinks.map((link, i) => {
-                  const active = activeHash === link.href;
+                  const href = resolveNavHref(link.href, pathname);
+                  const active = isLinkActive(link.href);
+
+                  if (isHashHref(link.href) && pathname === "/") {
+                    return (
+                      <motion.button
+                        key={link.href}
+                        type="button"
+                        custom={i}
+                        variants={itemVariants}
+                        initial="hidden"
+                        animate="visible"
+                        onClick={() => scrollToHash(link.href)}
+                        className={mobileNavItemClass(link.href)}
+                      >
+                        {link.label}
+                      </motion.button>
+                    );
+                  }
+
                   return (
-                    <motion.button
+                    <motion.div
                       key={link.href}
-                      type="button"
                       custom={i}
                       variants={itemVariants}
                       initial="hidden"
                       animate="visible"
-                      onClick={() => scrollTo(link.href)}
-                      className={`rounded-xl px-4 py-3.5 text-left text-[15px] font-medium transition ${
-                        active
-                          ? "bg-[#082F63]/8 text-[#082F63] ring-1 ring-[#C89B3C]/30"
-                          : "text-gray-700 hover:bg-[#faf9f6] hover:text-[#082F63]"
-                      }`}
                     >
-                      {link.label}
-                    </motion.button>
+                      <Link
+                        href={href}
+                        onClick={() => setMenuOpen(false)}
+                        className={`block ${mobileNavItemClass(link.href)}`}
+                      >
+                        {link.label}
+                      </Link>
+                    </motion.div>
                   );
                 })}
-                <motion.button
-                  type="button"
+                <motion.div
                   custom={navLinks.length}
                   variants={itemVariants}
                   initial="hidden"
                   animate="visible"
-                  onClick={() => scrollTo("#products")}
-                  className="btn-premium-navy mt-3 h-12 w-full"
                 >
-                  Shop Now
-                </motion.button>
+                  <Link
+                    href={pathname === "/" ? "#products" : "/#products"}
+                    onClick={() => setMenuOpen(false)}
+                    className="btn-premium-navy mt-3 flex h-12 w-full items-center justify-center"
+                  >
+                    Shop Now
+                  </Link>
+                </motion.div>
               </nav>
             </motion.div>
           </>

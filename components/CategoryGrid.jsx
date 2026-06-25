@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
+import Link from "next/link";
 import LazyImage from "@/components/ui/LazyImage";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 import SectionHeading from "@/components/ui/SectionHeading";
@@ -14,8 +15,7 @@ import {
 
 function CategoryCard({ category }) {
   return (
-    <a
-      id={`category-${category.slug}`}
+    <Link
       href={category.href}
       className="premium-card group flex w-[calc(100vw-5rem)] max-w-[260px] shrink-0 snap-center scroll-mt-28 flex-col overflow-hidden sm:w-[260px] sm:max-w-none sm:snap-start"
     >
@@ -38,7 +38,7 @@ function CategoryCard({ category }) {
           {category.desc}
         </p>
       </div>
-    </a>
+    </Link>
   );
 }
 

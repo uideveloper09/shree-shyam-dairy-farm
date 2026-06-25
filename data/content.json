@@ -18,10 +18,10 @@
     "footerTagline": "Join us on a journey that promises not just sustenance but soulful nourishment."
   },
   "navLinks": [
-    { "label": "Milk", "href": "#category-milk" },
-    { "label": "Ghee", "href": "#category-ghee" },
-    { "label": "Curd & Paneer", "href": "#category-curd" },
-    { "label": "Chaach", "href": "#category-chaach" },
+    { "label": "Milk", "href": "/category/milk" },
+    { "label": "Ghee", "href": "/category/ghee" },
+    { "label": "Curd & Paneer", "href": "/category/curd" },
+    { "label": "Chaach", "href": "/category/chaach" },
     { "label": "About Us", "href": "#about" },
     { "label": "Shop All", "href": "#products" }
   ],
@@ -44,36 +44,31 @@
       "slug": "milk",
       "label": "Milk",
       "desc": "100% pure cow milk, delivered fresh every morning from our farm.",
-      "image": "/images/products/Cow-Milk.png",
-      "href": "#category-milk"
+      "image": "/images/products/Cow-Milk.png"
     },
     {
       "slug": "ghee",
       "label": "Desi Ghee",
       "desc": "Traditional bilona-style ghee — pure, aromatic and nutrient-rich.",
-      "image": "/images/products/Desi-Ghee.png",
-      "href": "#category-ghee"
+      "image": "/images/products/Desi-Ghee.png"
     },
     {
       "slug": "curd",
       "label": "Curd & Paneer",
       "desc": "Fresh dahi and soft paneer made daily with farm-fresh milk.",
-      "image": "/images/products/Dahi.png",
-      "href": "#category-curd"
+      "image": "/images/products/Dahi.png"
     },
     {
       "slug": "chaach",
       "label": "Chaach",
       "desc": "Refreshing and healthy chaach — perfect for every season.",
-      "image": "/images/products/Chaach.png",
-      "href": "#category-chaach"
+      "image": "/images/products/Chaach.png"
     },
     {
       "slug": "paneer",
       "label": "Paneer",
       "desc": "Soft, protein-rich paneer for your favourite home recipes.",
-      "image": "/images/products/Paneer.png",
-      "href": "#category-curd"
+      "image": "/images/products/Paneer.png"
     }
   ],
   "products": [
