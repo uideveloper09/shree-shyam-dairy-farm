@@ -32,7 +32,7 @@ export default function HomePage() {
       <PromoBanner />
       <TopBar />
       <Navbar />
-      <main className="flex-1">
+      <main>
         <AnmasaHero />
         {productSections.map((section, i) => (
           <LazySection

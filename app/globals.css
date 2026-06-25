@@ -35,7 +35,6 @@ html {
   background-color: var(--footer-dark);
   overflow-x: hidden;
   touch-action: manipulation;
-  overscroll-behavior-y: none;
 }
 
 body {
@@ -50,13 +49,11 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  overscroll-behavior-y: none;
 }
 
 .site-shell {
   display: flex;
   width: 100%;
-  min-height: 100svh;
   flex-direction: column;
   background: var(--cream);
 }

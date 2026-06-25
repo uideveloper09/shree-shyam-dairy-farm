@@ -61,7 +61,7 @@ export default function Footer({ showTagline = true }) {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative mt-auto shrink-0 overflow-hidden bg-[#082F63]">
+    <footer className="relative shrink-0 overflow-hidden bg-[#082F63]">
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.08]"
         style={{
