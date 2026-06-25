@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="Card">
+  <rect width="48" height="48" rx="11" fill="#082F63"/>
+  <rect x="9" y="14" width="30" height="19" rx="3" fill="#ffffff"/>
+  <rect x="9" y="18" width="30" height="4.5" fill="#C89B3C"/>
+  <rect x="13" y="26" width="10" height="2.5" rx="1" fill="#082F63" opacity="0.35"/>
+  <rect x="26" y="26" width="8" height="2.5" rx="1" fill="#082F63" opacity="0.35"/>
+</svg>

@@ -359,7 +359,7 @@
     "freeShippingMin": 500,
     "shippingCharge": 40,
     "prepaidDiscountPercent": 5,
-    "paymentMethodsLabel": "Google Pay | PhonePe | UPI",
+    "paymentMethodsLabel": "Google Pay | PhonePe | Paytm | UPI",
     "paymentProvider": "Razorpay",
     "checkoutCta": "Continue to Safe Checkout",
     "placeOrderCta": "Place Order",

@@ -463,3 +463,24 @@ a, button {
 .ios-bottom-fill {
   display: none;
 }
+
+.payment-scan-line {
+  animation: payment-scan 2.4s ease-in-out infinite;
+}
+
+@keyframes payment-scan {
+  0% {
+    top: 8%;
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    top: 92%;
+    opacity: 0;
+  }
+}
