@@ -87,21 +87,21 @@ h1, h2, h3, h4, h5 {
 
 /* ─── Premium utilities ─── */
 .premium-section {
-  padding-top: 2.75rem;
-  padding-bottom: 2.75rem;
+  padding-top: 1.375rem;
+  padding-bottom: 1.375rem;
 }
 
 @media (min-width: 640px) {
   .premium-section {
-    padding-top: 5rem;
-    padding-bottom: 5rem;
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
   }
 }
 
 @media (min-width: 1024px) {
   .premium-section {
-    padding-top: 6rem;
-    padding-bottom: 6rem;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
   }
 }
 

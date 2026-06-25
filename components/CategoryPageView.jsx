@@ -31,7 +31,7 @@ export default function CategoryPageView({ category, products }) {
               priority
             />
           </div>
-          <div className={`${CONTAINER} relative py-12 sm:py-16`}>
+          <div className={`${CONTAINER} relative py-6 sm:py-8`}>
             <Link
               href="/"
               className="mb-6 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-wide text-white/60 transition hover:text-[#C89B3C]"
@@ -52,7 +52,7 @@ export default function CategoryPageView({ category, products }) {
 
         <section className={SECTION_WHITE}>
           <div className={CONTAINER}>
-            <div className="mb-8 flex flex-wrap items-end justify-between gap-3 border-b border-[#eee] pb-4">
+            <div className="mb-4 flex flex-wrap items-end justify-between gap-3 border-b border-[#eee] pb-2">
               <div>
                 <p className="text-[12px] font-semibold uppercase tracking-wide text-[#C89B3C]">
                   {site.name}

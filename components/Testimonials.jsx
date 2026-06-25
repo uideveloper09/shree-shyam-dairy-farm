@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Great_Vibes } from "next/font/google";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { useSiteData } from "@/context/SiteDataContext";
-import { CONTAINER, SECTION_CREAM } from "@/lib/layout";
+import { CONTAINER, SECTION_CREAM, SECTION_HEAD_COMPACT } from "@/lib/layout";
 
 const signatureFont = Great_Vibes({
   subsets: ["latin"],
@@ -108,7 +108,7 @@ export default function Testimonials() {
   return (
     <section className={SECTION_CREAM}>
       <div className={CONTAINER}>
-        <div className="mb-8 border-b border-[#e8e4dc] pb-5">
+        <div className={SECTION_HEAD_COMPACT}>
           <SectionHeading
             label={testimonialsSection.label}
             title={testimonialsSection.title}

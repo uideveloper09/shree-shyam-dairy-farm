@@ -12,7 +12,7 @@ export default function OurFarm() {
   return (
     <section id="farm" className={SECTION_WHITE}>
       <div className={CONTAINER}>
-        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+        <div className="grid items-center gap-6 lg:grid-cols-2 lg:gap-10">
           <MotionReveal delay={0.1}>
             <div>
               <SectionHeading label={farm.label} title={farm.title} align="left" />

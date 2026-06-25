@@ -12,7 +12,7 @@ export default function AboutStrip() {
   return (
     <section id="about" className={SECTION_CREAM}>
       <div className={CONTAINER}>
-        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
+        <div className="grid items-center gap-6 lg:grid-cols-2 lg:gap-10">
           <div className="relative w-full">
             <div className="absolute -inset-3 rounded-2xl bg-gradient-to-br from-[#C89B3C]/20 to-[#082F63]/10" />
             <div className="relative overflow-hidden rounded-2xl bg-[#f3f1ec] shadow-[0_16px_48px_rgba(8,47,99,0.15)] ring-1 ring-white/80">

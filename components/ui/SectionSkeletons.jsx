@@ -1,4 +1,4 @@
-import { CONTAINER, SECTION_CREAM, SECTION_WHITE } from "@/lib/layout";
+import { CONTAINER, SECTION_CREAM, SECTION_WHITE, SECTION_HEAD, SECTION_HEAD_ALT, SECTION_HEAD_COMPACT } from "@/lib/layout";
 
 function Shimmer({ className = "" }) {
   return <div className={`lazy-shimmer rounded-lg ${className}`} aria-hidden />;
@@ -10,7 +10,7 @@ export function ProductCarouselSkeleton({ bg = "white" }) {
   return (
     <section className={sectionClass} aria-hidden>
       <div className={CONTAINER}>
-        <div className="mb-10 border-b border-[#eee] pb-6">
+        <div className={SECTION_HEAD}>
           <Shimmer className="mb-3 h-3 w-24" />
           <Shimmer className="h-8 w-56 sm:w-72" />
         </div>
@@ -39,7 +39,7 @@ export function CategoryGridSkeleton() {
   return (
     <section className={SECTION_WHITE} aria-hidden>
       <div className={CONTAINER}>
-        <div className="mb-10 border-b border-[#eee] pb-6">
+        <div className={SECTION_HEAD}>
           <Shimmer className="mb-3 h-3 w-24" />
           <Shimmer className="h-8 w-64" />
         </div>
@@ -67,7 +67,7 @@ export function WhySectionSkeleton() {
   return (
     <section className={SECTION_CREAM} aria-hidden>
       <div className={CONTAINER}>
-        <div className="mb-10 text-center">
+        <div className="mb-5 text-center">
           <Shimmer className="mx-auto mb-3 h-3 w-28" />
           <Shimmer className="mx-auto h-8 w-48" />
         </div>
@@ -127,7 +127,7 @@ export function TestimonialsSkeleton() {
   return (
     <section className={SECTION_CREAM} aria-hidden>
       <div className={CONTAINER}>
-        <div className="mb-8 border-b border-[#e8e4dc] pb-5">
+        <div className={SECTION_HEAD_COMPACT}>
           <Shimmer className="mb-3 h-3 w-28" />
           <Shimmer className="h-8 w-72" />
         </div>
@@ -146,7 +146,7 @@ export function ContactSkeleton() {
   return (
     <section className={SECTION_WHITE} aria-hidden>
       <div className={CONTAINER}>
-        <div className="mb-10 border-b border-[#e8e4dc] pb-6">
+        <div className={SECTION_HEAD_ALT}>
           <Shimmer className="mb-3 h-3 w-24" />
           <Shimmer className="h-8 w-80" />
         </div>

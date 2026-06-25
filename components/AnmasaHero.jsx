@@ -31,7 +31,7 @@ export default function AnmasaHero() {
         <div
           className={`${CONTAINER} relative z-10 flex min-h-[420px] items-center sm:min-h-[540px] lg:min-h-[620px]`}
         >
-          <div className="max-w-2xl py-10 sm:py-16 lg:py-20">
+          <div className="max-w-2xl py-5 sm:py-8 lg:py-10">
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#C89B3C]/40 bg-[#C89B3C]/10 px-3 py-1 backdrop-blur-sm sm:mb-5 sm:px-4 sm:py-1.5">
               <span className="h-1.5 w-1.5 rounded-full bg-[#C89B3C]" />
               <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#C89B3C] sm:text-[11px] sm:tracking-[0.22em]">

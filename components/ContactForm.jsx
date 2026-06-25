@@ -10,7 +10,7 @@ import {
 } from "react-icons/fa";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { useSiteData } from "@/context/SiteDataContext";
-import { CONTAINER, SECTION_WHITE } from "@/lib/layout";
+import { CONTAINER, SECTION_WHITE, SECTION_HEAD_ALT } from "@/lib/layout";
 
 function ContactInfoCard({ icon: Icon, label, children, href }) {
   const inner = (
@@ -83,7 +83,7 @@ export default function ContactForm() {
   return (
     <section id="contact" className={SECTION_WHITE}>
       <div className={CONTAINER}>
-        <div className="mb-10 border-b border-[#e8e4dc] pb-6">
+        <div className={SECTION_HEAD_ALT}>
           <SectionHeading
             label={contact.label}
             title={contact.title}

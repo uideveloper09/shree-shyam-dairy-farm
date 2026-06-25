@@ -11,6 +11,7 @@ import {
   SECTION_WHITE,
   CAROUSEL_WRAP,
   CAROUSEL_TRACK,
+  SECTION_HEAD,
 } from "@/lib/layout";
 
 function CategoryCard({ category }) {
@@ -76,7 +77,7 @@ export default function CategoryGrid() {
   return (
     <section id="categories" className={SECTION_WHITE}>
       <div className={CONTAINER}>
-        <div className="mb-10 border-b border-[#eee] pb-6">
+        <div className={SECTION_HEAD}>
           <SectionHeading
             label={categorySection.label}
             title={categorySection.title}

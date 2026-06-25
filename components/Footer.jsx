@@ -71,7 +71,7 @@ export default function Footer({ showTagline = true }) {
       />
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#C89B3C]/60 to-transparent" />
 
-      <div className={`${CONTAINER} relative z-10 pt-16 pb-10 sm:pt-20`}>
+      <div className={`${CONTAINER} relative z-10 pt-8 pb-5 sm:pt-10`}>
         {/* Main links — 4 equal columns, no squeeze */}
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-10 xl:gap-x-14">
           {/* Brand */}
@@ -175,7 +175,7 @@ export default function Footer({ showTagline = true }) {
         </div>
 
         {/* Tagline */}
-        <div className="relative mt-12 border-t border-white/10 pt-8">
+        <div className="relative mt-6 border-t border-white/10 pt-4">
           <p className="mx-auto max-w-xl text-center font-tagline text-[15px] leading-[1.8] text-white/50">
             {site.footerTagline}{" "}
             <strong className="font-semibold text-white/80">{site.name}</strong> — where freshness

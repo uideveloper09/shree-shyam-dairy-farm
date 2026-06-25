@@ -10,6 +10,7 @@ import {
   SECTION_WHITE,
   CAROUSEL_WRAP,
   CAROUSEL_TRACK,
+  SECTION_HEAD,
 } from "@/lib/layout";
 
 export default function ProductCarousel({
@@ -58,7 +59,7 @@ export default function ProductCarousel({
   return (
     <section id={id} className={sectionClass}>
       <div className={CONTAINER}>
-        <div className="mb-6 flex items-end justify-between gap-3 border-b border-[#eee] pb-4 sm:mb-10 sm:gap-4 sm:pb-6">
+        <div className={`${SECTION_HEAD} flex items-end justify-between gap-3 sm:gap-4`}>
           <SectionHeading label={label} title={title} align="left" className="mb-0 min-w-0" />
           {viewAllHref && (
             <a href={viewAllHref} className="link-premium hidden shrink-0 sm:inline-flex">
