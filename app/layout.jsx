@@ -7,6 +7,7 @@ import CartDrawer from "@/components/ui/CartDrawer";
 import ChatAssistant from "@/components/ui/ChatAssistant";
 import ScrollToTop from "@/components/ui/ScrollToTop";
 import PageLoader from "@/components/ui/PageLoader";
+import FooterScrollClamp from "@/components/ui/FooterScrollClamp";
 
 const playfair = Playfair_Display({
   variable: "--font-heading",
@@ -80,6 +81,7 @@ export default async function RootLayout({ children }) {
     >
       <body className="m-0 overflow-x-hidden p-0 font-body antialiased text-gray-900">
         <PageLoader />
+        <FooterScrollClamp />
         <SiteDataProvider content={content}>
           <CartProvider>
             {children}
