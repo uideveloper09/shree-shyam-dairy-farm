@@ -7,6 +7,7 @@ import CartDrawer from "@/components/ui/CartDrawer";
 import ChatAssistant from "@/components/ui/ChatAssistant";
 import ScrollToTop from "@/components/ui/ScrollToTop";
 import PageLoader from "@/components/ui/PageLoader";
+import ScrollUnlock from "@/components/ui/ScrollUnlock";
 
 const playfair = Playfair_Display({
   variable: "--font-heading",
@@ -78,7 +79,8 @@ export default async function RootLayout({ children }) {
       lang="en"
       className={`${playfair.variable} ${poppins.variable} ${cinzel.variable} ${cormorant.variable} scroll-smooth`}
     >
-      <body className="m-0 overflow-x-hidden p-0 font-body antialiased text-gray-900">
+      <body className="m-0 min-h-full p-0 font-body antialiased text-gray-900">
+        <ScrollUnlock />
         <PageLoader />
         <SiteDataProvider content={content}>
           <CartProvider>

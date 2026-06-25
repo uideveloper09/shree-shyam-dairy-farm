@@ -46,6 +46,12 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
+    document.documentElement.style.overflow = "";
+    document.body.style.overflow = "";
+    document.body.style.touchAction = "";
+  }, []);
+
+  useEffect(() => {
     return () => {
       document.documentElement.style.overflow = "";
       document.body.style.overflow = "";
