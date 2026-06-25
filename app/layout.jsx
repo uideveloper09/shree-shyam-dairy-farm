@@ -76,8 +76,7 @@ export default async function RootLayout({ children }) {
       lang="en"
       className={`${playfair.variable} ${poppins.variable} ${cinzel.variable} ${cormorant.variable} scroll-smooth`}
     >
-      <body className="flex flex-col font-body antialiased text-gray-900">
-        <div className="ios-bottom-fill" aria-hidden />
+      <body className="m-0 overflow-x-hidden p-0 font-body antialiased text-gray-900">
         <PageLoader />
         <SiteDataProvider content={content}>
           <CartProvider>

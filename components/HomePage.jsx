@@ -32,7 +32,7 @@ export default function HomePage() {
       <PromoBanner />
       <TopBar />
       <Navbar />
-      <main className="flex-1">
+      <main>
         <AnmasaHero />
         {productSections.map((section, i) => (
           <LazySection
@@ -70,9 +70,7 @@ export default function HomePage() {
           <ContactForm />
         </LazySection>
       </main>
-      <LazySection skeleton={<div className="lazy-shimmer h-96 w-full" aria-hidden />}>
-        <Footer />
-      </LazySection>
+      <Footer />
     </div>
   );
 }
