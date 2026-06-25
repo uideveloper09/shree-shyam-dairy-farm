@@ -39,6 +39,11 @@ export default function PageLoader() {
       }, wait + 250);
     };
 
+    const maxHideTimeoutId = window.setTimeout(() => {
+      setFadeOut(true);
+      setHidden(true);
+    }, 3000);
+
     if (document.readyState === "complete") {
       finish();
     } else {
@@ -49,6 +54,7 @@ export default function PageLoader() {
       window.clearInterval(intervalId);
       window.clearTimeout(finishTimeoutId);
       window.clearTimeout(hideTimeoutId);
+      window.clearTimeout(maxHideTimeoutId);
       window.removeEventListener("load", finish);
     };
   }, []);
@@ -75,7 +81,7 @@ export default function PageLoader() {
       {/* Full-page skeleton overlay */}
       <div
         className={`fixed inset-0 z-[99] bg-[#faf9f6] transition-opacity duration-500 ${
-          fadeOut ? "pointer-events-none opacity-0" : "opacity-100"
+          fadeOut ? "pointer-events-none opacity-0" : "pointer-events-none opacity-100"
         }`}
         aria-busy={!fadeOut}
         aria-label="Loading page"

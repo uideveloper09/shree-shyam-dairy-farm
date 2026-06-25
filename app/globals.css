@@ -34,8 +34,6 @@ html {
   -webkit-text-size-adjust: 100%;
   background-color: var(--cream);
   overflow-x: hidden;
-  height: auto;
-  min-height: 0;
 }
 
 body {
@@ -50,9 +48,6 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  overscroll-behavior-y: none;
-  height: auto;
-  min-height: 0;
 }
 
 .site-shell {
@@ -60,16 +55,6 @@ body {
   width: 100%;
   flex-direction: column;
   background: var(--cream);
-  min-height: 0;
-}
-
-/* iOS Safari: avoid phantom scroll area below footer */
-@supports (-webkit-touch-callout: none) {
-  html,
-  body,
-  .site-shell {
-    min-height: unset;
-  }
 }
 
 .carousel-track {
