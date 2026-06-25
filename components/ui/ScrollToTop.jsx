@@ -23,7 +23,7 @@ export default function ScrollToTop() {
   return (
     <AnimatePresence>
       {visible && (
-        <div className="fixed bottom-24 right-4 z-[54] flex w-14 justify-center sm:right-6">
+        <div className="fixed-safe-bottom-high right-4 z-[54] flex w-14 justify-center sm:right-6">
           <motion.button
             type="button"
             initial={{ opacity: 0, y: 10, scale: 0.9 }}

@@ -185,7 +185,7 @@ export default function Footer({ showTagline = true }) {
       </div>
 
       {/* Copyright */}
-      <div className="border-t border-white/[0.06] bg-[#061E3D]">
+      <div className="border-t border-white/[0.06] bg-[#061E3D] safe-bottom">
         <div
           className={`${CONTAINER} flex flex-col items-center justify-between gap-2 py-4 sm:flex-row`}
         >

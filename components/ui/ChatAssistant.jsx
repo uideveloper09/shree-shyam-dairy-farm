@@ -136,7 +136,7 @@ export default function ChatAssistant() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.96 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-24 right-4 z-[55] flex h-[min(520px,calc(100vh-7rem))] w-[min(380px,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl border border-[#e8e4dc] bg-[#faf9f6] shadow-[0_20px_60px_rgba(8,47,99,0.18)] sm:right-6"
+            className="fixed-safe-bottom-high right-4 z-[55] flex h-[min(520px,calc(100dvh-8rem-env(safe-area-inset-bottom)))] w-[min(380px,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl border border-[#e8e4dc] bg-[#faf9f6] shadow-[0_20px_60px_rgba(8,47,99,0.18)] sm:right-6"
             role="dialog"
             aria-label="AI Chat Assistant"
           >
@@ -238,7 +238,7 @@ export default function ChatAssistant() {
         aria-label={isOpen ? "Close chat assistant" : "Open chat assistant"}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className={`fixed bottom-6 right-4 z-[55] flex h-14 w-14 items-center justify-center rounded-full shadow-[0_8px_30px_rgba(8,47,99,0.35)] transition sm:right-6 ${
+        className={`fixed-safe-bottom right-4 z-[55] flex h-14 w-14 items-center justify-center rounded-full shadow-[0_8px_30px_rgba(8,47,99,0.35)] transition sm:right-6 ${
           isOpen
             ? "bg-gray-700 text-white"
             : "bg-gradient-to-br from-[#082F63] to-[#0B3D7A] text-[#C89B3C]"

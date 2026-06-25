@@ -6,6 +6,7 @@ import { SiteDataProvider } from "@/context/SiteDataContext";
 import CartDrawer from "@/components/ui/CartDrawer";
 import ChatAssistant from "@/components/ui/ChatAssistant";
 import ScrollToTop from "@/components/ui/ScrollToTop";
+import PageLoader from "@/components/ui/PageLoader";
 
 const playfair = Playfair_Display({
   variable: "--font-heading",
@@ -35,6 +36,13 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const dynamic = "force-dynamic";
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#082F63",
+};
 
 export async function generateMetadata() {
   const { site } = await getContent();
@@ -66,9 +74,10 @@ export default async function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${playfair.variable} ${poppins.variable} ${cinzel.variable} ${cormorant.variable} h-full scroll-smooth`}
+      className={`${playfair.variable} ${poppins.variable} ${cinzel.variable} ${cormorant.variable} scroll-smooth`}
     >
-      <body className="min-h-full flex flex-col font-body antialiased bg-[#faf9f6] text-gray-900">
+      <body className="flex min-h-dvh flex-col font-body antialiased bg-[#faf9f6] text-gray-900">
+        <PageLoader />
         <SiteDataProvider content={content}>
           <CartProvider>
             {children}
