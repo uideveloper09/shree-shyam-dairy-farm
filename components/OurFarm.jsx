@@ -3,14 +3,16 @@
 import LazyImage from "@/components/ui/LazyImage";
 import MotionReveal from "@/components/ui/MotionReveal";
 import SectionHeading from "@/components/ui/SectionHeading";
+import SectionLink from "@/components/ui/SectionLink";
 import { useSiteData } from "@/context/SiteDataContext";
+import { HOME_SECTIONS, sectionTarget } from "@/lib/sections";
 import { CONTAINER, SECTION_WHITE } from "@/lib/layout";
 
 export default function OurFarm() {
   const { farm } = useSiteData();
 
   return (
-    <section id="farm" className={SECTION_WHITE}>
+    <section id={HOME_SECTIONS.FARM} className={SECTION_WHITE}>
       <div className={CONTAINER}>
         <div className="grid items-center gap-6 lg:grid-cols-2 lg:gap-10">
           <MotionReveal delay={0.1}>
@@ -32,9 +34,9 @@ export default function OurFarm() {
                 ))}
               </div>
 
-              <a href={farm.cta.href} className="btn-premium-navy mt-8 h-12 px-8">
+              <SectionLink href={sectionTarget(HOME_SECTIONS.CONTACT)} className="btn-premium-navy mt-8 h-12 px-8">
                 {farm.cta.label}
-              </a>
+              </SectionLink>
             </div>
           </MotionReveal>
 

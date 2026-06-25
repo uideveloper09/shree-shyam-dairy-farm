@@ -9,7 +9,8 @@ import { useSiteData } from "@/context/SiteDataContext";
 import { CONTAINER } from "@/lib/layout";
 import BrandLogo from "@/components/ui/BrandLogo";
 import CartButton from "@/components/ui/CartButton";
-import { isHashHref, resolveNavHref } from "@/lib/routes";
+import { isSectionLink, resolveNavHref, getSectionId } from "@/lib/routes";
+import { useSectionScroll } from "@/context/SectionScrollContext";
 
 const drawerVariants = {
   hidden: { opacity: 0, y: -24, scale: 0.98 },
@@ -39,17 +40,52 @@ const itemVariants = {
 export default function Navbar() {
   const { site, navLinks } = useSiteData();
   const pathname = usePathname();
+  const { handleSectionClick } = useSectionScroll();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [activeHash, setActiveHash] = useState("");
+  const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
-    if (pathname !== "/") return;
-    const syncHash = () => setActiveHash(window.location.hash || "");
-    syncHash();
-    window.addEventListener("hashchange", syncHash);
-    return () => window.removeEventListener("hashchange", syncHash);
-  }, [pathname]);
+    if (pathname !== "/") {
+      setActiveSection("");
+      return;
+    }
+
+    const sectionIds = navLinks
+      .filter((link) => isSectionLink(link.href))
+      .map((link) => getSectionId(link.href));
+
+    if (!sectionIds.length) return;
+
+    const visible = new Map();
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          visible.set(entry.target.id, entry.isIntersecting ? entry.intersectionRatio : 0);
+        });
+
+        let best = "";
+        let bestRatio = 0;
+        for (const id of sectionIds) {
+          const ratio = visible.get(id) ?? 0;
+          if (ratio > bestRatio) {
+            bestRatio = ratio;
+            best = id;
+          }
+        }
+        if (best && bestRatio > 0.15) setActiveSection(best);
+      },
+      { rootMargin: "-35% 0px -50% 0px", threshold: [0, 0.15, 0.35, 0.55, 0.75] }
+    );
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, [pathname, navLinks]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -90,16 +126,16 @@ export default function Navbar() {
     };
   }, [menuOpen]);
 
-  const scrollToHash = (href) => {
-    const id = href.replace("#", "");
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
-    setActiveHash(href);
+  const scrollToSection = (href, e) => {
+    const id = handleSectionClick(e, href);
+    if (id) setActiveSection(id);
     setMenuOpen(false);
   };
 
   const isLinkActive = (href) => {
-    if (isHashHref(href)) {
-      return pathname === "/" && activeHash === href;
+    if (isSectionLink(href)) {
+      const id = getSectionId(href);
+      return pathname === "/" && activeSection === id;
     }
     return pathname === href || pathname.startsWith(`${href}/`);
   };
@@ -125,9 +161,9 @@ export default function Navbar() {
       }`}
     >
       <div className={CONTAINER}>
-        <div className="flex h-14 min-w-0 items-center gap-2 sm:h-16 sm:gap-3 lg:h-[84px] lg:gap-4">
-          <Link href="/" className="min-w-0 shrink" aria-label={site.name}>
-            <BrandLogo variant="light" compact className="max-w-[calc(100vw-6.5rem)] sm:max-w-none" />
+        <div className="flex min-h-14 items-center justify-between gap-2 py-2 sm:min-h-[3.75rem] sm:gap-3 sm:py-2.5 lg:min-h-[58px] lg:gap-3">
+          <Link href="/" className="block min-w-0 overflow-hidden lg:shrink-0" aria-label={site.name}>
+            <BrandLogo variant="light" compact className="max-w-full" />
           </Link>
 
           <nav
@@ -138,12 +174,12 @@ export default function Navbar() {
               const href = resolveNavHref(link.href, pathname);
               const active = isLinkActive(link.href);
 
-              if (isHashHref(link.href) && pathname === "/") {
+              if (isSectionLink(link.href)) {
                 return (
-                  <button
+                  <Link
                     key={link.href}
-                    type="button"
-                    onClick={() => scrollToHash(link.href)}
+                    href={href}
+                    onClick={(e) => scrollToSection(link.href, e)}
                     className={navItemClass(link.href)}
                   >
                     {link.label}
@@ -152,7 +188,7 @@ export default function Navbar() {
                         active ? "w-4/5" : "w-0"
                       }`}
                     />
-                  </button>
+                  </Link>
                 );
               }
 
@@ -169,11 +205,12 @@ export default function Navbar() {
             })}
           </nav>
 
-          <div className="ml-auto flex shrink-0 items-center gap-1.5 sm:gap-2">
+          <div className="ml-auto flex shrink-0 items-center gap-1.5 sm:gap-2 lg:ml-0">
             <CartButton className="h-9 w-9 sm:h-10 sm:w-10" />
             <Link
-              href={pathname === "/" ? "#products" : "/#products"}
-              className="btn-premium-navy hidden h-9 px-4 text-[10px] md:inline-flex md:h-10 md:px-5 md:text-[11px]"
+              href={resolveNavHref("#products", pathname)}
+              onClick={(e) => scrollToSection("#products", e)}
+              className="btn-premium-navy hidden h-9 px-4 text-[10px] lg:inline-flex lg:h-10 lg:px-5 lg:text-[11px]"
             >
               Shop Now
             </Link>
@@ -227,20 +264,23 @@ export default function Navbar() {
                   const href = resolveNavHref(link.href, pathname);
                   const active = isLinkActive(link.href);
 
-                  if (isHashHref(link.href) && pathname === "/") {
+                  if (isSectionLink(link.href)) {
                     return (
-                      <motion.button
+                      <motion.div
                         key={link.href}
-                        type="button"
                         custom={i}
                         variants={itemVariants}
                         initial="hidden"
                         animate="visible"
-                        onClick={() => scrollToHash(link.href)}
-                        className={mobileNavItemClass(link.href)}
                       >
-                        {link.label}
-                      </motion.button>
+                        <Link
+                          href={href}
+                          onClick={(e) => scrollToSection(link.href, e)}
+                          className={`block ${mobileNavItemClass(link.href)}`}
+                        >
+                          {link.label}
+                        </Link>
+                      </motion.div>
                     );
                   }
 
@@ -269,8 +309,8 @@ export default function Navbar() {
                   animate="visible"
                 >
                   <Link
-                    href={pathname === "/" ? "#products" : "/#products"}
-                    onClick={() => setMenuOpen(false)}
+                    href={resolveNavHref("#products", pathname)}
+                    onClick={(e) => scrollToSection("#products", e)}
                     className="btn-premium-navy mt-3 flex h-12 w-full items-center justify-center"
                   >
                     Shop Now

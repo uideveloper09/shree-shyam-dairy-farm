@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useMemo } from "react";
 import TopBar from "@/components/TopBar";
 import PromoBanner from "@/components/PromoBanner";
 import Navbar from "@/components/Navbar";
@@ -7,7 +8,9 @@ import AnmasaHero from "@/components/AnmasaHero";
 import ProductCarousel from "@/components/ProductCarousel";
 import CategoryGrid from "@/components/CategoryGrid";
 import WhyAnmasa from "@/components/WhyAnmasa";
-import AboutStrip from "@/components/AboutStrip";
+import AboutSection from "@/components/sections/AboutSection";
+import { HOME_SECTIONS, buildHomeSectionOrder } from "@/lib/sections";
+import { useSectionScroll } from "@/context/SectionScrollContext";
 import OurFarm from "@/components/OurFarm";
 import Testimonials from "@/components/Testimonials";
 import ContactForm from "@/components/ContactForm";
@@ -26,6 +29,16 @@ import { useSiteData } from "@/context/SiteDataContext";
 
 export default function HomePage() {
   const { productSections } = useSiteData();
+  const { registerHomeSectionOrder } = useSectionScroll();
+
+  const sectionOrder = useMemo(
+    () => buildHomeSectionOrder(productSections),
+    [productSections]
+  );
+
+  useEffect(() => {
+    registerHomeSectionOrder(sectionOrder);
+  }, [sectionOrder, registerHomeSectionOrder]);
 
   return (
     <div className="site-shell">
@@ -37,12 +50,13 @@ export default function HomePage() {
         {productSections.map((section, i) => (
           <LazySection
             key={section.id}
+            sectionId={section.id === "best-value" ? HOME_SECTIONS.PRODUCTS : section.id}
             skeleton={
               <ProductCarouselSkeleton bg={i % 2 === 1 ? "gray" : "white"} />
             }
           >
             <ProductCarousel
-              id={section.id === "best-value" ? "products" : section.id}
+              id={section.id === "best-value" ? HOME_SECTIONS.PRODUCTS : section.id}
               label={section.label}
               title={section.title}
               products={section.products}
@@ -51,22 +65,22 @@ export default function HomePage() {
             />
           </LazySection>
         ))}
-        <LazySection skeleton={<CategoryGridSkeleton />}>
+        <LazySection sectionId={HOME_SECTIONS.CATEGORIES} skeleton={<CategoryGridSkeleton />}>
           <CategoryGrid />
         </LazySection>
-        <LazySection skeleton={<WhySectionSkeleton />}>
+        <LazySection sectionId={HOME_SECTIONS.QUALITY} skeleton={<WhySectionSkeleton />}>
           <WhyAnmasa />
         </LazySection>
-        <LazySection skeleton={<SplitSectionSkeleton bg="cream" />}>
-          <AboutStrip />
+        <LazySection sectionId={HOME_SECTIONS.ABOUT} skeleton={<SplitSectionSkeleton bg="cream" />}>
+          <AboutSection />
         </LazySection>
-        <LazySection skeleton={<FarmSectionSkeleton />}>
+        <LazySection sectionId={HOME_SECTIONS.FARM} skeleton={<FarmSectionSkeleton />}>
           <OurFarm />
         </LazySection>
         <LazySection skeleton={<TestimonialsSkeleton />}>
           <Testimonials />
         </LazySection>
-        <LazySection skeleton={<ContactSkeleton />}>
+        <LazySection sectionId={HOME_SECTIONS.CONTACT} skeleton={<ContactSkeleton />}>
           <ContactForm />
         </LazySection>
       </main>

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import SectionLink from "@/components/ui/SectionLink";
 import Image from "next/image";
 import TopBar from "@/components/TopBar";
 import PromoBanner from "@/components/PromoBanner";
@@ -82,9 +83,9 @@ export default function CategoryPageView({ category, products }) {
                 <p className="mt-2 text-[14px] text-gray-500">
                   Please check back soon or browse our full shop.
                 </p>
-                <Link href="/#products" className="btn-premium-navy mt-6 inline-flex h-11 px-8">
+                <SectionLink href="#products" className="btn-premium-navy mt-6 inline-flex h-11 px-8">
                   Shop all products
-                </Link>
+                </SectionLink>
               </div>
             )}
           </div>

@@ -78,7 +78,172 @@ h1, h2, h3, h4, h5 {
 }
 
 .font-logo {
-  font-family: var(--font-logo), "Cinzel", "Trajan Pro", Georgia, serif;
+  font-family: var(--font-logo), "Marcellus", Georgia, serif;
+}
+
+.logo-wordmark {
+  font-family: var(--font-logo), "Marcellus", Georgia, serif;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.logo-wordmark-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.logo-wordmark-frame {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+  padding-left: 0.55rem;
+  border-left: 2px solid rgba(200, 155, 60, 0.8);
+}
+
+.logo-wordmark-frame-compact {
+  gap: 0.125rem;
+  padding-left: 0.4rem;
+}
+
+@media (max-width: 639px) {
+  .logo-wordmark-frame-compact .logo-wordmark-title-light,
+  .logo-wordmark-frame-compact .logo-wordmark-title-dark {
+    letter-spacing: 0.09em;
+  }
+
+  .logo-wordmark-frame-compact .logo-wordmark-subtitle {
+    letter-spacing: 0.12em;
+  }
+
+  .logo-wordmark-frame-compact .logo-wordmark-rule-line {
+    width: 0.75rem;
+  }
+
+  .logo-wordmark-frame-compact .logo-wordmark-rule {
+    gap: 0.2rem;
+  }
+
+  .logo-wordmark-frame-compact .logo-wordmark-rule-gem {
+    width: 3px;
+    height: 3px;
+  }
+}
+
+.logo-wordmark-title-light {
+  color: #082f63;
+  letter-spacing: 0.17em;
+}
+
+.logo-wordmark-title-dark {
+  color: #f8fafc;
+  letter-spacing: 0.17em;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.18);
+}
+
+.logo-wordmark-rule {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.logo-wordmark-rule-line {
+  flex: 1 1 0;
+  min-width: 0.5rem;
+  max-width: 1.25rem;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(200, 155, 60, 0.15), #c89b3c, rgba(200, 155, 60, 0.15));
+}
+
+.logo-wordmark-rule-gem {
+  flex-shrink: 0;
+  width: 4px;
+  height: 4px;
+  rotate: 45deg;
+  background: #c89b3c;
+  box-shadow: 0 0 8px rgba(200, 155, 60, 0.45);
+}
+
+.logo-wordmark-subtitle {
+  color: #c89b3c;
+  letter-spacing: 0.24em;
+}
+
+.logo-wordmark-primary {
+  background: linear-gradient(135deg, #082F63 0%, #0a4588 55%, #082F63 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  letter-spacing: 0.14em;
+}
+
+.logo-wordmark-primary-dark {
+  background: linear-gradient(135deg, #ffffff 0%, #dce4ef 52%, #ffffff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  letter-spacing: 0.14em;
+}
+
+.logo-wordmark-accent {
+  color: #c89b3c;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-shadow: 0 1px 12px rgba(200, 155, 60, 0.25);
+}
+
+.logo-wordmark-divider {
+  display: block;
+  height: 1px;
+  width: 1.75rem;
+  background: linear-gradient(90deg, #c89b3c 0%, rgba(200, 155, 60, 0.15) 100%);
+}
+
+@media (min-width: 640px) {
+  .logo-wordmark-rule-line {
+    max-width: 1.75rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .logo-wordmark-divider {
+    width: 2.25rem;
+  }
+
+  .logo-wordmark-rule-line {
+    max-width: 2.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .logo-wordmark {
+    letter-spacing: 0.1em;
+  }
+
+  .logo-wordmark-title-light,
+  .logo-wordmark-title-dark {
+    letter-spacing: 0.2em;
+  }
+
+  .logo-wordmark-subtitle {
+    letter-spacing: 0.28em;
+  }
+
+  .logo-wordmark-primary {
+    letter-spacing: 0.16em;
+  }
+
+  .logo-wordmark-primary-dark {
+    letter-spacing: 0.16em;
+  }
+
+  .logo-wordmark-accent {
+    letter-spacing: 0.22em;
+  }
 }
 
 .font-tagline {

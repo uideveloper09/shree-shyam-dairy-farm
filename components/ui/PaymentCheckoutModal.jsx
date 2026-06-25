@@ -134,16 +134,6 @@ export default function PaymentCheckoutModal({
       .catch(() => setConfigured({ configured: false }));
   }, [open]);
 
-  useEffect(() => {
-    if (!open) return;
-    document.documentElement.style.overflow = "hidden";
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.documentElement.style.overflow = "";
-      document.body.style.overflow = "";
-    };
-  }, [open]);
-
   const handlePay = async () => {
     setLoading(true);
     setError("");
@@ -244,7 +234,7 @@ export default function PaymentCheckoutModal({
                     </p>
                   </div>
                   <div className="rounded-full bg-[#C89B3C]/15 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-[#C89B3C] ring-1 ring-[#C89B3C]/30">
-                    {cartItems.length} item{cartItems.length === 1 ? "" : "s"}
+                    {bill.itemCount} item{bill.itemCount === 1 ? "" : "s"}
                   </div>
                 </div>
                 <div className="mt-4 space-y-2 border-t border-dashed border-white/15 pt-3">

@@ -10,7 +10,9 @@ import {
   FaInstagram,
   FaWhatsapp,
 } from "react-icons/fa";
-import Image from "next/image";
+import Link from "next/link";
+import BrandLogo from "@/components/ui/BrandLogo";
+import SectionLink from "@/components/ui/SectionLink";
 import { useSiteData } from "@/context/SiteDataContext";
 import { Newsletter, FooterColHeading } from "@/components/AboutStrip";
 import { CONTAINER } from "@/lib/layout";
@@ -23,7 +25,7 @@ const SOCIAL_ICONS = {
 
 function FooterLink({ href, children, showChevron = false }) {
   return (
-    <a
+    <SectionLink
       href={href}
       className="group inline-flex items-center gap-2 text-[13px] text-white/55 transition hover:text-[#C89B3C]"
     >
@@ -34,7 +36,7 @@ function FooterLink({ href, children, showChevron = false }) {
         />
       )}
       {children}
-    </a>
+    </SectionLink>
   );
 }
 
@@ -76,29 +78,9 @@ export default function Footer({ showTagline = true }) {
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-10 xl:gap-x-14">
           {/* Brand */}
           <div className="min-w-0 sm:col-span-2 lg:col-span-1">
-            <div className="flex items-start gap-3">
-              <a href="#home" aria-label={site.name} className="shrink-0">
-                <Image
-                  src="/logos/logo-footer.png"
-                  alt="Logo"
-                  width={60}
-                  height={60}
-                  className="h-[60px] w-[60px] rounded-full ring-2 ring-[#C89B3C]/30"
-                />
-              </a>
-              <div className="min-w-0">
-                <p className="font-logo text-[17px] font-bold uppercase leading-tight tracking-[0.1em] text-white">
-                  SHREE SHYAM
-                  <br />
-                  DAIRY FARM
-                </p>
-                {showTagline && (
-                  <p className="font-tagline mt-1 text-[12px] text-[#C89B3C]/90">
-                    {site.logoTagline}
-                  </p>
-                )}
-              </div>
-            </div>
+            <Link href="/" aria-label={site.name} className="inline-block max-w-full min-w-0">
+              <BrandLogo variant="dark" stacked showTagline={showTagline} className="max-w-full" />
+            </Link>
             <p className="mt-4 text-[13px] leading-[1.75] text-white/50">{site.footerDesc}</p>
             <div className="mt-5 flex gap-2.5">
               {socialLinks.map(({ label, href, icon }) => {

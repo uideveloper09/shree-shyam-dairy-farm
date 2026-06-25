@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect } from "react";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
+import SectionLink from "@/components/ui/SectionLink";
 import SectionHeading from "@/components/ui/SectionHeading";
 import ProductCard from "@/components/ui/ProductCard";
 import {
@@ -62,9 +63,9 @@ export default function ProductCarousel({
         <div className={`${SECTION_HEAD} flex items-end justify-between gap-3 sm:gap-4`}>
           <SectionHeading label={label} title={title} align="left" className="mb-0 min-w-0" />
           {viewAllHref && (
-            <a href={viewAllHref} className="link-premium hidden shrink-0 sm:inline-flex">
+            <SectionLink href={viewAllHref} className="link-premium hidden shrink-0 sm:inline-flex">
               View all →
-            </a>
+            </SectionLink>
           )}
         </div>
 
@@ -100,9 +101,9 @@ export default function ProductCarousel({
 
         {viewAllHref && (
           <div className="mt-6 text-center sm:hidden">
-            <a href={viewAllHref} className="link-premium">
+            <SectionLink href={viewAllHref} className="link-premium">
               View all →
-            </a>
+            </SectionLink>
           </div>
         )}
       </div>

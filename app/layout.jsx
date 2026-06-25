@@ -1,4 +1,4 @@
-import { Playfair_Display, Poppins, Cinzel, Cormorant_Garamond } from "next/font/google";
+import { Playfair_Display, Poppins, Marcellus, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import { getContent } from "@/lib/data";
 import { CartProvider } from "@/context/CartContext";
@@ -8,6 +8,7 @@ import ChatAssistant from "@/components/ui/ChatAssistant";
 import ScrollToTop from "@/components/ui/ScrollToTop";
 import PageLoader from "@/components/ui/PageLoader";
 import ScrollUnlock from "@/components/ui/ScrollUnlock";
+import { SectionScrollProvider } from "@/context/SectionScrollContext";
 
 const playfair = Playfair_Display({
   variable: "--font-heading",
@@ -22,10 +23,10 @@ const poppins = Poppins({
   display: "swap",
 });
 
-const cinzel = Cinzel({
+const logoFont = Marcellus({
   variable: "--font-logo",
   subsets: ["latin"],
-  weight: ["600", "700", "800"],
+  weight: "400",
   display: "swap",
 });
 
@@ -77,19 +78,21 @@ export default async function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${playfair.variable} ${poppins.variable} ${cinzel.variable} ${cormorant.variable} scroll-smooth`}
+      className={`${playfair.variable} ${poppins.variable} ${logoFont.variable} ${cormorant.variable} scroll-smooth`}
     >
       <body className="m-0 min-h-full p-0 font-body antialiased text-gray-900">
         <ScrollUnlock />
-        <PageLoader />
-        <SiteDataProvider content={content}>
-          <CartProvider>
-            {children}
-            <CartDrawer />
-            <ChatAssistant />
-            <ScrollToTop />
-          </CartProvider>
-        </SiteDataProvider>
+        <SectionScrollProvider>
+          <PageLoader />
+          <SiteDataProvider content={content}>
+            <CartProvider>
+              {children}
+              <CartDrawer />
+              <ChatAssistant />
+              <ScrollToTop />
+            </CartProvider>
+          </SiteDataProvider>
+        </SectionScrollProvider>
       </body>
     </html>
   );

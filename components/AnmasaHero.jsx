@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { FaLeaf, FaTruck, FaAward } from "react-icons/fa";
 import { useSiteData } from "@/context/SiteDataContext";
+import SectionLink from "@/components/ui/SectionLink";
 import { CONTAINER } from "@/lib/layout";
 
 const TRUST_ITEMS = [
@@ -52,18 +53,18 @@ export default function AnmasaHero() {
             </p>
 
             <div className="mt-7 flex flex-col gap-2.5 sm:mt-9 sm:flex-row sm:flex-wrap sm:gap-3">
-              <a
+              <SectionLink
                 href={hero.primaryCta.href}
                 className="btn-premium-gold h-11 w-full sm:h-12 sm:w-auto sm:px-8"
               >
                 {hero.primaryCta.label}
-              </a>
-              <a
+              </SectionLink>
+              <SectionLink
                 href={hero.secondaryCta.href}
                 className="btn-premium-outline h-11 w-full sm:h-12 sm:w-auto sm:px-8"
               >
                 {hero.secondaryCta.label}
-              </a>
+              </SectionLink>
             </div>
 
             <div className="mt-8 flex flex-wrap gap-4 border-t border-white/10 pt-6 sm:mt-10 sm:gap-6 sm:pt-8">
