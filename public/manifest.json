@@ -1,0 +1,27 @@
+{
+  "name": "Shree Shyam Dairy Farm",
+  "short_name": "SSD Farm",
+  "description": "Pure & fresh dairy — orders, delivery, farm ERP",
+  "start_url": "/m",
+  "display": "standalone",
+  "background_color": "#082F63",
+  "theme_color": "#082F63",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/images/our-farm-banner.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    { "name": "Customer", "url": "/m/customer", "description": "Orders & subscriptions" },
+    { "name": "Delivery", "url": "/m/delivery", "description": "Delivery routes" },
+    { "name": "Farm", "url": "/m/farm", "description": "Farm manager" },
+    { "name": "Owner", "url": "/m/owner", "description": "Owner dashboard" }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}

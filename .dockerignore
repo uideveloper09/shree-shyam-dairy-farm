@@ -1,0 +1,15 @@
+node_modules
+.next
+.git
+.env*
+!.env.example
+storage
+backups
+coverage
+*.md
+!README.md
+docker-compose*.yml
+k8s
+monitoring
+.github
+terminals

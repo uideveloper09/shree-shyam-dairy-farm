@@ -1,0 +1,26 @@
+# Build & dependencies
+node_modules
+.next
+out
+build
+dist
+coverage
+
+# Generated / vendor
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+next-env.d.ts
+*.tsbuildinfo
+
+# Runtime artifacts
+logs
+storage
+backups
+.vercel
+
+# Prisma migrations (SQL formatting differs)
+prisma/migrations
+
+# Large static assets
+public

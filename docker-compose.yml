@@ -1,0 +1,77 @@
+# Development — hot reload + local Postgres + Redis
+services:
+  app:
+    build:
+      context: .
+      target: deps
+    command: sh -c "npx prisma generate && npm run dev"
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      APP_ENV: development
+      NODE_ENV: development
+      DATABASE_URL: postgresql://ssd:ssd@postgres:5432/shree_shyam?schema=public
+      REDIS_URL: redis://redis:6379
+      JWT_ACCESS_SECRET: dev_access_secret_min_32_characters_long
+      JWT_REFRESH_SECRET: dev_refresh_secret_min_32_characters_long
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ssd
+      POSTGRES_PASSWORD: ssd
+      POSTGRES_DB: shree_shyam
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ssd -d shree_shyam"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  worker-queue:
+    build:
+      context: .
+      target: deps
+    command: npx tsx workers/queue.worker.ts
+    environment:
+      REDIS_URL: redis://redis:6379
+      APP_ENV: development
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  worker-mqtt:
+    build:
+      context: .
+      target: deps
+    command: npx tsx workers/mqtt-bridge.worker.ts
+    environment:
+      MQTT_BRIDGE_ENABLED: "false"
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      - redis
+
+volumes:
+  postgres_data:
