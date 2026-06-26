@@ -5,6 +5,7 @@ import TopBar from "@/components/TopBar";
 import PromoBanner from "@/components/PromoBanner";
 import Navbar from "@/components/Navbar";
 import AnmasaHero from "@/components/AnmasaHero";
+import MilkSubscriptionCTA from "@/components/MilkSubscriptionCTA";
 import ProductCarousel from "@/components/ProductCarousel";
 import CategoryGrid from "@/components/CategoryGrid";
 import WhyAnmasa from "@/components/WhyAnmasa";
@@ -47,6 +48,7 @@ export default function HomePage() {
       <Navbar />
       <main>
         <AnmasaHero />
+        <MilkSubscriptionCTA />
         {productSections.map((section, i) => (
           <LazySection
             key={section.id}

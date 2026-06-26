@@ -9,6 +9,7 @@ import ScrollToTop from "@/components/ui/ScrollToTop";
 import PageLoader from "@/components/ui/PageLoader";
 import ScrollUnlock from "@/components/ui/ScrollUnlock";
 import { SectionScrollProvider } from "@/context/SectionScrollContext";
+import QueryProvider from "@/components/providers/QueryProvider";
 
 const playfair = Playfair_Display({
   variable: "--font-heading",
@@ -92,14 +93,16 @@ export default async function RootLayout({ children }) {
         <ScrollUnlock />
         <SectionScrollProvider>
           <PageLoader />
-          <SiteDataProvider content={content}>
-            <CartProvider>
-              {children}
-              <CartDrawer />
-              <ChatAssistant />
-              <ScrollToTop />
-            </CartProvider>
-          </SiteDataProvider>
+          <QueryProvider>
+            <SiteDataProvider content={content}>
+              <CartProvider>
+                {children}
+                <CartDrawer />
+                <ChatAssistant />
+                <ScrollToTop />
+              </CartProvider>
+            </SiteDataProvider>
+          </QueryProvider>
         </SectionScrollProvider>
       </body>
     </html>

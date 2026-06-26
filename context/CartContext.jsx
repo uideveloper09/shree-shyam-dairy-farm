@@ -6,21 +6,34 @@ import {
   useMemo,
   useState,
   useCallback,
+  useEffect,
 } from "react";
 import { useSiteData } from "@/context/SiteDataContext";
 import { calculateBill, findCoupon } from "@/lib/cart";
+import { useCartStore } from "@/store/useCartStore";
 
 const CartContext = createContext(null);
 
 export function CartProvider({ children }) {
   const { cart: cartConfig } = useSiteData();
-  const [cartItems, setCartItems] = useState([]);
+  const cartItems = useCartStore((s) => s.cartItems);
+  const setCartItems = useCartStore((s) => s.setCartItems);
+  const orderNote = useCartStore((s) => s.orderNote);
+  const setOrderNote = useCartStore((s) => s.setOrderNote);
+  const couponInput = useCartStore((s) => s.couponInput);
+  const setCouponInput = useCartStore((s) => s.setCouponInput);
+  const appliedCoupon = useCartStore((s) => s.appliedCoupon);
+  const setAppliedCoupon = useCartStore((s) => s.setAppliedCoupon);
+  const couponMessage = useCartStore((s) => s.couponMessage);
+  const setCouponMessage = useCartStore((s) => s.setCouponMessage);
+  const initGuestId = useCartStore((s) => s.initGuestId);
+
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [orderNote, setOrderNote] = useState("");
-  const [couponInput, setCouponInput] = useState("");
-  const [appliedCoupon, setAppliedCoupon] = useState(null);
-  const [couponMessage, setCouponMessage] = useState("");
   const [removeConfirmId, setRemoveConfirmId] = useState(null);
+
+  useEffect(() => {
+    initGuestId();
+  }, [initGuestId]);
 
   const openCart = () => setIsCartOpen(true);
   const closeCart = () => {
@@ -32,36 +45,37 @@ export function CartProvider({ children }) {
   const addToCart = (product) => {
     if (product.inStock === false) return;
 
-    setCartItems((prev) => {
-      const existing = prev.find((item) => item.id === product.id);
-      if (existing) {
-        return prev.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      }
-      return [...prev, { ...product, quantity: 1 }];
-    });
+    const prev = useCartStore.getState().cartItems;
+    const existing = prev.find((item) => item.id === product.id);
+    if (existing) {
+      setCartItems(
+        prev.map((item) =>
+          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        )
+      );
+    } else {
+      setCartItems([...prev, { ...product, quantity: 1 }]);
+    }
   };
 
   const removeFromCart = (id) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
+    setCartItems(useCartStore.getState().cartItems.filter((item) => item.id !== id));
     setRemoveConfirmId(null);
   };
 
   const increaseQty = (id) => {
-    setCartItems((prev) =>
-      prev.map((item) =>
+    setCartItems(
+      useCartStore.getState().cartItems.map((item) =>
         item.id === id ? { ...item, quantity: item.quantity + 1 } : item
       )
     );
   };
 
   const decreaseQty = (id) => {
-    setCartItems((prev) =>
-      prev
-        .map((item) =>
+    setCartItems(
+      useCartStore
+        .getState()
+        .cartItems.map((item) =>
           item.id === id ? { ...item, quantity: item.quantity - 1 } : item
         )
         .filter((item) => item.quantity > 0)
@@ -87,7 +101,7 @@ export function CartProvider({ children }) {
     setAppliedCoupon(coupon);
     setCouponMessage(`Hurray! ${coupon.code} applied successfully`);
     return true;
-  }, [cartConfig.coupons, couponInput]);
+  }, [cartConfig.coupons, couponInput, setAppliedCoupon, setCouponMessage]);
 
   const removeCoupon = () => {
     setAppliedCoupon(null);

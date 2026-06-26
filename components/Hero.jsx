@@ -12,6 +12,7 @@
  *   Bottom pad    : extra pb for features bar overlap
  */
 import Image from "next/image";
+import Link from "next/link";
 import MotionReveal from "@/components/ui/MotionReveal";
 import OrderButton from "@/components/ui/OrderButton";
 import { CONTAINER } from "@/lib/layout";
@@ -61,10 +62,16 @@ export default function Hero() {
 
             {/* CTA */}
             <MotionReveal delay={0.36}>
-              <div className="mt-8 sm:mt-10">
+              <div className="mt-8 flex flex-wrap gap-3 sm:mt-10">
                 <OrderButton href="#products" className="text-[15px]">
                   Order Now
                 </OrderButton>
+                <Link
+                  href="/login?redirect=/account/subscriptions"
+                  className="inline-flex h-12 items-center justify-center rounded-md border-2 border-[#082F63]/20 bg-white/90 px-8 text-[15px] font-semibold text-[#082F63] backdrop-blur-sm transition hover:border-[#C89B3C]/50 hover:bg-white"
+                >
+                  Subscribe milk
+                </Link>
               </div>
             </MotionReveal>
 
