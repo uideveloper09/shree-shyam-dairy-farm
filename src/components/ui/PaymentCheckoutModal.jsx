@@ -353,8 +353,6 @@ export default function PaymentCheckoutModal({
                     methodId={method}
                     amount={bill.estimatedTotal}
                     isMobile={isMobile}
-                    onOpenCheckout={startRazorpayCheckout}
-                    openLoading={loading}
                   />
                 </div>
               )}

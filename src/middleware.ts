@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { resolveTenantFromHost } from "@/lib/tenant/resolve";
+import { resolveTenantFromHost } from "@/lib/tenant/resolve-host";
 import { TENANT_COOKIE, TENANT_HEADER } from "@/constants/tenant";
 
 const protectedPrefixes = ["/account", "/admin", "/m"];

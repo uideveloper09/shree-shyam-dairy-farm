@@ -79,10 +79,10 @@ async function createUpiPaymentLinkQr(razorpay, order, method) {
 
 function qrUnavailableMessage() {
   if (isTestMode()) {
-    return "Inline UPI QR is not available in Razorpay test mode. Tap Pay below and Razorpay checkout will show the UPI QR there.";
+    return "Test mode: inline QR nahi milta. Neeche Pay dabayein — Razorpay checkout mein UPI QR milega.";
   }
 
-  return "UPI QR is not enabled on your Razorpay account yet. Tap Pay below, or enable QR Codes from Razorpay Dashboard.";
+  return "Account par scan QR enable nahi hai. Neeche Pay dabayein — Razorpay UPI checkout se pay karein.";
 }
 
 export async function POST(request) {

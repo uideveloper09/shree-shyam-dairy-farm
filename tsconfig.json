@@ -29,7 +29,6 @@
     "src/**/*.js",
     "src/**/*.jsx",
     "tests/**/*.ts",
-    "prisma/**/*.ts",
     "workers/**/*.ts",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",

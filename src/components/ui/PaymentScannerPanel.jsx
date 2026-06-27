@@ -1,19 +1,13 @@
 "use client";
 
-import { Loader2, Lock, Smartphone } from "lucide-react";
+import { Lock } from "lucide-react";
 import { PaymentMethodLogo } from "@/components/ui/PaymentMethodIcons";
 import { PAYMENT_METHOD_META } from "@/utils/paymentMethods";
 import { formatINR } from "@/utils/cart";
 
 const UPI_APP_LABELS = ["GPay", "PhonePe", "Paytm", "BHIM"];
 
-export default function PaymentScannerPanel({
-  methodId,
-  amount,
-  isMobile,
-  onOpenCheckout,
-  openLoading,
-}) {
+export default function PaymentScannerPanel({ methodId, amount, isMobile }) {
   const meta = PAYMENT_METHOD_META[methodId] || PAYMENT_METHOD_META.upi;
 
   if (methodId === "card") {
@@ -56,8 +50,7 @@ export default function PaymentScannerPanel({
         </div>
         <p className="mt-3 text-[14px] font-semibold text-[#082F63]">Secure Razorpay checkout</p>
         <p className="mt-1.5 text-[12px] leading-relaxed text-gray-500">
-          Pay button dabayein — Razorpay popup khulega jahan UPI QR, GPay, PhonePe aur Paytm
-          available hain.
+          Neeche Pay dabayein — Razorpay popup mein UPI QR, GPay, PhonePe aur Paytm milega.
         </p>
         <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
           {UPI_APP_LABELS.map((label) => (
@@ -73,25 +66,9 @@ export default function PaymentScannerPanel({
 
       <p className="mt-4 text-center text-[12px] leading-relaxed text-gray-500">
         {isMobile
-          ? "Neeche Pay dabayein ya yahan se Razorpay checkout kholen"
+          ? "Neeche Pay dabayein — Razorpay checkout khulega"
           : "Neeche Pay dabayein — Razorpay checkout mein QR scan karein"}
       </p>
-
-      {onOpenCheckout ? (
-        <button
-          type="button"
-          onClick={onOpenCheckout}
-          disabled={openLoading}
-          className="mt-3 flex h-11 w-full items-center justify-center gap-2 rounded-xl border border-[#082F63]/15 bg-white text-[13px] font-semibold text-[#082F63] shadow-sm transition hover:border-[#C89B3C]/40 hover:shadow-md disabled:opacity-50"
-        >
-          {openLoading ? (
-            <Loader2 size={16} className="animate-spin" />
-          ) : (
-            <Smartphone size={16} className="text-[#C89B3C]" />
-          )}
-          Open Razorpay · {formatINR(amount)}
-        </button>
-      ) : null}
     </div>
   );
 }

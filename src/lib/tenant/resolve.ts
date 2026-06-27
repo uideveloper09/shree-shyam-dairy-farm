@@ -1,5 +1,8 @@
 import { prisma, isDatabaseConfigured } from "@/repositories/prisma";
 import { DEFAULT_TENANT_SLUG } from "@/constants/tenant";
+import { resolveTenantFromHost } from "@/lib/tenant/resolve-host";
+
+export { resolveTenantFromHost } from "@/lib/tenant/resolve-host";
 
 export type ResolvedTenant = {
   id: string;
@@ -51,22 +54,6 @@ export async function resolveTenantByDomain(host: string): Promise<ResolvedTenan
     plan: domain.tenant.plan,
     farmId: domain.tenant.slug,
   };
-}
-
-export function resolveTenantFromHost(host: string): string | null {
-  const base = (
-    process.env.NEXT_PUBLIC_APP_DOMAIN || "shree-shyam-dairy-farm.vercel.app"
-  ).toLowerCase();
-  const h = host.toLowerCase().split(":")[0]!;
-
-  if (h === base || h === "localhost") return DEFAULT_TENANT_SLUG;
-
-  if (h.endsWith(`.${base}`)) {
-    const sub = h.replace(`.${base}`, "");
-    if (sub && sub !== "www") return sub;
-  }
-
-  return null;
 }
 
 export async function resolveTenantFromRequest(request: Request): Promise<ResolvedTenant | null> {
