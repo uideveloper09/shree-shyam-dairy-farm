@@ -1,5 +1,6 @@
 import { OrderStatus, PaymentStatus, Prisma } from "@prisma/client";
 import { prisma, isDatabaseConfigured } from "@/repositories/prisma";
+import { ensureProductByLegacyId } from "@/services/catalog/ensure-product";
 import { generateOrderNumber } from "./order-number";
 
 export interface CheckoutCartItem {
@@ -54,10 +55,7 @@ export async function createCheckoutOrder(
 
   const productRows = await Promise.all(
     input.items.map(async (item) => {
-      const product = await prisma.product.findFirst({
-        where: { legacyId: item.id, isActive: true },
-        select: { id: true, name: true, price: true, unit: true },
-      });
+      const product = await ensureProductByLegacyId(item.id);
 
       return {
         item,
@@ -66,19 +64,13 @@ export async function createCheckoutOrder(
     })
   );
 
-  const orderItems = productRows.map(({ item, product }) => {
-    if (!product) {
-      throw new Error(`Product not found for cart item: ${item.name}`);
-    }
-
-    return {
-      productId: product.id,
-      name: product.name,
-      price: new Prisma.Decimal(Number(product.price)),
-      quantity: item.quantity,
-      unit: product.unit ?? item.unit ?? null,
-    };
-  });
+  const orderItems = productRows.map(({ item, product }) => ({
+    productId: product.id,
+    name: product.name,
+    price: new Prisma.Decimal(Number(product.price)),
+    quantity: item.quantity,
+    unit: product.unit ?? item.unit ?? null,
+  }));
 
   const order = await prisma.order.create({
     data: {
