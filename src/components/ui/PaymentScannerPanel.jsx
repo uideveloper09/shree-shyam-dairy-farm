@@ -1,27 +1,17 @@
 "use client";
 
-import Image from "next/image";
-import { Loader2, Smartphone } from "lucide-react";
+import { Loader2, Lock, Smartphone } from "lucide-react";
 import { PaymentMethodLogo } from "@/components/ui/PaymentMethodIcons";
 import { PAYMENT_METHOD_META } from "@/utils/paymentMethods";
 import { formatINR } from "@/utils/cart";
 
-function ScanLine() {
-  return (
-    <div className="pointer-events-none absolute inset-x-3 top-0 h-full overflow-hidden rounded-xl">
-      <div className="payment-scan-line absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#C89B3C] to-transparent opacity-80" />
-    </div>
-  );
-}
+const UPI_APP_LABELS = ["GPay", "PhonePe", "Paytm", "BHIM"];
 
 export default function PaymentScannerPanel({
   methodId,
   amount,
-  qrImageUrl,
-  qrLoading,
-  qrError,
   isMobile,
-  onOpenApp,
+  onOpenCheckout,
   openLoading,
 }) {
   const meta = PAYMENT_METHOD_META[methodId] || PAYMENT_METHOD_META.upi;
@@ -32,7 +22,7 @@ export default function PaymentScannerPanel({
         <div className="flex flex-col items-center text-center">
           <PaymentMethodLogo id="card" size="md" active />
           <p className="mt-3 text-[15px] font-semibold text-[#082F63]">Secure card payment</p>
-          <p className="mt-1 max-w-[240px] text-[12px] leading-relaxed text-gray-500">
+          <p className="mt-1 max-w-[260px] text-[12px] leading-relaxed text-gray-500">
             Visa, Mastercard & RuPay — encrypted checkout via Razorpay
           </p>
           <div className="mt-4 flex gap-2">
@@ -55,66 +45,43 @@ export default function PaymentScannerPanel({
       <div className="flex items-center gap-3 border-b border-[#e8e4dc]/80 pb-3">
         <PaymentMethodLogo id={methodId} size="md" active />
         <div>
-          <p className="text-[14px] font-semibold text-[#082F63]">{meta.scanLabel}</p>
+          <p className="text-[14px] font-semibold text-[#082F63]">{meta.label} via Razorpay</p>
           <p className="text-[11px] text-gray-500">Amount: {formatINR(amount)}</p>
         </div>
       </div>
 
-      <div className="relative mx-auto mt-4 w-fit">
-        <div className="relative overflow-hidden rounded-2xl bg-white p-3 shadow-[0_8px_32px_rgba(8,47,99,0.1)] ring-2 ring-[#C89B3C]/30">
-          {qrLoading ? (
-            <div className="flex h-[200px] w-[200px] items-center justify-center">
-              <Loader2 size={32} className="animate-spin text-[#082F63]/30" />
-            </div>
-          ) : qrImageUrl ? (
-            <>
-              <ScanLine />
-              <Image
-                src={qrImageUrl}
-                alt={`${meta.label} payment QR code`}
-                width={200}
-                height={200}
-                unoptimized
-                className="relative h-[200px] w-[200px] object-contain"
-              />
-            </>
-          ) : (
-            <div className="flex h-[200px] w-[200px] flex-col items-center justify-center gap-2 px-4 text-center">
-              <p className="text-[11px] leading-relaxed text-gray-500">
-                {qrError || "QR could not be loaded"}
-              </p>
-            </div>
-          )}
+      <div className="mt-4 rounded-2xl bg-white p-5 text-center shadow-[0_8px_32px_rgba(8,47,99,0.08)] ring-2 ring-[#C89B3C]/25">
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[#082F63]/5">
+          <Lock size={28} className="text-[#082F63]" strokeWidth={1.75} />
         </div>
-        <span
-          className="absolute -left-1 -top-1 h-5 w-5 rounded-tl-lg border-l-2 border-t-2"
-          style={{ borderColor: meta.scanColor }}
-        />
-        <span
-          className="absolute -right-1 -top-1 h-5 w-5 rounded-tr-lg border-r-2 border-t-2"
-          style={{ borderColor: meta.scanColor }}
-        />
-        <span
-          className="absolute -bottom-1 -left-1 h-5 w-5 rounded-bl-lg border-b-2 border-l-2"
-          style={{ borderColor: meta.scanColor }}
-        />
-        <span
-          className="absolute -bottom-1 -right-1 h-5 w-5 rounded-br-lg border-b-2 border-r-2"
-          style={{ borderColor: meta.scanColor }}
-        />
+        <p className="mt-3 text-[14px] font-semibold text-[#082F63]">Secure Razorpay checkout</p>
+        <p className="mt-1.5 text-[12px] leading-relaxed text-gray-500">
+          Pay button dabayein — Razorpay popup khulega jahan UPI QR, GPay, PhonePe aur Paytm
+          available hain.
+        </p>
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+          {UPI_APP_LABELS.map((label) => (
+            <span
+              key={label}
+              className="rounded-full bg-[#faf9f6] px-2.5 py-1 text-[10px] font-semibold text-[#082F63]/75 ring-1 ring-[#e8e4dc]"
+            >
+              {label}
+            </span>
+          ))}
+        </div>
       </div>
 
       <p className="mt-4 text-center text-[12px] leading-relaxed text-gray-500">
         {isMobile
-          ? `Scan QR with ${meta.label} or tap below to open the app`
-          : `Open ${meta.label} on your phone and scan this QR`}
+          ? "Neeche Pay dabayein ya yahan se Razorpay checkout kholen"
+          : "Neeche Pay dabayein — Razorpay checkout mein QR scan karein"}
       </p>
 
-      {isMobile && (
+      {onOpenCheckout ? (
         <button
           type="button"
-          onClick={onOpenApp}
-          disabled={openLoading || qrLoading}
+          onClick={onOpenCheckout}
+          disabled={openLoading}
           className="mt-3 flex h-11 w-full items-center justify-center gap-2 rounded-xl border border-[#082F63]/15 bg-white text-[13px] font-semibold text-[#082F63] shadow-sm transition hover:border-[#C89B3C]/40 hover:shadow-md disabled:opacity-50"
         >
           {openLoading ? (
@@ -122,9 +89,9 @@ export default function PaymentScannerPanel({
           ) : (
             <Smartphone size={16} className="text-[#C89B3C]" />
           )}
-          {meta.openLabel}
+          Open Razorpay · {formatINR(amount)}
         </button>
-      )}
+      ) : null}
     </div>
   );
 }

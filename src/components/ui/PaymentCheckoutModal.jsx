@@ -1,11 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { HiX } from "react-icons/hi";
 import { ShieldCheck, Lock, ChevronDown, Loader2 } from "lucide-react";
 import { formatINR } from "@/utils/cart";
-import { finalizeQrPayment, openRazorpayCheckout } from "@/utils/razorpayCheckout";
+import { openRazorpayCheckout } from "@/utils/razorpayCheckout";
 import { PaymentMethodLogo } from "@/components/ui/PaymentMethodIcons";
 import PaymentScannerPanel from "@/components/ui/PaymentScannerPanel";
 import { PAYMENT_METHOD_META, UPI_METHODS } from "@/utils/paymentMethods";
@@ -124,85 +124,39 @@ export default function PaymentCheckoutModal({
     () => typeof navigator !== "undefined" && /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
   );
 
-  const [qrImageUrl, setQrImageUrl] = useState("");
-  const [qrId, setQrId] = useState("");
-  const [qrKind, setQrKind] = useState("qr_code");
-  const [razorpayOrderId, setRazorpayOrderId] = useState("");
-  const [keyId, setKeyId] = useState("");
   const [preparedOrder, setPreparedOrder] = useState(null);
   const [checkoutError, setCheckoutError] = useState("");
-  const [qrLoading, setQrLoading] = useState(false);
-  const [qrError, setQrError] = useState("");
-  const [paidSuccess, setPaidSuccess] = useState(false);
   const [showBillDetails, setShowBillDetails] = useState(false);
 
-  const pollRef = useRef(null);
-  const qrRequestRef = useRef(0);
-
-  const clearPoll = useCallback(() => {
-    if (pollRef.current) {
-      clearInterval(pollRef.current);
-      pollRef.current = null;
-    }
-  }, []);
-
   const completePayment = useCallback(async () => {
-    setPaidSuccess(true);
-    clearPoll();
     onSuccess?.();
     onClose();
-  }, [clearPoll, onClose, onSuccess]);
+  }, [onClose, onSuccess]);
 
-  const loadUpiQr = useCallback(async () => {
-    if (!UPI_METHODS.has(method) || !preparedOrder) return;
+  const startRazorpayCheckout = useCallback(async () => {
+    if (!preparedOrder) return;
 
-    const requestId = ++qrRequestRef.current;
-    setQrLoading(true);
-    setQrError("");
-    setQrImageUrl("");
-    setQrId("");
-    setQrKind("qr_code");
-    setRazorpayOrderId("");
+    setLoading(true);
+    setError("");
 
     try {
-      const res = await fetch("/api/payment/upi-qr", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          amount: preparedOrder.amount,
-          receipt: preparedOrder.receipt,
-          internalOrderId: preparedOrder.orderId,
-          method,
-        }),
+      await openRazorpayCheckout({
+        amount: preparedOrder.amount,
+        receipt: preparedOrder.receipt,
+        internalOrderId: preparedOrder.orderId,
+        site,
+        paymentMethod: method,
+        onSuccess: completePayment,
+        onDismiss: () => setLoading(false),
       });
-
-      const data = await res.json();
-      if (requestId !== qrRequestRef.current) return;
-
-      if (!res.ok) {
-        throw new Error(data.error || data.detail || "Could not load QR");
-      }
-
-      setRazorpayOrderId(data.orderId);
-      setKeyId(data.keyId);
-
-      if (data.qrFailed) {
-        setQrError(data.qrError || "QR could not be loaded");
-        return;
-      }
-
-      setQrImageUrl(data.qrImageUrl);
-      setQrId(data.qrId);
-      setQrKind(data.qrKind || "qr_code");
     } catch (err) {
-      if (requestId !== qrRequestRef.current) return;
-      setQrError(err.message || "QR load failed");
-    } finally {
-      if (requestId === qrRequestRef.current) {
-        setQrLoading(false);
+      if (err.message !== "Payment cancelled") {
+        setError(err.message || "Payment could not be started");
       }
+    } finally {
+      setLoading(false);
     }
-  }, [method, preparedOrder]);
+  }, [completePayment, method, preparedOrder, site]);
 
   useEffect(() => {
     if (!open) return undefined;
@@ -211,12 +165,7 @@ export default function PaymentCheckoutModal({
       setError("");
       setCheckoutError("");
       setMethod("upi");
-      setPaidSuccess(false);
       setShowBillDetails(false);
-      setQrImageUrl("");
-      setQrId("");
-      setQrKind("qr_code");
-      setRazorpayOrderId("");
       setPreparedOrder(null);
     }, 0);
 
@@ -251,134 +200,8 @@ export default function PaymentCheckoutModal({
         setCheckoutError(err.message || "Could not prepare order");
       });
 
-    return () => {
-      clearTimeout(resetId);
-      clearPoll();
-    };
-  }, [appliedCoupon, bill, cartItems, clearPoll, open, orderNote]);
-
-  useEffect(() => {
-    if (!open || !configured?.configured || !preparedOrder) return undefined;
-
-    const effectId = setTimeout(() => {
-      if (UPI_METHODS.has(method)) {
-        loadUpiQr();
-      } else {
-        setQrImageUrl("");
-        setQrId("");
-        setRazorpayOrderId("");
-        clearPoll();
-      }
-    }, 0);
-
-    return () => {
-      clearTimeout(effectId);
-      qrRequestRef.current += 1;
-    };
-  }, [clearPoll, configured?.configured, loadUpiQr, method, open, preparedOrder]);
-
-  useEffect(() => {
-    clearPoll();
-
-    if (
-      !open ||
-      !qrId ||
-      !razorpayOrderId ||
-      paidSuccess ||
-      !UPI_METHODS.has(method) ||
-      !preparedOrder
-    ) {
-      return undefined;
-    }
-
-    pollRef.current = setInterval(async () => {
-      try {
-        const res = await fetch(
-          `/api/payment/qr-status?qrId=${encodeURIComponent(qrId)}&orderId=${encodeURIComponent(razorpayOrderId)}&qrKind=${encodeURIComponent(qrKind)}`
-        );
-        const data = await res.json();
-
-        if (data.paid) {
-          await finalizeQrPayment({
-            paymentId: data.paymentId,
-            orderId: data.orderId,
-            internalOrderId: preparedOrder.orderId,
-            amount: preparedOrder.amount,
-            paymentMethod: method,
-          });
-          await completePayment();
-        }
-      } catch {
-        /* keep polling */
-      }
-    }, 3000);
-
-    return clearPoll;
-  }, [
-    clearPoll,
-    completePayment,
-    method,
-    open,
-    paidSuccess,
-    preparedOrder,
-    qrId,
-    qrKind,
-    razorpayOrderId,
-  ]);
-
-  const handleOpenApp = async () => {
-    if (!preparedOrder) return;
-
-    setLoading(true);
-    setError("");
-
-    try {
-      await openRazorpayCheckout({
-        amount: preparedOrder.amount,
-        receipt: preparedOrder.receipt,
-        internalOrderId: preparedOrder.orderId,
-        site,
-        paymentMethod: method,
-        razorpayOrderId,
-        keyId,
-        onSuccess: completePayment,
-        onDismiss: () => setLoading(false),
-      });
-    } catch (err) {
-      if (err.message !== "Payment cancelled") {
-        setError(err.message || "Payment could not be started");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handlePay = async () => {
-    if (!preparedOrder) return;
-
-    setLoading(true);
-    setError("");
-
-    try {
-      await openRazorpayCheckout({
-        amount: preparedOrder.amount,
-        receipt: preparedOrder.receipt,
-        internalOrderId: preparedOrder.orderId,
-        site,
-        paymentMethod: method,
-        razorpayOrderId: method !== "card" ? razorpayOrderId : undefined,
-        keyId: method !== "card" ? keyId : undefined,
-        onSuccess: completePayment,
-        onDismiss: () => setLoading(false),
-      });
-    } catch (err) {
-      if (err.message !== "Payment cancelled") {
-        setError(err.message || "Payment could not be started");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
+    return () => clearTimeout(resetId);
+  }, [appliedCoupon, bill, cartItems, open, orderNote]);
 
   const selectedMethod = PAYMENT_METHOD_META[method];
   const payLabel =
@@ -529,11 +352,8 @@ export default function PaymentCheckoutModal({
                   <PaymentScannerPanel
                     methodId={method}
                     amount={bill.estimatedTotal}
-                    qrImageUrl={UPI_METHODS.has(method) ? qrImageUrl : ""}
-                    qrLoading={UPI_METHODS.has(method) && qrLoading}
-                    qrError={qrError}
                     isMobile={isMobile}
-                    onOpenApp={handleOpenApp}
+                    onOpenCheckout={startRazorpayCheckout}
                     openLoading={loading}
                   />
                 </div>
@@ -549,13 +369,9 @@ export default function PaymentCheckoutModal({
             <div className="shrink-0 border-t border-[#e8e4dc] bg-white px-5 py-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
               <button
                 type="button"
-                onClick={handlePay}
+                onClick={startRazorpayCheckout}
                 disabled={
-                  loading ||
-                  configured === null ||
-                  !configured?.configured ||
-                  !preparedOrder ||
-                  qrLoading
+                  loading || configured === null || !configured?.configured || !preparedOrder
                 }
                 className="btn-premium-gold relative flex h-12 w-full items-center justify-center gap-2 text-[13px] disabled:cursor-not-allowed disabled:opacity-45"
               >
@@ -576,7 +392,7 @@ export default function PaymentCheckoutModal({
                 <Lock size={12} className="shrink-0 text-[#C89B3C]/70" />
                 <span>
                   {UPI_METHODS.has(method)
-                    ? "Scan QR or open app — auto-detects payment"
+                    ? "Razorpay secure checkout — UPI QR & apps"
                     : `${cartConfig.paymentMethodsLabel} — Secured by ${cartConfig.paymentProvider}`}
                 </span>
               </div>
