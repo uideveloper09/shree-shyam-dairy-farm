@@ -30,9 +30,7 @@ export default async function AdminLayout({ children }) {
       <header className="border-b border-white/10 bg-[#082F63]">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
           <div>
-            <p className="text-xs uppercase tracking-widest text-[#C89B3C]">
-              Shree Shyam Dairy Farm
-            </p>
+            <p className="text-xs uppercase tracking-widest text-[#C89B3C]">Kunwar Dairy</p>
             <h1 className="font-heading text-lg font-bold">Farm ERP Admin</h1>
           </div>
           <p className="text-sm text-white/70">

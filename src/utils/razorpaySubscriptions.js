@@ -6,6 +6,23 @@ const TOTAL_COUNT = {
   monthly: 12,
 };
 
+const LOG = "[AutoPay]";
+
+export function logRazorpayError(context, err) {
+  console.error(`${LOG} Razorpay error — ${context}`, {
+    statusCode: err?.statusCode ?? null,
+    code: err?.error?.code ?? err?.code ?? null,
+    description: err?.error?.description ?? err?.description ?? null,
+    reason: err?.error?.reason ?? null,
+    field: err?.error?.field ?? null,
+    source: err?.error?.source ?? null,
+    step: err?.error?.step ?? null,
+    message: err?.message ?? null,
+    error: err?.error ?? null,
+    raw: err,
+  });
+}
+
 export function mapFrequencyToRazorpayPlan(frequency) {
   switch (frequency) {
     case "DAILY":
@@ -29,17 +46,37 @@ export async function createRazorpayBillingPlan({
   frequency,
   subscriptionId,
 }) {
+  console.log(`${LOG} createRazorpayBillingPlan() entered`, {
+    subscriptionId,
+    productName,
+    amountPaise,
+    frequency,
+  });
+
   const razorpay = getRazorpayClient();
-  if (!razorpay) return null;
+  if (!razorpay) {
+    console.error(`${LOG} createRazorpayBillingPlan() — Razorpay client not configured`, {
+      hasKeyId: Boolean(process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID),
+      hasKeySecret: Boolean(process.env.RAZORPAY_KEY_SECRET),
+    });
+    return null;
+  }
 
   const planMeta = mapFrequencyToRazorpayPlan(frequency);
+  console.log(`${LOG} createRazorpayBillingPlan() plan meta`, planMeta);
 
   try {
+    console.log(`${LOG} before razorpay.plans.create()`, {
+      period: planMeta.period,
+      interval: planMeta.interval,
+      amountPaise,
+    });
+
     const plan = await razorpay.plans.create({
       period: planMeta.period,
       interval: planMeta.interval,
       item: {
-        name: `SSD ${productName}`.slice(0, 250),
+        name: `Kunwar ${productName}`.slice(0, 250),
         amount: amountPaise,
         currency: "INR",
         description: `Milk subscription — ${frequency.replace(/_/g, " ").toLowerCase()}`,
@@ -48,6 +85,13 @@ export async function createRazorpayBillingPlan({
         app: "shree-shyam-dairy-farm",
         subscriptionId,
       },
+    });
+
+    console.log(`${LOG} razorpay.plans.create() success`, { planId: plan.id });
+
+    console.log(`${LOG} before razorpay.subscriptions.create()`, {
+      planId: plan.id,
+      total_count: planMeta.total_count,
     });
 
     const rzSub = await razorpay.subscriptions.create({
@@ -61,6 +105,12 @@ export async function createRazorpayBillingPlan({
       },
     });
 
+    console.log(`${LOG} razorpay.subscriptions.create() success`, {
+      razorpaySubscriptionId: rzSub.id,
+      status: rzSub.status,
+      shortUrl: rzSub.short_url,
+    });
+
     return {
       planId: plan.id,
       razorpaySubscriptionId: rzSub.id,
@@ -68,7 +118,7 @@ export async function createRazorpayBillingPlan({
       status: rzSub.status,
     };
   } catch (err) {
-    console.error("Razorpay subscription billing error:", err?.error || err);
+    logRazorpayError("createRazorpayBillingPlan() catch", err);
     return null;
   }
 }

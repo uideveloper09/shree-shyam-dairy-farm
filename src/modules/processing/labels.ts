@@ -1,6 +1,7 @@
 import { randomBytes } from "crypto";
 import QRCode from "qrcode";
 import type { ProcProductType } from "@prisma/client";
+import { getSiteUrl } from "@/lib/site-url";
 
 export function batchNumber(productType: ProcProductType) {
   const code = productType.slice(0, 3).toUpperCase();
@@ -27,7 +28,7 @@ export function buildQrPayload(data: {
     barcode: data.barcode,
     expiry: data.expiryDate,
     qty: data.qty,
-    trace: `https://shree-shyam-dairy-farm.vercel.app/trace/${data.batchNumber}`,
+    trace: `${getSiteUrl()}/trace/${data.batchNumber}`,
   });
 }
 

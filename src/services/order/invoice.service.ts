@@ -1,4 +1,5 @@
 import { prisma } from "@/repositories/prisma";
+import { getSiteUrl } from "@/lib/site-url";
 
 export interface OrderInvoiceResult {
   invoiceNumber: string;
@@ -34,8 +35,7 @@ export async function generateOrderInvoice(orderId: string): Promise<OrderInvoic
   const seq = order.orderNumber.replace(/\D/g, "").slice(-6).padStart(6, "0");
   const invoiceNumber = order.invoiceNumber ?? `INV/${year}/${seq}`;
 
-  const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000").replace(/\/$/, "");
-  const invoiceUrl = order.invoiceUrl ?? `${baseUrl}/account/orders/${order.orderNumber}`;
+  const invoiceUrl = order.invoiceUrl ?? `${getSiteUrl()}/account/orders/${order.orderNumber}`;
 
   const updated = await prisma.order.update({
     where: { id: orderId },

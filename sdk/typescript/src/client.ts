@@ -28,10 +28,7 @@ export class ShreeShyamClient {
 
   constructor(options: ShreeShyamClientOptions) {
     this.apiKey = options.apiKey;
-    const base = (options.baseUrl || "https://shree-shyam-dairy-farm.vercel.app").replace(
-      /\/$/,
-      ""
-    );
+    const base = (options.baseUrl || "https://kunwardairy.com").replace(/\/$/, "");
     this.baseUrl = `${base}/api/public/${options.version || "v1"}`;
   }
 

@@ -173,6 +173,12 @@ export default function Footer({ showTagline = true }) {
         >
           <p className="text-[11px] text-white/40">
             &copy; {year} {site.name}. All Rights Reserved.
+            {site.legalName ? (
+              <>
+                {" "}
+                <span className="text-white/30">({site.legalName})</span>
+              </>
+            ) : null}
           </p>
           <p className="text-[10px] uppercase tracking-[0.16em] text-[#C89B3C]/55">
             Farm Se Seedha Aapke Ghar Tak

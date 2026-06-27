@@ -40,15 +40,15 @@ export default function About() {
               text-[1.875rem] sm:text-[2.25rem] lg:text-[2.625rem]
             "
             >
-              Shree Shyam Dairy Farm
+              Kunwar Dairy
             </h2>
 
             {/* Body */}
             <p className="mt-5 text-base text-[#555] leading-[1.8] max-w-[480px]">
-              Shree Shyam Dairy Farm ki shurwaat ek sapne ke saath hui — logon tak shuddh, taaza aur
-              poshtik dairy products pahunchane ke. Hum apne farm par gaayon ki dekhbhal pure pyaar
-              aur vaigyanik tarike se karte hain, taaki aapko mile sabse behtar doodh aur dairy
-              products.
+              Kunwar Dairy ki shurwaat ek sapne ke saath hui — logon tak shuddh, taaza aur poshtik
+              dairy products pahunchane ke. Operated by Shree Shyam Dairy Farm, hum apne farm par
+              gaayon ki dekhbhal pure pyaar aur vaigyanik tarike se karte hain, taaki aapko mile
+              sabse behtar doodh aur dairy products.
             </p>
 
             <div className="mt-8">
@@ -63,7 +63,7 @@ export default function About() {
             <div className="w-full">
               <Image
                 src="/images/dairy-form-front-gate.png"
-                alt="Shree Shyam Dairy Farm Gate"
+                alt="Kunwar Dairy farm gate"
                 width={900}
                 height={650}
                 className="w-full h-auto rounded-[20px] shadow-[0_4px_28px_rgba(8,47,99,0.1)]"

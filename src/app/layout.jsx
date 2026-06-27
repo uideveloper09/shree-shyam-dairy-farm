@@ -19,6 +19,8 @@ import QueryProvider from "@/features/providers/QueryProvider";
 import { getServerTenantConfig } from "@/lib/tenant/server";
 import TenantThemeInjector from "@/features/tenant/TenantThemeInjector";
 import { TenantProvider } from "@/features/tenant/TenantProvider";
+import CsrfFetchInit from "@/components/auth/CsrfFetchInit";
+import { SEO_TITLE, SEO_DESCRIPTION, SEO_KEYWORDS } from "@/constants/brand";
 
 const playfair = Playfair_Display({
   variable: "--font-heading",
@@ -74,15 +76,23 @@ export const viewport = {
 export async function generateMetadata() {
   const { site } = await getContent();
   return {
-    title: `${site.name} | Pure & Fresh Dairy Products`,
-    description: site.description,
+    title: SEO_TITLE,
+    description: SEO_DESCRIPTION,
     manifest: "/manifest.json",
-    keywords: ["dairy farm", "fresh milk", "paneer", "dahi", "ghee", "chaach", "Bihar", site.name],
+    keywords: [...SEO_KEYWORDS, site.location],
+    metadataBase: new URL("https://kunwardairy.com"),
     openGraph: {
-      title: site.name,
-      description: site.description,
+      title: SEO_TITLE,
+      description: SEO_DESCRIPTION,
+      url: "https://kunwardairy.com",
+      siteName: site.name,
       locale: "en_IN",
       type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: SEO_TITLE,
+      description: SEO_DESCRIPTION,
     },
   };
 }
@@ -104,6 +114,7 @@ export default async function RootLayout({ children }) {
         className="m-0 min-h-dvh p-0 font-body antialiased text-gray-900"
       >
         <ScrollUnlock />
+        <CsrfFetchInit />
         <SectionScrollProvider>
           <PageLoader />
           <QueryProvider>

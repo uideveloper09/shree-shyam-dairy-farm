@@ -19,12 +19,12 @@ export function applySecurityHeaders(response: NextResponse): NextResponse {
 export function getCspHeader(isProd: boolean): string {
   const directives = [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://checkout.razorpay.com https://*.razorpay.com",
+    "script-src 'self' 'unsafe-inline' https://checkout.razorpay.com https://*.razorpay.com https://accounts.google.com",
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com data:",
     "img-src 'self' data: blob: https: http:",
-    "connect-src 'self' https://api.razorpay.com https://*.razorpay.com https://api.openai.com",
-    "frame-src 'self' https://api.razorpay.com https://*.razorpay.com https://www.google.com https://maps.google.com https://*.google.com",
+    "connect-src 'self' https://api.razorpay.com https://*.razorpay.com https://api.openai.com https://accounts.google.com https://oauth2.googleapis.com",
+    "frame-src 'self' https://api.razorpay.com https://*.razorpay.com https://accounts.google.com https://www.google.com https://maps.google.com https://*.google.com",
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",

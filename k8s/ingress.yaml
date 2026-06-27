@@ -12,11 +12,21 @@ metadata:
 spec:
   tls:
     - hosts:
-        - shree-shyam-dairy-farm.vercel.app
-        - erp.shreeshyamdairyfarm.com
+        - kunwardairy.com
+        - www.kunwardairy.com
       secretName: ssd-tls
   rules:
-    - host: erp.shreeshyamdairyfarm.com
+    - host: kunwardairy.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ssd-app
+                port:
+                  number: 80
+    - host: www.kunwardairy.com
       http:
         paths:
           - path: /

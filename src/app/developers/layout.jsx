@@ -14,7 +14,7 @@ export default function DevelopersLayout({ children }) {
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
           <div>
             <p className="text-xs uppercase tracking-widest text-[#C89B3C]">Developer Platform</p>
-            <h1 className="font-heading text-lg font-bold">Shree Shyam API</h1>
+            <h1 className="font-heading text-lg font-bold">Kunwar Dairy API</h1>
           </div>
           <Link href="/" className="text-xs text-white/60 hover:text-white">
             ← Back to site

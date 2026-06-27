@@ -41,7 +41,7 @@ export default function WhyChooseUs() {
             >
               <Image
                 src="/images/why-choose-us.png"
-                alt="Healthy cows at Shree Shyam Dairy Farm"
+                alt="Healthy cows at Kunwar Dairy"
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 42vw"

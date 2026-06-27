@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Loader2, Lock, ArrowLeft, CheckCircle2 } from "lucide-react";
@@ -15,13 +15,54 @@ export default function ResetPasswordForm() {
   const [confirm, setConfirm] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [verifying, setVerifying] = useState(Boolean(token));
+  const [tokenValid, setTokenValid] = useState(false);
   const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    if (!token) return;
+
+    let cancelled = false;
+
+    async function verifyToken() {
+      setVerifying(true);
+      setError("");
+
+      try {
+        const res = await fetch(`/api/v1/auth/reset-password?token=${encodeURIComponent(token)}`);
+        const data = await res.json();
+
+        if (cancelled) return;
+
+        if (!res.ok || !data.valid) {
+          setTokenValid(false);
+          setError(data.message || "This reset link is invalid. Request a new one.");
+          return;
+        }
+
+        setTokenValid(true);
+      } catch {
+        if (!cancelled) {
+          setTokenValid(false);
+          setError("Could not verify reset link. Please try again.");
+        }
+      } finally {
+        if (!cancelled) setVerifying(false);
+      }
+    }
+
+    void verifyToken();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [token]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
-    if (!token) {
+    if (!token || !tokenValid) {
       setError("Invalid reset link. Request a new one from the forgot password page.");
       return;
     }
@@ -64,7 +105,12 @@ export default function ResetPasswordForm() {
         </div>
 
         <div className="rounded-2xl border border-[#e8e4dc] bg-white p-6 shadow-[0_12px_40px_rgba(8,47,99,0.08)]">
-          {done ? (
+          {verifying ? (
+            <div className="flex flex-col items-center py-6 text-sm text-gray-500">
+              <Loader2 size={28} className="mb-3 animate-spin text-[#082F63]" />
+              Verifying reset link...
+            </div>
+          ) : done ? (
             <div className="text-center">
               <CheckCircle2 size={40} className="mx-auto text-emerald-500" />
               <p className="mt-4 text-sm font-semibold text-[#082F63]">Password updated</p>
@@ -87,6 +133,14 @@ export default function ResetPasswordForm() {
                 </div>
               )}
 
+              {token && !tokenValid && !error && (
+                <div className="mb-4 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2.5 text-sm text-amber-900">
+                  <Link href="/forgot-password" className="font-semibold underline">
+                    Request a new reset link
+                  </Link>
+                </div>
+              )}
+
               <label className="mb-4 block">
                 <span className="mb-1.5 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-[#082F63]/70">
                   <Lock size={14} /> New password
@@ -96,7 +150,8 @@ export default function ResetPasswordForm() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="h-11 w-full rounded-xl border border-[#e8e4dc] px-3 text-sm outline-none transition focus:border-[#C89B3C]/50 focus:ring-2 focus:ring-[#C89B3C]/20"
+                  disabled={!tokenValid}
+                  className="h-11 w-full rounded-xl border border-[#e8e4dc] px-3 text-sm outline-none transition focus:border-[#C89B3C]/50 focus:ring-2 focus:ring-[#C89B3C]/20 disabled:opacity-60"
                   placeholder="••••••••"
                 />
               </label>
@@ -110,18 +165,20 @@ export default function ResetPasswordForm() {
                   required
                   value={confirm}
                   onChange={(e) => setConfirm(e.target.value)}
-                  className="h-11 w-full rounded-xl border border-[#e8e4dc] px-3 text-sm outline-none transition focus:border-[#C89B3C]/50 focus:ring-2 focus:ring-[#C89B3C]/20"
+                  disabled={!tokenValid}
+                  className="h-11 w-full rounded-xl border border-[#e8e4dc] px-3 text-sm outline-none transition focus:border-[#C89B3C]/50 focus:ring-2 focus:ring-[#C89B3C]/20 disabled:opacity-60"
                   placeholder="••••••••"
                 />
               </label>
 
               <p className="mb-4 text-[11px] leading-relaxed text-gray-500">
-                Min 8 characters with uppercase, lowercase, number, and special character.
+                Min 8 characters with uppercase, lowercase, number, and special character. Link
+                expires in 15 minutes.
               </p>
 
               <button
                 type="submit"
-                disabled={loading || !token}
+                disabled={loading || !tokenValid}
                 className="btn-premium-gold flex h-11 w-full items-center justify-center gap-2 text-sm disabled:opacity-60"
               >
                 {loading ? <Loader2 size={18} className="animate-spin" /> : null}

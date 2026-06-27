@@ -53,7 +53,7 @@ export default function ChatAssistant() {
   const listRef = useRef(null);
   const inputRef = useRef(null);
 
-  const assistantName = config.name || "Shyam AI";
+  const assistantName = config.name || "Kunwar AI";
   const greeting =
     config.greeting ||
     `Namaste! Main ${site.name} ka AI assistant hoon. Products, orders, delivery — kuch bhi poochho!`;

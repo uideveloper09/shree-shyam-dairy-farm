@@ -25,14 +25,15 @@ npm run env:validate
 
 ### Required environment variables
 
-| Variable              | Purpose                            |
-| --------------------- | ---------------------------------- |
-| `DATABASE_URL`        | PostgreSQL connection              |
-| `JWT_ACCESS_SECRET`   | JWT signing (≥ 32 chars)           |
-| `JWT_REFRESH_SECRET`  | Refresh token signing (≥ 32 chars) |
-| `ADMIN_SECRET`        | Admin API protection (≥ 16 chars)  |
-| `NEXT_PUBLIC_APP_URL` | Canonical HTTPS URL                |
-| `ENCRYPTION_KEY`      | Credential encryption (32 chars)   |
+| Variable                 | Purpose                                                                                       |
+| ------------------------ | --------------------------------------------------------------------------------------------- |
+| `DATABASE_URL`           | PostgreSQL connection                                                                         |
+| `JWT_ACCESS_SECRET`      | JWT signing (≥ 32 chars)                                                                      |
+| `JWT_REFRESH_SECRET`     | Refresh token signing (≥ 32 chars)                                                            |
+| `ADMIN_SECRET`           | Admin API protection (≥ 16 chars)                                                             |
+| `NEXT_PUBLIC_APP_URL`    | Canonical **website** HTTPS URL (emails, OAuth, Stripe). API is same-origin: `{url}/api/v1/*` |
+| `NEXT_PUBLIC_APP_DOMAIN` | Hostname for tenant subdomains (e.g. `farm1.kunwardairy.com`)                                 |
+| `ENCRYPTION_KEY`         | Credential encryption (32 chars)                                                              |
 
 ### Recommended
 
@@ -51,7 +52,7 @@ Full list: `.env.example`
 
 ## Vercel (current production)
 
-**URL:** [shree-shyam-dairy-farm.vercel.app](https://shree-shyam-dairy-farm.vercel.app)
+**URL:** [kunwardairy.com](https://kunwardairy.com)
 
 ### Setup
 
@@ -252,7 +253,8 @@ Schedule via cron on the host or a CI scheduled workflow. Retention: 30 days (co
 
 - **Vercel** — automatic TLS
 - **Self-hosted** — terminate TLS at Nginx (`nginx/ssl/`) or Cloudflare
-- Set `NEXT_PUBLIC_APP_URL` to the canonical `https://` domain
+- Set `NEXT_PUBLIC_APP_URL=https://kunwardairy.com` and `NEXT_PUBLIC_APP_DOMAIN=kunwardairy.com`
+- API routes remain same-origin: `https://kunwardairy.com/api/v1/*` (no `api.kunwardairy.com`)
 
 ---
 

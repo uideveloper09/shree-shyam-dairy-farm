@@ -1,6 +1,7 @@
 export const AUTH_COOKIE = {
   access: "ssd_access",
   refresh: "ssd_refresh",
+  csrf: "ssd_csrf",
 } as const;
 
 export const TOKEN_TTL = {

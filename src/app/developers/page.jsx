@@ -5,8 +5,8 @@ export default function DevelopersPage() {
     <div>
       <h2 className="font-heading text-3xl font-bold">Public REST API</h2>
       <p className="mt-3 max-w-2xl text-white/70">
-        Build integrations with Shree Shyam Dairy Farm — product catalog, order tracking, and
-        real-time webhooks. Versioned, rate-limited, and documented with OpenAPI.
+        Build integrations with Kunwar Dairy — product catalog, order tracking, and real-time
+        webhooks. Versioned, rate-limited, and documented with OpenAPI.
       </p>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2">

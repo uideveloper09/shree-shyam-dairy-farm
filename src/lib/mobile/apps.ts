@@ -1,5 +1,6 @@
 import type { Permission } from "@/lib/security/permissions";
 import { hasPermission } from "@/lib/security/permissions";
+import { getSiteUrl } from "@/lib/site-url";
 
 export type MobileAppId = "customer" | "delivery" | "farm" | "vet" | "owner";
 
@@ -71,8 +72,7 @@ export function getDefaultAppForRole(role: string): MobileAppConfig | null {
 }
 
 export const DEEP_LINK_PREFIX = "ssd://";
-export const DEEP_LINK_BASE =
-  process.env.NEXT_PUBLIC_APP_URL || "https://shree-shyam-dairy-farm.vercel.app";
+export const DEEP_LINK_BASE = getSiteUrl();
 
 export function resolveDeepLink(path: string): string {
   if (path.startsWith(DEEP_LINK_PREFIX)) {

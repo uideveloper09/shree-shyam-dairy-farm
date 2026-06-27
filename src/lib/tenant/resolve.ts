@@ -1,5 +1,5 @@
 import { prisma, isDatabaseConfigured } from "@/repositories/prisma";
-import { DEFAULT_TENANT_SLUG } from "@/constants/tenant";
+import { DEFAULT_TENANT_SLUG, TENANT_COOKIE } from "@/constants/tenant";
 import { resolveTenantFromHost } from "@/lib/tenant/resolve-host";
 
 export { resolveTenantFromHost } from "@/lib/tenant/resolve-host";
@@ -11,6 +11,12 @@ export type ResolvedTenant = {
   plan: string;
   farmId: string;
 };
+
+function parseCookie(cookieHeader: string | null, name: string): string | null {
+  if (!cookieHeader) return null;
+  const match = cookieHeader.match(new RegExp(`(?:^|;\\s*)${name}=([^;]+)`));
+  return match ? decodeURIComponent(match[1]) : null;
+}
 
 export async function resolveTenantBySlug(slug: string): Promise<ResolvedTenant | null> {
   if (!isDatabaseConfigured()) {
@@ -57,15 +63,21 @@ export async function resolveTenantByDomain(host: string): Promise<ResolvedTenan
 }
 
 export async function resolveTenantFromRequest(request: Request): Promise<ResolvedTenant | null> {
-  const headerSlug = request.headers.get("x-tenant-slug");
-  if (headerSlug) return resolveTenantBySlug(headerSlug);
-
   const host = request.headers.get("host") || "";
   const subdomainSlug = resolveTenantFromHost(host);
-  if (subdomainSlug) return resolveTenantBySlug(subdomainSlug);
+  if (subdomainSlug) {
+    const tenant = await resolveTenantBySlug(subdomainSlug);
+    if (tenant) return tenant;
+  }
 
   const custom = await resolveTenantByDomain(host);
   if (custom) return custom;
+
+  const cookieSlug = parseCookie(request.headers.get("cookie"), TENANT_COOKIE);
+  if (cookieSlug) {
+    const tenant = await resolveTenantBySlug(cookieSlug);
+    if (tenant) return tenant;
+  }
 
   return resolveTenantBySlug(DEFAULT_TENANT_SLUG);
 }

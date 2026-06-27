@@ -80,6 +80,35 @@ export async function validateRefreshToken(token: string) {
   });
 }
 
+/** Issue a new opaque refresh token and revoke the previous one (rotation). */
+export async function rotateRefreshToken(oldToken: string) {
+  const record = await validateRefreshToken(oldToken);
+  if (!record) return null;
+
+  const newRefreshToken = nanoid(48);
+
+  await prisma.$transaction([
+    prisma.refreshToken.update({
+      where: { id: record.id },
+      data: { revokedAt: new Date() },
+    }),
+    prisma.refreshToken.create({
+      data: {
+        userId: record.userId,
+        token: newRefreshToken,
+        remember: record.remember,
+        userAgent: record.userAgent,
+        ipAddress: record.ipAddress,
+        deviceLabel: record.deviceLabel,
+        sessionId: record.sessionId,
+        expiresAt: record.expiresAt,
+      },
+    }),
+  ]);
+
+  return { record, newRefreshToken };
+}
+
 export async function revokeRefreshToken(token: string): Promise<void> {
   const record = await prisma.refreshToken.findUnique({ where: { token } });
   if (!record) return;

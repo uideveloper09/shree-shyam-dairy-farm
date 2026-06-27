@@ -35,7 +35,7 @@ export async function POST(request: Request) {
   }
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   if (!isDatabaseConfigured()) {
     return NextResponse.json({ devices: [] }, { status: 503 });
   }
@@ -43,7 +43,11 @@ export async function GET() {
   const { user, error } = await requireFarmOperator();
   if (error) return error;
 
+  const { resolveTenantFromRequest } = await import("@/lib/tenant/resolve");
+  const tenant = await resolveTenantFromRequest(request);
+  const farmId = tenant?.farmId ?? "default";
+
   const { listDevices } = await import("@/services/farm/iot.service");
-  const devices = await listDevices();
-  return NextResponse.json({ devices, userId: user!.id });
+  const devices = await listDevices(farmId);
+  return NextResponse.json({ devices, userId: user!.id, farmId });
 }

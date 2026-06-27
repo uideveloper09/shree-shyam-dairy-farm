@@ -4,7 +4,7 @@ import { getRefreshTokenFromCookies } from "@/lib/auth/cookies";
 import { signAccessToken } from "@/lib/auth/jwt";
 import { setAuthCookies } from "@/lib/auth/cookies";
 import { publicUser } from "@/lib/auth/session";
-import { validateRefreshToken } from "@/lib/security/session-manager";
+import { rotateRefreshToken } from "@/lib/security/session-manager";
 import { writeAudit, AUDIT_ACTIONS } from "@/lib/security/audit";
 import { securityGate } from "@/lib/security/gate";
 
@@ -27,11 +27,16 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "No refresh token" }, { status: 401 });
     }
 
-    const record = await validateRefreshToken(refreshToken);
-    if (!record?.user || !record.user.isActive || record.user.deletedAt) {
+    const rotation = await rotateRefreshToken(refreshToken);
+    if (
+      !rotation?.record?.user ||
+      !rotation.record.user.isActive ||
+      rotation.record.user.deletedAt
+    ) {
       return NextResponse.json({ error: "Invalid refresh token" }, { status: 401 });
     }
 
+    const { record, newRefreshToken } = rotation;
     const user = record.user;
     const accessToken = await signAccessToken({
       sub: user.id,
@@ -39,7 +44,7 @@ export async function POST(request: Request) {
       role: user.role,
     });
 
-    await setAuthCookies(accessToken, refreshToken, record.remember);
+    await setAuthCookies(accessToken, newRefreshToken, record.remember);
 
     await writeAudit({
       userId: user.id,

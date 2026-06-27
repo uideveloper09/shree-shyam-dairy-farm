@@ -6,7 +6,7 @@ export default function LogoIcon({ className = "h-[75px] w-[75px]", "aria-label"
   return (
     <Image
       src="/logos/logo-header.png"
-      alt={ariaLabel || "Shree Shyam Dairy Farm logo"}
+      alt={ariaLabel || "Kunwar Dairy"}
       width={75}
       height={75}
       sizes="(max-width: 640px) 40px, (max-width: 1024px) 48px, 56px"

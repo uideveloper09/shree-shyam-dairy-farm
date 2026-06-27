@@ -2,10 +2,11 @@ import { NextResponse } from "next/server";
 import { prisma, isDatabaseConfigured } from "@/repositories/prisma";
 import { forgotPasswordSchema } from "@/lib/validators/auth";
 import { securityGate } from "@/lib/security/gate";
-import { createEmailToken } from "@/lib/security/otp.service";
 import { writeAudit, AUDIT_ACTIONS } from "@/lib/security/audit";
 import { logger } from "@/lib/ops/logger";
-import { sendEmail } from "@/modules/notifications/channels/email";
+import { createPasswordResetToken } from "@/lib/auth/password-reset.service";
+import { sendPasswordResetEmail } from "@/lib/auth/password-reset-email";
+import { getPasswordResetUrl } from "@/lib/auth/password-reset.service";
 
 export const dynamic = "force-dynamic";
 
@@ -27,29 +28,25 @@ export async function POST(request: Request) {
   }
 
   const email = parsed.data.email.toLowerCase().trim();
-  const user = await prisma.user.findUnique({ where: { email }, select: { id: true } });
+  const user = await prisma.user.findUnique({
+    where: { email },
+    select: { id: true, name: true },
+  });
+
   const emailConfigured = Boolean(process.env.RESEND_API_KEY?.trim());
   let emailSent = false;
 
   if (user) {
-    const token = await createEmailToken(user.id, "reset_password", 1);
-    const resetUrl = `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/reset-password?token=${token}`;
+    const token = await createPasswordResetToken(user.id);
 
     if (emailConfigured) {
-      const result = await sendEmail({
-        recipient: email,
-        title: "Reset your password",
-        subject: "Reset your Shree Shyam Dairy Farm password",
-        body: "Use the link below to reset your password. This link expires in 1 hour.",
-        html: `
-          <p>Hello,</p>
-          <p>Click the link below to reset your password. This link expires in 1 hour.</p>
-          <p><a href="${resetUrl}">${resetUrl}</a></p>
-          <p>If you did not request this, you can ignore this email.</p>
-        `,
+      const result = await sendPasswordResetEmail({
+        email,
+        token,
+        userName: user.name,
       });
 
-      emailSent = result.ok && result.delivered === true;
+      emailSent = result.delivered;
 
       if (!emailSent) {
         logger.error("password_reset_email_failed", {
@@ -58,7 +55,10 @@ export async function POST(request: Request) {
         });
       }
     } else {
-      logger.info("password_reset_dev_link", { email, resetUrl });
+      logger.info("password_reset_dev_link", {
+        email,
+        resetUrl: getPasswordResetUrl(token),
+      });
     }
 
     await writeAudit({

@@ -3,7 +3,7 @@
 **Project:** Shree Shyam Dairy Farm  
 **Audit date:** June 25, 2026 · **Sprint 0 updated:** June 26, 2026  
 **Source:** `MASTER_PROJECT_AUDIT.md` — Phases 1–10 · Sprint 0 completion per `SPRINT0_SUMMARY.md`  
-**Live:** [shree-shyam-dairy-farm.vercel.app](https://shree-shyam-dairy-farm.vercel.app)  
+**Live:** [kunwardairy.com](https://kunwardairy.com)  
 **Stack:** Next.js 16.2.9 · React 19 · Prisma 6 · PostgreSQL · Tailwind v4
 
 ---

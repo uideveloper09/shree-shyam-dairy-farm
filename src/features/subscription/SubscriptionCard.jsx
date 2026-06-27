@@ -78,22 +78,49 @@ export default function SubscriptionCard({ subscription, onAction, actionLoading
             icon={CreditCard}
             label="Setup auto-pay"
             onClick={async () => {
+              const billingUrl = `/api/v1/subscriptions/${subscription.id}/billing`;
+              console.log("[AutoPay] Setup auto-pay button clicked", {
+                subscriptionId: subscription.id,
+                hasAutoPay: subscription.hasAutoPay,
+                status: subscription.status,
+                billingUrl,
+              });
+
               setBillingLoading(true);
               try {
-                const res = await fetchWithSession(
-                  `/api/v1/subscriptions/${subscription.id}/billing`,
-                  { method: "POST" }
-                );
+                console.log("[AutoPay] fetch() calling billing API", {
+                  url: billingUrl,
+                  method: "POST",
+                });
+
+                const res = await fetchWithSession(billingUrl, { method: "POST" });
+
+                console.log("[AutoPay] fetch() billing API response", {
+                  url: billingUrl,
+                  status: res.status,
+                  ok: res.ok,
+                });
+
                 const data = await res.json();
                 if (res.status === 401) {
                   throw new Error("Session expired. Please log in again.");
                 }
-                if (!res.ok) throw new Error(data.error || "Auto-pay setup failed");
+                if (!res.ok) {
+                  console.error("[AutoPay] billing API error body", data);
+                  throw new Error(data.error || "Auto-pay setup failed");
+                }
+
+                console.log("[AutoPay] billing API success", {
+                  shortUrl: data.billing?.shortUrl,
+                  razorpaySubscriptionId: data.billing?.razorpaySubscriptionId,
+                });
+
                 if (data.billing?.shortUrl) {
                   window.open(data.billing.shortUrl, "_blank", "noopener,noreferrer");
                 }
                 onRefresh?.();
               } catch (err) {
+                console.error("[AutoPay] Setup auto-pay catch", err);
                 alert(err.message || "Auto-pay setup failed");
               } finally {
                 setBillingLoading(false);

@@ -78,12 +78,12 @@ const DEFAULT_RULES = [
   },
 ];
 
-export async function ensureAutonomyDefaults() {
+export async function ensureAutonomyDefaults(farmId = "default") {
   const config = await prisma.farmAutonomyConfig.findUnique({
-    where: { farmId: "default" },
+    where: { farmId },
   });
   if (!config) {
-    await prisma.farmAutonomyConfig.create({ data: { farmId: "default" } });
+    await prisma.farmAutonomyConfig.create({ data: { farmId } });
   }
 
   const count = await prisma.automationRule.count();
@@ -131,19 +131,22 @@ export async function ensureAutonomyDefaults() {
   });
 }
 
-export async function getAutonomyConfig() {
-  await ensureAutonomyDefaults();
-  return prisma.farmAutonomyConfig.findUniqueOrThrow({ where: { farmId: "default" } });
+export async function getAutonomyConfig(farmId = "default") {
+  await ensureAutonomyDefaults(farmId);
+  return prisma.farmAutonomyConfig.findUniqueOrThrow({ where: { farmId } });
 }
 
-export async function updateAutonomyConfig(data: {
-  mode?: FarmAutonomyMode;
-  dryRun?: boolean;
-  maintenanceMode?: boolean;
-  emergencyStop?: boolean;
-}) {
+export async function updateAutonomyConfig(
+  data: {
+    mode?: FarmAutonomyMode;
+    dryRun?: boolean;
+    maintenanceMode?: boolean;
+    emergencyStop?: boolean;
+  },
+  farmId = "default"
+) {
   return prisma.farmAutonomyConfig.update({
-    where: { farmId: "default" },
+    where: { farmId },
     data,
   });
 }
@@ -252,13 +255,20 @@ export async function evaluateAutonomyOnReading(reading: NormalizedReading) {
   }
 }
 
-export async function listActuators() {
-  return prisma.actuatorDevice.findMany({ orderBy: { name: "asc" } });
+export async function listActuators(farmId = "default") {
+  return prisma.actuatorDevice.findMany({
+    where: { farmId },
+    orderBy: { name: "asc" },
+  });
 }
 
-export async function manualActuatorCommand(deviceKey: string, command: "ON" | "OFF") {
+export async function manualActuatorCommand(
+  deviceKey: string,
+  command: "ON" | "OFF",
+  farmId = "default"
+) {
   await prisma.actuatorDevice.updateMany({
-    where: { deviceKey },
+    where: { deviceKey, farmId },
     data: { state: command, lastCommandAt: new Date() },
   });
   return prisma.actuatorDevice.findUnique({ where: { deviceKey } });

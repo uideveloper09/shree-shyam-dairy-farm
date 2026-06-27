@@ -39,7 +39,12 @@ async function main() {
       console.log("[mqtt-bridge] Message:", topic);
       try {
         const body = JSON.parse(payload.toString());
-        const baseUrl = process.env.SSD_CLOUD_URL || "http://localhost:3000";
+        const baseUrl =
+          process.env.SSD_CLOUD_URL?.trim() ||
+          process.env.NEXT_PUBLIC_APP_URL?.trim() ||
+          (process.env.NODE_ENV === "production"
+            ? "https://kunwardairy.com"
+            : "http://localhost:3000");
         await fetch(`${baseUrl}/api/v1/iot/data`, {
           method: "POST",
           headers: {

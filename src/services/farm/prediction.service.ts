@@ -121,14 +121,14 @@ export async function runMilkForecast(farmId = "default") {
   return snapshot;
 }
 
-export async function runInventoryForecast() {
+export async function runInventoryForecast(farmId = "default") {
   const products = await prisma.product.findMany({
     where: { isActive: true },
     select: { id: true, name: true, stockQty: true, slug: true },
   });
 
   const demand = await prisma.predictionSnapshot.findFirst({
-    where: { domain: "DEMAND" },
+    where: { domain: "DEMAND", farmId },
     orderBy: { createdAt: "desc" },
   });
 
@@ -146,6 +146,7 @@ export async function runInventoryForecast() {
 
   await prisma.predictionSnapshot.create({
     data: {
+      farmId,
       domain: "INVENTORY",
       horizon: "DAILY",
       pointValue: forecasts.filter((f) => f.reorderSuggested).length,
@@ -159,7 +160,7 @@ export async function runInventoryForecast() {
   return forecasts;
 }
 
-export async function runProfitForecast() {
+export async function runProfitForecast(farmId = "default") {
   const since = new Date(Date.now() - 30 * 86400000);
   const revenue = await prisma.order.aggregate({
     where: {
@@ -176,6 +177,7 @@ export async function runProfitForecast() {
 
   await prisma.predictionSnapshot.create({
     data: {
+      farmId,
       domain: "PROFIT",
       horizon: "MONTHLY",
       pointValue: dailyProfit * 30,
@@ -238,8 +240,8 @@ export async function runProductionPlan(farmId = "default") {
 export async function runDailyPredictions(farmId = "default") {
   const milk = await runMilkForecast(farmId);
   const demand = await runDemandForecast(farmId);
-  const inventory = await runInventoryForecast();
-  const profit = await runProfitForecast();
+  const inventory = await runInventoryForecast(farmId);
+  const profit = await runProfitForecast(farmId);
   const plan = await runProductionPlan(farmId);
 
   await prisma.aIInsight.create({
@@ -256,9 +258,9 @@ export async function runDailyPredictions(farmId = "default") {
   return { milk, demand, inventory, profit, plan };
 }
 
-export async function getLatestPredictions(domain?: PredictionDomain) {
+export async function getLatestPredictions(domain?: PredictionDomain, farmId = "default") {
   return prisma.predictionSnapshot.findMany({
-    where: domain ? { domain } : undefined,
+    where: { farmId, ...(domain ? { domain } : {}) },
     orderBy: { createdAt: "desc" },
     take: domain ? 5 : 20,
   });

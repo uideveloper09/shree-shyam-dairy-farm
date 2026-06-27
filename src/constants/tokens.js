@@ -1,5 +1,5 @@
 /**
- * SHREE SHYAM DAIRY FARM — Design System Tokens
+ * KUNWAR DAIRY — Design System Tokens
  * ------------------------------------------------
  * Reverse-engineered from the full-page mockup.
  * All values map directly to Tailwind utility classes.

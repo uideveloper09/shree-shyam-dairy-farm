@@ -155,6 +155,8 @@ model User {
   deletedAt         DateTime?
   lastLoginAt       DateTime?
   lastLoginIp       String?
+  passwordResetTokenHash String?
+  passwordResetExpiresAt DateTime?
   createdAt         DateTime       @default(now())
   updatedAt         DateTime       @updatedAt
 
@@ -216,6 +218,8 @@ model User {
   aiModuleRuns       AiModuleRun[]
   aiWhatsAppSessions AiWhatsAppSession[]
   partnerMemberships SaasPartnerMember[]
+
+  @@index([passwordResetTokenHash])
 }
 
 model Session {

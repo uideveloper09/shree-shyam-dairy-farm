@@ -20,6 +20,17 @@ export function isValidUrl(value: string): boolean {
   }
 }
 
+/** True when URL hostname is loopback (invalid for production deploy). */
+export function isLocalhostUrl(value: string | undefined): boolean {
+  if (!value?.trim()) return false;
+  try {
+    const { hostname } = new URL(value);
+    return hostname === "localhost" || hostname === "127.0.0.1" || hostname === "::1";
+  } catch {
+    return false;
+  }
+}
+
 /** Map legacy NextAuth env vars to current names. */
 export function applyLegacyAliases(): void {
   if (!process.env.JWT_ACCESS_SECRET && process.env.NEXTAUTH_SECRET) {

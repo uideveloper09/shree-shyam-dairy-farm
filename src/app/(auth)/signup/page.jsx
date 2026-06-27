@@ -49,7 +49,7 @@ export default function SignupPage() {
             <BrandLogo compact />
           </Link>
           <h1 className="mt-6 font-heading text-2xl font-bold text-[#082F63]">Create account</h1>
-          <p className="mt-1 text-sm text-gray-500">Join Shree Shyam for fresh dairy delivery</p>
+          <p className="mt-1 text-sm text-gray-500">Join Kunwar Dairy for fresh dairy delivery</p>
         </div>
 
         <form

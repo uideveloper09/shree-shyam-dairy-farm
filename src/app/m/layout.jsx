@@ -8,7 +8,7 @@ import ServiceWorkerRegister from "@/features/mobile/ServiceWorkerRegister";
 
 export const metadata = {
   manifest: "/manifest.json",
-  appleWebApp: { capable: true, title: "Shree Shyam" },
+  appleWebApp: { capable: true, title: "Kunwar" },
 };
 
 export default async function MobileLayout({ children }) {

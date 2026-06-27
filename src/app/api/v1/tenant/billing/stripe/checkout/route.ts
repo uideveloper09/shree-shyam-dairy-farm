@@ -3,6 +3,7 @@ import { requireUser } from "@/lib/auth/session";
 import { resolveTenantFromRequest } from "@/lib/tenant/resolve";
 import { createStripeCheckoutSession } from "@/lib/billing/stripe";
 import type { TenantPlan } from "@/constants/tenant";
+import { getSiteUrl } from "@/lib/site-url";
 
 export const dynamic = "force-dynamic";
 
@@ -19,7 +20,7 @@ export async function POST(request: Request) {
 
   const body = await request.json();
   const plan = (body.plan as TenantPlan) || "growth";
-  const base = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  const base = getSiteUrl();
 
   try {
     const session = await createStripeCheckoutSession(

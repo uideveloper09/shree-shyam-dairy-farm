@@ -1,17 +1,18 @@
 {
   "site": {
-    "name": "Shree Shyam Dairy Farm",
-    "shortName": "Shree Shyam",
+    "name": "Kunwar Dairy",
+    "shortName": "Kunwar",
+    "legalName": "Shree Shyam Dairy Farm",
     "logoTagline": "Farm Se Seedha Aapke Ghar Tak",
     "hindiTagline": "शुद्ध दूध, Seedha Aapke Ghar Tak",
     "tagline": "Fresh & Pure Dairy Products",
     "location": "Bihar, India",
     "phone": "+91 98765 43210",
     "whatsappNumber": "919876543210",
-    "email": "shreeshyamdairyfarm@gmail.com",
+    "email": "orders@kunwardairy.com",
     "hours": "Mon - Sun: 6:00 AM - 10:00 PM",
-    "description": "Pure, fresh and natural dairy products straight from our farm to your home in Bihar, India.",
-    "footerDesc": "Shree Shyam Dairy Farm se aapke ghar tak shuddh, taaza aur poshtik dairy products — bina kisi bichauliye ke.",
+    "description": "Order fresh farm milk, paneer, curd, ghee and manage subscriptions online with Kunwar Dairy.",
+    "footerDesc": "Kunwar Dairy se aapke ghar tak shuddh, taaza aur poshtik dairy products — bina kisi bichauliye ke.",
     "promo": "🎉 10% OFF on your First order | Use FRESH10",
     "deliveryNote": "Same-day delivery in Bihar* | Farm-fresh daily",
     "serviceNote": "Proudly serving customers throughout Bihar, India",
@@ -35,7 +36,7 @@
     "title": "Discover the Finest Dairy That Elevates Your Kitchen",
     "subtitle": "Farm-fresh milk, ghee, dahi, paneer & chaach — delivered straight from our farm to your home.",
     "image": "/images/hero-section-banner.png",
-    "imageAlt": "Shree Shyam Dairy Farm — Pure Fresh Dairy",
+    "imageAlt": "Kunwar Dairy — Pure Fresh Dairy",
     "primaryCta": { "label": "Shop Now", "href": "#products" },
     "secondaryCta": { "label": "About Us", "href": "#about" }
   },
@@ -270,7 +271,7 @@
       "name": "Priya Sharma",
       "location": "Patna, Bihar",
       "rating": 5,
-      "quote": "Shree Shyam ka doodh bahut fresh hai. Subah delivery milti hai aur doodh ka taste bilkul gaon jaisa. Ghee bhi amazing hai — roti par lagate hi khushboo aa jati hai."
+      "quote": "Kunwar Dairy ka doodh bahut fresh hai. Subah delivery milti hai aur doodh ka taste bilkul gaon jaisa. Ghee bhi amazing hai — roti par lagate hi khushboo aa jati hai."
     },
     {
       "name": "Rahul Kumar",
@@ -282,14 +283,14 @@
       "name": "Anita Devi",
       "location": "Muzaffarpur, Bihar",
       "rating": 5,
-      "quote": "Humara poora parivaar Shree Shyam ka dahi aur chaach use karta hai. Koi preservatives nahi, bilkul natural. Farm se seedha ghar tak — sach mein!"
+      "quote": "Humara poora parivaar Kunwar Dairy ka dahi aur chaach use karta hai. Koi preservatives nahi, bilkul natural. Farm se seedha ghar tak — sach mein!"
     }
   ],
   "about": {
     "label": "About Us",
-    "title": "About Shree Shyam",
+    "title": "About Kunwar Dairy",
     "image": "/images/about-us-banner.png",
-    "imageAlt": "Shree Shyam Dairy Farm — fresh milk, healthy cows, happy farm",
+    "imageAlt": "Kunwar Dairy — fresh milk, healthy cows, happy farm",
     "body": "We raise healthy cows on our own farm, process milk with modern hygienic equipment, and deliver fresh dairy products directly to your doorstep — no middlemen, no compromise on quality.",
     "cta": { "label": "Visit Our Farm", "href": "#farm" }
   },
@@ -297,8 +298,8 @@
     "label": "Our Farm",
     "title": "Jahan Se Shuru Hoti Hai Shuddhata",
     "image": "/images/our-farm-banner.png",
-    "imageAlt": "Shree Shyam Dairy Farm",
-    "description": "Shree Shyam Dairy Farm mein hum har din taaza, poshtik aur shuddh dairy products taiyaar karte hain. Hamare gaayon ko saaf-suthra vatavaran, santulit aahar aur niyamit veterinary care di jaati hai.",
+    "imageAlt": "Kunwar Dairy farm",
+    "description": "Kunwar Dairy mein hum har din taaza, poshtik aur shuddh dairy products taiyaar karte hain. Operated by Shree Shyam Dairy Farm — hamare gaayon ko saaf-suthra vatavaran, santulit aahar aur niyamit veterinary care di jaati hai.",
     "features": [
       "200+ Healthy Cows",
       "Organic Green Fodder",
@@ -313,8 +314,8 @@
     "label": "Contact Us",
     "title": "Let's Answer Your Queries",
     "subtitle": "Visit our farm, call us, or drop a message — we're happy to help.",
-    "mapQuery": "Shree Shyam Dairy Farm, Bihar, India",
-    "address": "Shree Shyam Dairy Farm, Bihar, India",
+    "mapQuery": "Kunwar Dairy, Bihar, India",
+    "address": "Kunwar Dairy, Bihar, India",
     "directionsLabel": "Get Directions"
   },
   "categorySection": {
@@ -323,7 +324,7 @@
   },
   "whySection": {
     "label": "Why Choose Us",
-    "title": "Why Shree Shyam?"
+    "title": "Why Kunwar Dairy?"
   },
   "testimonialsSection": {
     "label": "Testimonials",
@@ -340,9 +341,9 @@
     ]
   },
   "chatAssistant": {
-    "name": "Shyam AI",
+    "name": "Kunwar AI",
     "title": "Farm Assistant",
-    "greeting": "Namaste! 🙏 Main Shree Shyam Dairy Farm ka AI assistant hoon. Products, prices, delivery, ya order — kuch bhi poochho!",
+    "greeting": "Namaste! 🙏 Main Kunwar Dairy ka AI assistant hoon. Products, prices, delivery, ya order — kuch bhi poochho!",
     "placeholder": "Apna sawaal likho...",
     "quickPrompts": [
       "Products aur prices?",

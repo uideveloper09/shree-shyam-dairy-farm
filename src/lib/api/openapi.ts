@@ -1,24 +1,25 @@
-import { PUBLIC_API_BASE, CURRENT_API_VERSION } from "@/lib/api/versioning";
+import { CURRENT_API_VERSION } from "@/lib/api/versioning";
 import { API_SCOPES, WEBHOOK_EVENTS } from "@/lib/api/scopes";
-
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://shree-shyam-dairy-farm.vercel.app";
+import { getSiteUrl, getPublicApiBaseUrl } from "@/lib/site-url";
 
 export function buildOpenApiSpec() {
+  const siteUrl = getSiteUrl();
+  const apiBaseUrl = getPublicApiBaseUrl();
   return {
     openapi: "3.1.0",
     info: {
-      title: "Shree Shyam Dairy Farm Public API",
+      title: "Kunwar Dairy Public API",
       version: CURRENT_API_VERSION,
       description:
         "REST API for products, orders, subscriptions, and webhooks. Authenticate with `Authorization: Bearer ssd_live_...`",
       contact: {
         name: "API Support",
-        url: `${BASE_URL}/developers`,
+        url: `${siteUrl}/developers`,
         email: "api@shreeshyamdairyfarm.com",
       },
       license: { name: "Proprietary" },
     },
-    servers: [{ url: `${BASE_URL}${PUBLIC_API_BASE}`, description: "Production API v1" }],
+    servers: [{ url: apiBaseUrl, description: "Production API v1 (same-origin App Router)" }],
     security: [{ bearerAuth: [] }, { apiKeyAuth: [] }],
     tags: [
       { name: "Products", description: "Product catalog" },

@@ -4,7 +4,10 @@
  */
 import mqtt from "mqtt";
 
-const CLOUD_URL = process.env.SSD_CLOUD_URL || "http://localhost:3000";
+const CLOUD_URL =
+  process.env.SSD_CLOUD_URL?.trim() ||
+  process.env.NEXT_PUBLIC_APP_URL?.trim() ||
+  (process.env.NODE_ENV === "production" ? "https://kunwardairy.com" : "http://localhost:3000");
 const GATEWAY_KEY = process.env.SSD_GATEWAY_KEY;
 const GATEWAY_API_KEY = process.env.SSD_GATEWAY_API_KEY;
 const MQTT_URL = process.env.MQTT_BROKER_URL || "mqtt://localhost:1883";

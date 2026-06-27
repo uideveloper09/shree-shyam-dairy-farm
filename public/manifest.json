@@ -1,7 +1,7 @@
 {
-  "name": "Shree Shyam Dairy Farm",
-  "short_name": "SSD Farm",
-  "description": "Pure & fresh dairy — orders, delivery, farm ERP",
+  "name": "Kunwar Dairy",
+  "short_name": "Kunwar",
+  "description": "Farm fresh milk delivery, dairy subscriptions, and pure dairy products.",
   "start_url": "/m",
   "display": "standalone",
   "background_color": "#082F63",

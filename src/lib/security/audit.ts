@@ -59,6 +59,8 @@ export const AUDIT_ACTIONS = {
   TWO_FA_DISABLED: "auth.2fa.disabled",
   SESSION_REVOKED: "auth.session.revoked",
   OAUTH_LOGIN: "auth.oauth.login",
+  EMAIL_VERIFIED: "auth.email.verified",
+  EMAIL_VERIFY_SENT: "auth.email.verify_sent",
   GDPR_EXPORT: "gdpr.export",
   GDPR_DELETE: "gdpr.delete",
   GDPR_CONSENT: "gdpr.consent",

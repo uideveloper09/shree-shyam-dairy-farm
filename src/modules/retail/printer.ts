@@ -1,5 +1,6 @@
 import { randomBytes } from "crypto";
 import QRCode from "qrcode";
+import { getAppDomain, getSiteUrl } from "@/lib/site-url";
 
 export function billNumber() {
   return `BILL-${new Date().getFullYear()}-${randomBytes(3).toString("hex").toUpperCase()}`;
@@ -27,7 +28,7 @@ export function buildBillQrPayload(data: {
     invoice: data.invoiceNumber,
     total: data.total,
     gstin: data.gstin,
-    verify: `https://shree-shyam-dairy-farm.vercel.app/invoice/${data.billNumber}`,
+    verify: `${getSiteUrl()}/invoice/${data.billNumber}`,
   });
 }
 
@@ -103,7 +104,7 @@ export function formatThermalReceipt(bill: {
 
   rows.push("-".repeat(width));
   rows.push(center("Thank you! Visit again."));
-  rows.push(center("www.shree-shyam-dairy-farm.vercel.app"));
+  rows.push(center(`www.${getAppDomain()}`));
   rows.push("\n\n\n");
 
   return rows.join("\n");

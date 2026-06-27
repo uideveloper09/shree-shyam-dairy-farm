@@ -5,18 +5,69 @@ import { securityGate } from "@/lib/security/gate";
 import { getGoogleAuthUrl, loginWithGoogle } from "@/lib/security/oauth";
 import { publicUser } from "@/lib/auth/session";
 import { writeAudit, AUDIT_ACTIONS } from "@/lib/security/audit";
+import { getRequestContext } from "@/lib/security/request-context";
+import { getSiteUrl } from "@/lib/site-url";
 
 export const dynamic = "force-dynamic";
 
+function resolveRedirectUri(request: Request): string {
+  return process.env.GOOGLE_REDIRECT_URI?.trim() || `${getSiteUrl()}/api/v1/auth/oauth/google`;
+}
+
+type OAuthState = { s: string; r?: string; rm?: boolean };
+
+function encodeOAuthState(payload: OAuthState): string {
+  return Buffer.from(JSON.stringify(payload)).toString("base64url");
+}
+
+function decodeOAuthState(value: string | null): OAuthState | null {
+  if (!value) return null;
+  try {
+    return JSON.parse(Buffer.from(value, "base64url").toString("utf8")) as OAuthState;
+  } catch {
+    return null;
+  }
+}
+
+/** Start OAuth flow or complete callback (?code=). */
 export async function GET(request: Request) {
-  const redirectUri =
-    process.env.GOOGLE_REDIRECT_URI ||
-    `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/v1/auth/oauth/google`;
+  const url = new URL(request.url);
+  const code = url.searchParams.get("code")?.trim();
+  const redirectUri = resolveRedirectUri(request);
+
+  if (code) {
+    if (!isDatabaseConfigured()) {
+      return NextResponse.redirect(new URL("/login?error=oauth_unavailable", request.url));
+    }
+
+    const ctx = getRequestContext(request);
+    const statePayload = decodeOAuthState(url.searchParams.get("state"));
+    const remember = Boolean(statePayload?.rm);
+    const redirectTo = statePayload?.r || "/account";
+
+    try {
+      const { user } = await loginWithGoogle(code, redirectUri, ctx, remember);
+
+      await writeAudit({
+        userId: user.id,
+        action: AUDIT_ACTIONS.OAUTH_LOGIN,
+        ipAddress: ctx.ip,
+        metadata: { provider: "google" },
+      });
+
+      return NextResponse.redirect(new URL(redirectTo, request.url));
+    } catch (err) {
+      console.error("Google OAuth callback error:", err);
+      return NextResponse.redirect(new URL("/login?error=oauth_failed", request.url));
+    }
+  }
 
   try {
-    const state = nanoid(16);
-    const url = getGoogleAuthUrl(redirectUri, state);
-    return NextResponse.redirect(url);
+    const redirectTo = url.searchParams.get("redirect") || "/account";
+    const remember = url.searchParams.get("remember") === "1";
+    const state = encodeOAuthState({ s: nanoid(16), r: redirectTo, rm: remember });
+    const authUrl = getGoogleAuthUrl(redirectUri, state);
+    return NextResponse.redirect(authUrl);
   } catch {
     return NextResponse.json({ error: "Google OAuth not configured" }, { status: 503 });
   }
@@ -40,9 +91,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Authorization code required" }, { status: 400 });
   }
 
-  const redirectUri =
-    process.env.GOOGLE_REDIRECT_URI ||
-    `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/v1/auth/oauth/google`;
+  const redirectUri = resolveRedirectUri(request);
 
   try {
     const { user } = await loginWithGoogle(code, redirectUri, gate.ctx, remember);

@@ -23,7 +23,7 @@ export default function Hero() {
       {/* Background */}
       <Image
         src="/images/hero-section-banner.png"
-        alt="Shree Shyam Dairy Farm — Pure Fresh Milk"
+        alt="Kunwar Dairy — Pure Fresh Milk"
         fill
         priority
         className="object-cover object-right"

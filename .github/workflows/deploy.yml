@@ -64,7 +64,7 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/v')
     environment:
       name: production
-      url: https://shree-shyam-dairy-farm.vercel.app
+      url: https://kunwardairy.com
     steps:
       - uses: actions/checkout@v4
 

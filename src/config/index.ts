@@ -110,6 +110,7 @@ function fallbackEnvInput(): EnvInput {
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
     NEXT_PUBLIC_APP_DOMAIN: process.env.NEXT_PUBLIC_APP_DOMAIN,
     DEFAULT_TENANT_SLUG: process.env.DEFAULT_TENANT_SLUG,
+    SSD_CLOUD_URL: process.env.SSD_CLOUD_URL,
     STORAGE_PROVIDER: process.env.STORAGE_PROVIDER,
     CRON_SECRET: process.env.CRON_SECRET,
     METRICS_TOKEN: process.env.METRICS_TOKEN,

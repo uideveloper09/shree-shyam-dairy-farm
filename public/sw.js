@@ -36,7 +36,7 @@ self.addEventListener("fetch", (event) => {
 });
 
 self.addEventListener("push", (event) => {
-  let data = { title: "Shree Shyam", body: "New notification" };
+  let data = { title: "Kunwar Dairy", body: "New notification" };
   try {
     if (event.data) data = event.data.json();
   } catch {

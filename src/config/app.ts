@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { isPlaceholder, isValidUrl } from "./_shared";
+import { isPlaceholder, isValidUrl, isLocalhostUrl } from "./_shared";
+import { PRODUCTION_SITE_URL } from "@/lib/site-url";
 
 export const appEnvSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).optional(),
@@ -13,6 +14,8 @@ export const appEnvSchema = z.object({
   ADMIN_SECRET: z.string().optional(),
   CRON_SECRET: z.string().optional(),
   METRICS_TOKEN: z.string().optional(),
+  /** IoT/MQTT bridge target — must be production site URL when APP_ENV=production */
+  SSD_CLOUD_URL: z.string().optional(),
 });
 
 export type AppEnvInput = z.infer<typeof appEnvSchema>;
@@ -76,8 +79,11 @@ export function buildAppConfig(
     version: data.APP_VERSION || "0.1.0",
     isProduction: appEnv === "production",
     public: {
-      url: data.NEXT_PUBLIC_APP_URL || data.NEXTAUTH_URL || "http://localhost:3000",
-      domain: data.NEXT_PUBLIC_APP_DOMAIN || "shree-shyam-dairy-farm.vercel.app",
+      url:
+        data.NEXT_PUBLIC_APP_URL ||
+        data.NEXTAUTH_URL ||
+        (appEnv === "production" ? PRODUCTION_SITE_URL : "http://localhost:3000"),
+      domain: data.NEXT_PUBLIC_APP_DOMAIN || "kunwardairy.com",
       tenantSlug: data.DEFAULT_TENANT_SLUG || "default",
     },
     admin: {
@@ -99,8 +105,30 @@ export function validateAppStrict(app: AppConfigSlice, errors: string[], warning
   if (app.isProduction && !app.admin.configured) {
     errors.push("ADMIN_SECRET is required in production");
   }
+  if (app.isProduction && !process.env.NEXT_PUBLIC_APP_URL && !process.env.NEXTAUTH_URL) {
+    warnings.push(
+      `NEXT_PUBLIC_APP_URL not set — defaulting to ${PRODUCTION_SITE_URL} in production`
+    );
+  }
   if (app.isProduction && !app.public.url.startsWith("https://")) {
-    warnings.push("NEXT_PUBLIC_APP_URL should use https:// in production");
+    errors.push("NEXT_PUBLIC_APP_URL must use https:// in production");
+  }
+  if (app.isProduction && isLocalhostUrl(app.public.url)) {
+    errors.push("NEXT_PUBLIC_APP_URL must not point to localhost in production");
+  }
+  if (app.isProduction && isLocalhostUrl(process.env.NEXTAUTH_URL)) {
+    errors.push("NEXTAUTH_URL must not point to localhost in production (use NEXT_PUBLIC_APP_URL)");
+  }
+  if (app.isProduction && isLocalhostUrl(process.env.NEXT_PUBLIC_APP_URL)) {
+    errors.push("NEXT_PUBLIC_APP_URL must not point to localhost in production");
+  }
+  if (app.isProduction && isLocalhostUrl(process.env.SSD_CLOUD_URL)) {
+    errors.push("SSD_CLOUD_URL must not point to localhost in production");
+  }
+  if (app.isProduction && process.env.NEXTAUTH_URL && process.env.NEXT_PUBLIC_APP_URL) {
+    warnings.push(
+      "Both NEXTAUTH_URL and NEXT_PUBLIC_APP_URL are set — prefer NEXT_PUBLIC_APP_URL only"
+    );
   }
 }
 

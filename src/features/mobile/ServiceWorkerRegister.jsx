@@ -30,7 +30,7 @@ export function InstallPrompt() {
 
   return (
     <div className="mb-4 rounded-xl border border-[#C89B3C]/40 bg-[#C89B3C]/10 p-4">
-      <p className="text-sm font-medium text-white">Install Shree Shyam App</p>
+      <p className="text-sm font-medium text-white">Install Kunwar Dairy App</p>
       <p className="mt-1 text-xs text-white/60">
         Add to home screen for offline access and push alerts.
       </p>

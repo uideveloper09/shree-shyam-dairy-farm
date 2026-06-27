@@ -18,11 +18,11 @@ describe("tenant/constants", () => {
 
 describe("tenant/resolve", () => {
   it("resolves subdomain", () => {
-    expect(resolveTenantFromHost("farm1.shree-shyam-dairy-farm.vercel.app")).toBe("farm1");
+    expect(resolveTenantFromHost("farm1.kunwardairy.com")).toBe("farm1");
   });
 
   it("returns default for main domain", () => {
-    expect(resolveTenantFromHost("shree-shyam-dairy-farm.vercel.app")).toBe("default");
+    expect(resolveTenantFromHost("kunwardairy.com")).toBe("default");
   });
 });
 

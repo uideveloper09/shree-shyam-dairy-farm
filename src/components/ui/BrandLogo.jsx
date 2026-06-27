@@ -55,7 +55,7 @@ export default function BrandLogo({
             <span
               className={`logo-wordmark ${titleClass} block max-w-full leading-[1.05] ${compact ? "truncate" : ""} ${titleSize}`}
             >
-              SHREE SHYAM
+              KUNWAR
             </span>
             <div className="logo-wordmark-rule max-w-full" aria-hidden>
               <span className="logo-wordmark-rule-line shrink" />
@@ -65,7 +65,7 @@ export default function BrandLogo({
             <span
               className={`logo-wordmark logo-wordmark-subtitle block max-w-full leading-[1.05] ${compact ? "truncate" : ""} ${subtitleSize}`}
             >
-              DAIRY FARM
+              DAIRY
             </span>
           </div>
         ) : (
@@ -75,14 +75,14 @@ export default function BrandLogo({
                 isDark ? "text-white" : "text-[#082F63]"
               }`}
             >
-              SHREE SHYAM
+              KUNWAR
             </span>
             <span
               className={`logo-wordmark block max-w-full truncate leading-[1.05] ${subtitleSize} ${
                 isDark ? "text-[#C89B3C]" : "text-[#082F63]"
               }`}
             >
-              DAIRY FARM
+              DAIRY
             </span>
           </>
         )}

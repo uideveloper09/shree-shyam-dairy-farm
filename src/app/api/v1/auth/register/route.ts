@@ -8,6 +8,7 @@ import { validatePasswordPolicy } from "@/lib/security/password-policy";
 import { createAuthSession } from "@/lib/security/session-manager";
 import { writeAudit, AUDIT_ACTIONS } from "@/lib/security/audit";
 import { recordGdprConsent } from "@/lib/security/gdpr";
+import { sendVerificationEmailForUser } from "@/lib/auth/email-verification.service";
 
 export const dynamic = "force-dynamic";
 
@@ -91,9 +92,21 @@ export async function POST(request: Request) {
 
     await recordGdprConsent(user.id);
 
+    const verifyResult = await sendVerificationEmailForUser(user.id);
+    if (verifyResult.sent) {
+      await writeAudit({
+        userId: user.id,
+        action: AUDIT_ACTIONS.EMAIL_VERIFY_SENT,
+        ipAddress: gate.ctx.ip,
+      });
+    }
+
     return NextResponse.json({
       user: publicUser({ ...user, emailVerified: Boolean(user.emailVerified) }),
-      message: "Account created successfully",
+      message: verifyResult.sent
+        ? "Account created. Check your email to verify your address."
+        : "Account created successfully",
+      emailVerificationSent: verifyResult.sent,
     });
   } catch (err) {
     console.error("Register error:", err);

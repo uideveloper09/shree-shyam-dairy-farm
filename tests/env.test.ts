@@ -66,8 +66,22 @@ describe("config", () => {
     expect(result.errors.some((e) => e.includes("EMAIL_FROM"))).toBe(true);
   });
 
+  it("rejects localhost NEXT_PUBLIC_APP_URL in production", () => {
+    process.env.APP_ENV = "production";
+    process.env.NODE_ENV = "production";
+    process.env.NEXT_PUBLIC_APP_URL = "http://localhost:3000";
+    process.env.DATABASE_URL = "postgresql://u:p@host:5432/db?sslmode=require";
+    process.env.JWT_ACCESS_SECRET = "a".repeat(32);
+    process.env.JWT_REFRESH_SECRET = "b".repeat(32);
+    process.env.ADMIN_SECRET = "c".repeat(16);
+    const result = validateEnv({ strict: true });
+    expect(result.ok).toBe(false);
+    expect(result.errors.some((e) => e.includes("localhost"))).toBe(true);
+  });
+
   it("enforces production requirements", () => {
     process.env.APP_ENV = "production";
+    process.env.NEXT_PUBLIC_APP_URL = "https://kunwardairy.com";
     delete process.env.DATABASE_URL;
     delete process.env.JWT_ACCESS_SECRET;
     delete process.env.ADMIN_SECRET;

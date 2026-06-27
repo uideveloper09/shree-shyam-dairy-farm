@@ -2,8 +2,10 @@
  * Order confirmation message templates (email, WhatsApp, SMS, admin).
  */
 import type { OrderConfirmationContext } from "./order-confirmation.types";
+import { getSiteUrl } from "@/lib/site-url";
+import { CUSTOMER_BRAND_NAME } from "@/constants/brand";
 
-const BRAND_NAME = "Shree Shyam Dairy Farm";
+const BRAND_NAME = CUSTOMER_BRAND_NAME;
 
 export function buildOrderConfirmationContext(params: {
   orderId: string;
@@ -20,9 +22,7 @@ export function buildOrderConfirmationContext(params: {
   userId?: string;
   itemCount: number;
 }): OrderConfirmationContext {
-  const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000").replace(/\/$/, "");
-
-  const invoiceLink = params.invoiceUrl || `${baseUrl}/account/orders/${params.orderNumber}`;
+  const invoiceLink = params.invoiceUrl || `${getSiteUrl()}/account/orders/${params.orderNumber}`;
 
   return {
     orderId: params.orderId,
