@@ -1,13 +1,26 @@
 import { SignJWT, jwtVerify } from "jose";
 
+function resolveAccessSecret(): string {
+  return process.env.JWT_ACCESS_SECRET || process.env.NEXTAUTH_SECRET || "";
+}
+
+function resolveRefreshSecret(): string {
+  return (
+    process.env.JWT_REFRESH_SECRET ||
+    process.env.JWT_ACCESS_SECRET ||
+    process.env.NEXTAUTH_SECRET ||
+    ""
+  );
+}
+
 function getAccessSecret() {
-  const secret = process.env.JWT_ACCESS_SECRET;
+  const secret = resolveAccessSecret();
   if (!secret) throw new Error("JWT_ACCESS_SECRET is not configured");
   return new TextEncoder().encode(secret);
 }
 
 function getRefreshSecret() {
-  const secret = process.env.JWT_REFRESH_SECRET || process.env.JWT_ACCESS_SECRET;
+  const secret = resolveRefreshSecret();
   if (!secret) throw new Error("JWT_REFRESH_SECRET is not configured");
   return new TextEncoder().encode(secret);
 }

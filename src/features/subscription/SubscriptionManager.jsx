@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { Loader2, Plus, Milk } from "lucide-react";
+import { fetchWithSession } from "@/lib/auth/client-fetch";
 import SubscriptionCard from "@/features/subscription/SubscriptionCard";
 import SubscribeMilkForm from "@/features/subscription/SubscribeMilkForm";
 
@@ -17,7 +18,7 @@ export default function SubscriptionManager() {
     setLoading(true);
     try {
       const [subRes, prodRes] = await Promise.all([
-        fetch("/api/v1/subscriptions"),
+        fetchWithSession("/api/v1/subscriptions"),
         fetch("/api/products?category=milk"),
       ]);
 
@@ -53,7 +54,7 @@ export default function SubscriptionManager() {
   const handleAction = async (id, action, body) => {
     setActionLoading(id);
     try {
-      const res = await fetch(`/api/v1/subscriptions/${id}/${action}`, {
+      const res = await fetchWithSession(`/api/v1/subscriptions/${id}/${action}`, {
         method: "POST",
         headers: body ? { "Content-Type": "application/json" } : undefined,
         body: body ? JSON.stringify(body) : undefined,

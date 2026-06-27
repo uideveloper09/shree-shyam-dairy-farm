@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { Loader2, Pause, Play, Plane, SkipForward, XCircle, CreditCard } from "lucide-react";
 import { formatINR } from "@/utils/cart";
+import { fetchWithSession } from "@/lib/auth/client-fetch";
 import DeliveryCalendar from "@/features/subscription/DeliveryCalendar";
 
 const STATUS_BADGE = {
@@ -79,11 +80,15 @@ export default function SubscriptionCard({ subscription, onAction, actionLoading
             onClick={async () => {
               setBillingLoading(true);
               try {
-                const res = await fetch(`/api/v1/subscriptions/${subscription.id}/billing`, {
-                  method: "POST",
-                });
+                const res = await fetchWithSession(
+                  `/api/v1/subscriptions/${subscription.id}/billing`,
+                  { method: "POST" }
+                );
                 const data = await res.json();
-                if (!res.ok) throw new Error(data.error);
+                if (res.status === 401) {
+                  throw new Error("Session expired. Please log in again.");
+                }
+                if (!res.ok) throw new Error(data.error || "Auto-pay setup failed");
                 if (data.billing?.shortUrl) {
                   window.open(data.billing.shortUrl, "_blank", "noopener,noreferrer");
                 }
