@@ -23,14 +23,17 @@ import { TenantProvider } from "@/features/tenant/TenantProvider";
 const playfair = Playfair_Display({
   variable: "--font-heading",
   subsets: ["latin"],
+  weight: ["600", "700"],
   display: "swap",
+  preload: false,
 });
 
 const poppins = Poppins({
   variable: "--font-body",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
+  preload: false,
 });
 
 const logoFont = Marcellus({
@@ -38,13 +41,15 @@ const logoFont = Marcellus({
   subsets: ["latin"],
   weight: "400",
   display: "swap",
+  preload: false,
 });
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-tagline",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["500"],
   display: "swap",
+  preload: false,
 });
 
 const greatVibes = Great_Vibes({
@@ -52,6 +57,7 @@ const greatVibes = Great_Vibes({
   subsets: ["latin"],
   weight: "400",
   display: "swap",
+  preload: false,
 });
 
 export const viewport = {

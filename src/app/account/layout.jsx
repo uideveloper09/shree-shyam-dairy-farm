@@ -38,7 +38,7 @@ export default async function AccountLayout({ children }) {
     <div className="min-h-[100dvh] bg-[#f8f6f1]">
       <header className="border-b border-[#e8e4dc] bg-white">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
-          <Link href="/">
+          <Link href="/" prefetch={false}>
             <BrandLogo compact />
           </Link>
           <div className="text-right">
@@ -58,6 +58,7 @@ export default async function AccountLayout({ children }) {
               <Link
                 key={href}
                 href={href}
+                prefetch={false}
                 className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-[#082F63]/80 transition hover:bg-[#f8f6f1] hover:text-[#082F63]"
               >
                 <Icon size={16} className="text-[#C89B3C]" />
