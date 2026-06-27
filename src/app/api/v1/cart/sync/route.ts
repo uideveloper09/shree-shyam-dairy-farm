@@ -33,32 +33,36 @@ export async function POST(request: Request) {
 
     const cart = await getOrCreateUserCart(user!.id);
 
-    await prisma.cart.update({
-      where: { id: cart.id },
-      data: {
-        note: note ?? cart.note,
-        couponCode: couponCode ?? cart.couponCode,
-        guestId: guestId ?? cart.guestId,
-      },
-    });
+    if (note !== undefined || couponCode !== undefined) {
+      await prisma.cart.update({
+        where: { id: cart.id },
+        data: {
+          ...(note !== undefined ? { note } : {}),
+          ...(couponCode !== undefined ? { couponCode } : {}),
+        },
+      });
+    }
 
     for (const item of items) {
+      const legacyId = Number(item.id);
+      if (!Number.isFinite(legacyId)) continue;
+
       const product = await prisma.product.findFirst({
-        where: { legacyId: Number(item.id), isActive: true },
+        where: { legacyId, isActive: true },
       });
       if (!product) continue;
 
-      const existing = cart.items.find((i) => i.productId === product.id);
-      if (existing) {
-        await prisma.cartItem.update({
-          where: { id: existing.id },
-          data: { quantity: item.quantity },
-        });
-      } else {
-        await prisma.cartItem.create({
-          data: { cartId: cart.id, productId: product.id, quantity: item.quantity },
-        });
-      }
+      await prisma.cartItem.upsert({
+        where: {
+          cartId_productId: { cartId: cart.id, productId: product.id },
+        },
+        update: { quantity: item.quantity },
+        create: {
+          cartId: cart.id,
+          productId: product.id,
+          quantity: item.quantity,
+        },
+      });
     }
 
     const updated = await getOrCreateUserCart(user!.id);

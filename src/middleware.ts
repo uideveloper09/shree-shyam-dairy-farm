@@ -3,8 +3,15 @@ import type { NextRequest } from "next/server";
 import { resolveTenantFromHost } from "@/lib/tenant/resolve-host";
 import { TENANT_COOKIE, TENANT_HEADER } from "@/constants/tenant";
 
-const protectedPrefixes = ["/account", "/admin", "/m"];
 const authRoutes = ["/login", "/signup"];
+
+function isProtectedPath(pathname: string) {
+  if (pathname.startsWith("/account")) return true;
+  if (pathname.startsWith("/admin")) return true;
+  // Match /m and /m/* only — not /manifest.json, /metrics, etc.
+  if (pathname === "/m" || pathname.startsWith("/m/")) return true;
+  return false;
+}
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -17,7 +24,7 @@ export function middleware(request: NextRequest) {
     requestHeaders.set(TENANT_HEADER, subdomainSlug);
   }
 
-  const isProtected = protectedPrefixes.some((p) => pathname.startsWith(p));
+  const isProtected = isProtectedPath(pathname);
   const isAuthRoute = authRoutes.some((p) => pathname.startsWith(p));
 
   if (isProtected && !accessToken) {
@@ -39,5 +46,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|manifest.json|sw.js|images/).*)"],
 };
