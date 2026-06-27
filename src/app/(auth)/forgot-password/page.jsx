@@ -26,6 +26,13 @@ export default function ForgotPasswordPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Could not send reset link");
 
+      if (!data.emailConfigured) {
+        setError(
+          "Email service is not configured yet. Add RESEND_API_KEY and EMAIL_FROM on Vercel, or contact support."
+        );
+        return;
+      }
+
       setSent(true);
     } catch (err) {
       setError(err.message || "Something went wrong");
